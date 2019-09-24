@@ -357,7 +357,7 @@ public class HrDoweightController extends BaseController {
     /**
      * 保存收货称重
      * **/
-    @RequiresPermissions("stone:order:weight")
+    //@RequiresPermissions("stone:order:weight")
     @PostMapping("/saveReceiveWeight")
     @ResponseBody
     public AjaxResult saveReceiveWeight(ReceiveStock order){
