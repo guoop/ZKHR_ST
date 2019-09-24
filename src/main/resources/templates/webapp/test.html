@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+  <th:block th:include="include :: header('webapp测试')" />
+</head>
+
+<body class="gray-bg">
+  <div class="form-content">
+    <form class="form-horizontal" id="form-tasks-add">
+      <div class="row">
+        <div class="form-group">
+          <label class="col-sm-2 control-label">选用车辆：</label>
+          <div class="col-sm-10">
+            <select id="cartypeList" name="cartypeList" class="form-control select2-hidden-accessible" multiple="">
+              <option th:each="cartype:${@dict.getType('shangtong_cars_types')}" th:value="${cartype.dictValue}" th:text="${cartype.dictLabel}"></option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div th:include="include :: footer"></div>
+  <th:block th:include="include :: select2-js" />
+</body>
+
+</html>

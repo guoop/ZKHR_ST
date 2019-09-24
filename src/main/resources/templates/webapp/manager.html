@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>报单</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/webapp/manager.css">
+  <link rel="stylesheet" href="/css/webapp/vant.min.css">
+  <link rel="stylesheet" href="/css/webapp/webapp.css">
+  <script src="/css/webapp/webapp.js"></script>
+</head>
+
+<body>
+  <div class="manager-root">
+    <div>
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs manager-nav-tabs" id="my_tab" style="display: none;">
+        <li class="active"><a href="javascript:">报料单信息</a></li>
+        <li><a href="javascript:">地图选点</a></li>
+      </ul>
+      <!-- Tab panes -->
+      <div class="tab-content" id="tab_content">
+        <div class="formtab" id="order">
+          <form class="form-horizontal od-form" action="" method="GET" id="orderform" autocomplete="on">
+            <div class="form-group">
+              <label for="name" class="col-sm-2 control-label">工程名称：</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="name" id="name" placeholder="请输入工程名称" required="required">
+              </div>
+            </div>
+            <input type="hidden" name="lon" id="lon" value="114.425541">
+            <input type="hidden" name="lat" id="lat" value="35.046859">
+            <div class="form-group">
+              <label for="receiver" class="col-sm-2 control-label">使用单位：</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="receiver" id="receiver" placeholder="" required="required">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="waterPart" class="col-sm-2 control-label">工程部位：</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="waterPart" id="waterPart" placeholder="" required="required">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="productKind" class="col-sm-2 control-label">强度等级：</label>
+              <div class="col-sm-10">
+                <!--<input type="text" class="form-control" name="productKind" id="productKind" required="required">-->
+                <select class="form-control" name="productKind" id="productKind" required="required">
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="totalFl" class="col-sm-2 control-label">使用方量（m³）：</label>
+              <div class="col-sm-10">
+                <input type="number" step="0.01" min="1" class="form-control" name="totalFl" id="totalFl" placeholder="" required="required">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="shajiangfl" class="col-sm-2 control-label">润泵砂浆（m³）：</label>
+              <div class="col-sm-10">
+                <input value="0" type="number" step="0.01" class="form-control" name="shajiangfl" id="shajiangfl" placeholder="" required="required">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="locationTanluodu" class="col-sm-2 control-label">塌落度：</label>
+              <div class="col-sm-10">
+                <input value="180±20" type="text" class="form-control" name="locationTanluodu" id="locationTanluodu" placeholder="" required="required">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="waterMethod" class="col-sm-2 control-label">浇筑方式：</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="waterMethod" id="waterMethod" placeholder="" required="required">
+              </div>
+            </div>
+            <div class="form-group">
+              <input type="hidden" class="form-control" name="arriveTime" id="arriveTime" placeholder="任务开始时间" required="required">
+              <label for="arriveTime" class="col-sm-2 control-label">使用时间：</label>
+              <div class="col-sm-10">
+                <div @click="showArriveTime" class="arrivetime">{{ currentDateFm }}</div>
+              </div>
+            </div>
+            <van-popup v-model="timeShow" position="bottom">
+              <van-datetime-picker v-model="currentDate" @confirm="chioceTime" type="datetime" :min-date="minDate" :max-date="maxDate" />
+            </van-popup>
+            <div class="form-group">
+              <label for="receivorMobile" class="col-sm-2 control-label">收货人电话：</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" name="receivorMobile" id="receivorMobile" placeholder="" required="required">
+              </div>
+            </div>
+            <h3>选填</h3>
+            <hr>
+            <div class="form-group">
+              <div class="carno-label-div">
+                <label class="col-sm-12 control-label carno-label">选用车辆号码：</label>
+                <img class="carno-label-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAAZCAYAAAChBHccAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDphM2FjMjdkYy00MDUyLTRjZmEtODJiMC1hYjA2OTMwZWE1M2YiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MDFFQzI0MDE2NjQyMTFFOUFCMDM4M0M4MTFGMTgyNzAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MDFFQzI0MDA2NjQyMTFFOUFCMDM4M0M4MTFGMTgyNzAiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTkgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5MDEyNTllMC01YWMzLTQ4YmUtYThiMy1lYmVkY2E1NGI3ZGIiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDpiMDE0MjEzNi00MmMyLWU1NGMtOTg1OS0yY2QzMDNhYzAwMWQiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6JX+CqAAAFP0lEQVR42sxXSUxkVRS9v6oooBiKqaAYirEYAhQbQyTBxI6YjlNjjJrulQsSV4quu1f2ol3bGjdtNGrUqB0XdEIbETEaly5IgAXzPM9TAcXwPeeGj2VP0FDV+JKf4lfd//5555577kVM05QIXzd2d3fNqakpc2RkxJycnDR5j/VhpN/lkMgtAxt+FAwG31tcXJTR0VHZ2tqSuLg42dvbk/T09KsulyvRMIz3EWtG4oWRAm/HdWtnZ6dpbm5O+vv7ZXp6WnAvTqdTP0tKSiQ7O7sZh+EB3kb8fiTYOuseTlxfYZ8rg4ODMjQ0JOPj47K//y82h8NB5qWgoEBqamrEZrP9gK/fwhU6T+YJ/Pba2lojtC3QuFAyJCQlJUVB8xD4XVZWVvQB3hcXF19OTU114fZNXDvnAZ4vbwGo51GcMjAwIEtLSwrc7XZLYWGhxMfHq+55qI2NDf2dErLb7XJwcHApLS2tFRJqxD7BJwnejZe3wkXqx8bGZHh4WGZmZhQUGc/Ly5Py8nJJSkpS0DwQpUT2V1dX9aB4lodriI2NbcNzL2PP1ccFYTsFcA/AtIPRemqcrM7Pz1PHyjgkobpOTEy8jjgjISHhaiAQ0ILlwbgoI7pRZ2cn/65H3G/cN9oF68XVBl0HJiYmlHEyiSwoy2VlZeLz+QjyOuI+gCSs595ZXl7+BPIy+vr6FDyfgXVKfn6+FjKcqBvxFxE7HQ3Z+JDqDoD1kzXKZWFhQWJiYiQjI+MIRHJysgLnA2HEfIoDraOAvwBoO59lYa+vr2sGtOE4HNUo4j/x2YD4sUgy74dLdIAxX09Pj9BZyB6lQuCUSnV1tYC5I+APWa8D/He9vb1OZo29gO+HtMi8UF445Dhq4DnEDkQCfAAxv+BF2dQ4C48OwuIEU1JZWSm5ubmUwH3AH7L3C3CcnyAhF4mgA7ED05m8Xq+Ulpay4GcOJdR1FvBPgfGfoW8P00tL3NzcFDiEeDwe8fv9kpmZSb0/kPFH7P0sxogWdGM3uzG7Mi2UB8jJyVEJ4lqAhF5E7N+n0Xw9GG6FNt20ttnZWWWcGs/KylIfp8aRAbrKA6USVrD3rj8glYsAeBespzOLlND29rZKkjaK90CRGe040CuI/+txmG8A43ewkau7u1utMBQK6ZxCxquqqhQ41nEaP1aSqIE2ZNSLOtDMMgMkCA1MawASCiIDryK2/STgG/Hdj2A7llKxmGBKKRFuSK1DOmcFfmQGIKYDVurr6uq6L8MkqaKiIoQscpS48x/w9NuwdRla/BopVDegFrkR/Zhds6ioSDfExicC/gjZ3LvyQNDv6NJ+Nj32EKu2SBjAM+O7wMFh7vsjzYe9oAmt/BaA25lCMKGMhwPn5wns8DRrAoQ8g/1/hf0GiIkZB5Eq2cPij8FBvoECEnD7eXjBNuPHmzi1weK0HkCLV/9luz9s7dEAbq1ZgL4At7kL93qa9UXZkkRmg/IGmXaMGZ8hjgf4mOCvIUU3OIcziMHWZEi9ccDiIaIM3FpL9Hc4UQukcsH6kpg4+BEXjMSAS92EIpIMtHuTNsWZg0FWw+AgRfDUXJSkcty4fRs19xKbInsBJcT/D+hC7C9UhIMdjunhnKKzLhjnDwygq5wDcDmc719DkX4LwG+QUNYAR2q6EccSupGN4Mk8AzgZsvnU1dWdJ3Br0R6vgOkva2trlUyyTnekC3KadbAQ2ZJ5Kg5YBM+TPSGNH7f4j3AT8GxAwu/ShQiesibRDk6FBEtNUd8Yaf8vwMNGJLMZuNZgpdeoezoRs/CPAAMAz71/PePrnwYAAAAASUVORK5CYII=" />
+              </div>
+              <ul class="carno" id="carno">
+              </ul>
+            </div>
+            <div class="form-group">
+              <label for="remarks" class="col-sm-2 control-label">备注：</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="remark" id="remarks" value="资料随车" placeholder="">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="maxcarfl" class="col-sm-2 control-label">每车最大方量：</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="maxcarfl" id="maxcarfl" value="" placeholder="">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="carsubfl" class="col-sm-2 control-label">每车需要减少的方量：</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" name="carsubfl" id="carsubfl" value="" placeholder="">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary btn-block">提交</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="manager-map" id="map">
+          <div id="manager_map"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/js/vue.js"></script>
+  <script src="/css/webapp/vant.min.js"></script>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/lodash.min.js"></script>
+  <script src="/ajax/libs/layer/layer.min.js"></script>
+  <!-- <script src="/js/bootstrap.min.js"></script> -->
+  <!-- <script src="//api.map.baidu.com/api?v=2.0&ak=dlriuGKWgEEMa38d5RMGHzZ5520bp5D3"></script> -->
+  <!-- <script src="/css/webapp/manager.js"></script> -->
+  <script>
+  // com_devEnv = "dev";
+  var Vue = window.Vue;
+  var vant = window.vant;
+  Vue.use(vant);
+  var app = new Vue({
+    el: '#order',
+    data: {
+      timeShow: false,
+      minDate: new Date(),
+      maxDate: new Date(Date.now() + 31622400000),
+      currentDate: new Date(),
+      currentDateFm: '',
+    },
+    methods: {
+      showArriveTime: function(e) {
+        this.timeShow = !this.timeShow;
+      },
+      chioceTime: function(timev) {
+        var arriveTime = formatDate(timev);
+        this.currentDateFm = arriveTime;
+        console.log('时间:', arriveTime);
+        document.querySelector('#arriveTime').value = arriveTime;
+        this.timeShow = false;
+      },
+    }
+  });
+
+  var global_var = {
+    mapIsShow: false,
+  };
+  var ajaxUrls = {
+    addTask: '/webapp/addTask', // 添加任务单
+    // taskList: 'webapp/taskList', // 业务员任务单列表
+    carlist: "/webapp/carlist", // 车辆列表
+    tongList: "/cars/comstrength/listAll", // 强度等级
+  };
+  var map;
+  if (com_devEnv === 'dev') {
+    $('input[name=name]').val('中央公馆――6#楼');
+    $('input[name=receiver]').val('新乡市隆基建筑安装有限公司');
+    $('input[name=waterPart]').val('7层墙柱梁板梯' + Date.now());
+    $('input[name=productKind]').val('C30');
+    $('input[name=totalFl]').val('205.5');
+    $('input[name=locationTanluodu]').val('180+-20');
+    $('input[name=waterMethod]').val('地泵');
+    $('input[name=arriveTime]').val('2019-7-10T14:48:00');
+    $('input[name=receivorMobile]').val('18601288359');
+    ajaxUrls = {
+      addTask: './ok.json',
+      // taskList: './taskList.php',
+      carlist: "http://101.200.50.35/carlist.php", //
+    };
+  }
+  // 车辆
+  var request = $.ajax({
+    url: ajaxUrls.carlist,
+    type: "POST",
+    data: {},
+    dataType: "json"
+  });
+  request.done(function(data) {
+    if (data.code !== 0) {
+      return;
+    }
+    var cars = data.list;
+    var carli = '';
+    for (var i = 0; i < cars.length; i++) {
+      carli += `<li class="carno-li" data-val="${cars[i].carNo}">
+        <span class="carno-txt">${cars[i].carNo}</span>
+      </li>`;
+    }
+    $('#carno').html(carli);
+  });
+  // 砼标号
+  var request = $.ajax({
+    url: ajaxUrls.tongList,
+    type: "POST",
+    data: {},
+    dataType: "json"
+  });
+  request.done(function(data) {
+    if (data.code !== 0) {
+      return;
+    }
+    var cars = data.data;
+    var carli = '';
+    for (var i = 0; i < cars.length; i++) {
+      $("#productKind").append(`<option value="${cars[i].strengthNo}">${cars[i].strengthNo}</option>`);
+    }
+  });
+  request.fail(function(jqXHR, textStatus) {
+    layer.msg('网络失败');
+    console.warn('网络失败', jqXHR);
+  });
+  $('#remarks').click(function() {
+    if ($(this).val() === '资料随车') {
+      $(this).val('');
+    }
+  });
+  // $('input[name=name]').bind('blur', function() {
+  //   console.log($('.tangram-suggestion-main').css('display'));
+  //   if ($('.tangram-suggestion-main').css('display') === 'none') {
+  //     layer.msg('请点选目的地', { time: 800 });
+  //     $('#my_tab > li').eq(1).trigger('click');
+  //   }
+  // });
+  // tab切换
+  // $('#my_tab > li').click(function(e) {
+  //   var idx = $(this).index();
+  //   $(this).addClass('active').siblings().removeClass('active');
+  //   $('#tab_content > div').eq(idx).css('z-index', 1).siblings().css('z-index', -1);
+  //   if (idx == 1) {
+  //     $('#tab_content > div').eq(0).hide();
+  //   } else {
+  //     $('#tab_content > div').eq(0).show();
+  //   }
+  // });
+
+  // 百度地图
+  // setTimeout(function() {
+  // map = new BMap.Map("manager_map"); // 创建地图实例
+  // var point = new BMap.Point(114.426468, 35.094869); // 创建点坐标
+  // map.centerAndZoom(point, 15); // 初始化地图，设置中心点坐标和地图级别
+  // map.addOverlay(new BMap.Marker(point)); // 定点坐标红点覆盖
+  // map.enableScrollWheelZoom(); // pc 滚轮缩放,调试用
+  // map.enablePinchToZoom();
+  // map.enableDoubleClickZoom();
+  // global_var.mapIsShow = true;
+  // }, 100);
+
+  //单击获取点击的经纬度
+  // map.addEventListener("click", function(e) {
+  //   // alert(e.point.lng, e.point.lat);
+  //   console.log(e.point.lng, e.point.lat);
+  //   map.clearOverlays();
+  //   var point = e.point;
+  //   $("input[name='lon']").val(point.lng);
+  //   $("input[name='lat']").val(point.lat);
+  //   map.addOverlay(new BMap.Marker(e.point));
+
+  //   // var geoc = new BMap.Geocoder();
+  //   // geoc.getLocation(point, function(rs) {
+  //   //   console.log(point, rs)
+  //   // });
+
+  //   layer.msg('选点成功.');
+  //   $('#my_tab > li').first().trigger('click');
+  // });
+
+  // 自动补全地名
+  // var autoComplate = new BMap.Autocomplete({
+  //   location: '新乡市',
+  //   input: 'name',
+  // });
+  // autoComplate.addEventListener('onconfirm', function(e) {
+  //   var itemVal = e.item.value;
+  //   autoLocation = itemVal.province + itemVal.city + itemVal.district + itemVal.street + itemVal.business;
+  //   console.log(autoLocation);
+  //   setPlace(autoLocation);
+  // });
+  // 设置地图地点为 自动补全地名
+  function setPlace(autoLocation) {
+    map.clearOverlays();
+
+    var local = new BMap.LocalSearch(map, {
+      onSearchComplete: function() {
+        var point = local.getResults().getPoi(0).point;
+        console.log(222222, point);
+        // map.addOverlay(new BMap.Marker(point));
+        map.centerAndZoom(point, 18);
+      }
+    });
+
+    local.search(autoLocation);
+  }
+
+  // 自动补全功能
+  function autoComplateInputSave(paramsdata) {
+    // receiver: '新乡市隆基建筑安装有限公司',
+    // waterPart: '7层墙柱梁板梯1560338449623',
+    // var paramsdata = $('#orderform').serializeArray();
+    var completions = JSON.parse(localStorage.getItem('webapp_auto_complete'));
+    if (completions === null) {
+      completions = {};
+      for (let i = 0; i < paramsdata.length; i++) {
+        let name = paramsdata[i].name;
+        let value = String(paramsdata[i].value).trim();
+        completions[name] = [];
+        completions[name].push({
+          value: value,
+          time: 1,
+        });
+      }
+    } else {
+      for (let i = 0; i < paramsdata.length; i++) {
+        let name = paramsdata[i].name;
+        let value = String(paramsdata[i].value).trim();
+        ishad = _.find(completions[name], ['value', value]);
+        if (value && !ishad) {
+          completions[name].push({
+            value: value,
+            time: 1,
+          });
+        }
+        if (completions[name].length > 5) {
+          completions[name].shift();
+        }
+      }
+    }
+    localStorage.setItem('webapp_auto_complete', JSON.stringify(completions));
+  }
+
+  $("#orderform").on("submit", function(e) {
+    //阻止submit表单提交
+    e.preventDefault();
+    // 验证
+    if (!$('#lon').val() || !$('#lat').val()) {
+      layer.alert('在地图上选点之后才能提交.');
+      $('#my_tab > li').eq(1).trigger('click');
+      return false;
+    }
+    var arriveTimeVal = $('input[name=arriveTime]').val();
+
+    if (!arriveTimeVal || Date.parse(arriveTimeVal) - Date.now() < 60000) { // 校验时间
+      layer.alert('使用时间必须大于当前时间');
+      return false;
+    }
+
+    // var params = new URLSearchParams($('#orderform').serialize());
+    var paramsdata = $('#orderform').serializeArray();
+
+    autoComplateInputSave(paramsdata);
+
+    if ($('.carno .active').length > 0) {
+      var carNoList = [];
+      $('.carno .active').each(function() {
+        carNoList.push($(this).attr('data-val'));
+      });
+      paramsdata.push({ name: 'carList', value: carNoList.join(',') });
+    }
+
+    // 日期格式化
+    for (var i = 0; i < paramsdata.length; i++) {
+      if (paramsdata[i].name === 'arriveTime') {
+        paramsdata[i].value = formatDate(paramsdata[i].value)
+      }
+    }
+
+    var request = $.ajax({
+      // url: "http://101.200.50.35/api2.php", // 接口
+      // url: "/webapp/submitTaskOrder", // 接口
+      // url: "/duties/tasks/add", // 接口
+      url: ajaxUrls.addTask, // 接口
+      type: "post",
+      data: paramsdata,
+      // contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+      dataType: "json"
+    });
+
+    request.done(function(data) {
+      console.log(data);
+      if (data.code !== 0) {
+        layer.alert(data.msg);
+        return;
+      }
+      layer.alert(data.msg, function() {
+        document.location.reload();
+      });
+    });
+
+    request.fail(function(jqXHR, textStatus) {
+      console.log('网络失败', jqXHR);
+    });
+
+    return false;
+
+  });
+
+  // 选择车辆
+  $('.carno').on('click', '.carno-li', function() {
+    $(this).toggleClass('active');
+  });
+  $('.carno-label-div').click(function() {
+    $(this).toggleClass('active');
+    $('.carno').slideToggle("slow");
+  });
+  </script>
+</body>
+
+</html>

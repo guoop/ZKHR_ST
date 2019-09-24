@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('任务车辆列表')" />
+	<style>
+		.fixed-table-toolbar{
+			display: none;
+		}
+	</style>
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li class="select-time">
+								<label>时间区间： </label>
+								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+								<span>-</span>
+								<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+							</li>
+							<li>
+								任务单号：<input type="text" name="taskNumber"/>
+							</li>
+							<li>
+								工程名称：<input type="text" name="taskName"/>
+							</li>
+							<li>
+								车号：<input type="text" name="carNo"/>
+							</li>
+							<li>
+								任务状态：
+								<select name="status" th:with="type=${@dict.getType('tasks_status')}">
+									<option value="">所有</option>
+									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+								</select>
+							</li>
+							<li>
+								司机电话：<input type="text" name="driverMobile"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-sm" onclick="$.table.exportExcel()" shiro:hasPermission="duties:tasksCars:export"><i class="fa fa-refresh"></i>&nbsp;导出</a>
+								<a class="btn btn-warning btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+	 <script src="/js/tasks/LodopFuncs.js"></script>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('duties:tasksCars:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('duties:tasksCars:remove')}]];
+        var datas = [[${@dict.getType('tasks_status')}]];
+        var prefix = ctx + "duties/tasksCars";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "任务车辆",
+				sortName: "carCnt desc,taskId desc,startTime desc,createTime",
+                sortOrder: "desc",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'id', 
+					title : '序号',
+					visible: false
+				},
+				{
+					field : 'sno',
+					title : '序号',
+					sortable: true
+				},
+				{
+					field : 'taskNumber',
+					title : '流水号',
+					sortable: true
+				},
+				{
+					field : 'taskName',
+					title : '工程名称',
+					sortable: true
+				},
+				{
+					field : 'waterPart',
+					title : '工程部位',
+					sortable: true
+				},
+				{
+					field : 'carNo', 
+					title : '车号',
+					sortable: true
+				},
+				{
+					field : 'grossWeight',
+					title : '毛重',
+					sortable: true
+				},{
+					field : 'carWeight',
+					title : '皮重',
+					sortable: true
+				},
+				{
+					field : 'netWeight',
+					title : '净重',
+					sortable: true
+				},
+				{
+					field : 'equalFangliang',
+					title : '折方量',
+					sortable: true
+				},
+				{
+					field : 'carCnt',
+					title : '累计车次',
+					sortable: true
+				},
+				{
+					field : 'ljfangliang',
+					title : '累计方量',
+					sortable: true
+				},
+				{
+					field : 'productKind',
+					title : '强度等级',
+					sortable: true
+				},
+				{
+					field : 'waterMethod',
+					title : '浇筑方式',
+					sortable: true
+				},
+				{
+					field : 'startTime',
+					title : '出站时间',
+					sortable: true
+				},
+				{
+					field : 'endTime',
+					title : '到达时间',
+					sortable: true
+				},
+				{
+					field : 'status', 
+					title : '状态',
+					sortable: true,
+                    /*formatter: function(value, row, index) {
+                        return row.status==1?'任务中': row.status==3 ? '已完成':'等待中';
+                    },*/
+					formatter: function(value, item, index) {
+					    var ret = '';
+					    if(item.status==1){
+					        if(!item.stationStatus||item.stationStatus!='OUT'){
+                                ret = '<span style="color: #f40;">待出站</span>'
+							}else{
+                                ret = '<span style="color: #b3e19d;">进行中</span>'
+							}
+						}else if(item.status==3){
+                            ret = '<span style="color: #23c6c8;">已完成</span>'
+						}else if(item.status==-1){
+                            ret = '<span style="color: #8a6d3b;">已删除</span>'
+						}else{
+                            ret = '<span style="color: #f40;">未知</span>'
+						}
+						return ret;
+						// return $.table.selectDictLabel(datas, item.status);
+					}
+				},
+				{
+					field : 'remark',
+					title : '备注',
+					sortable: true
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+                        actions.push('<a class="btn btn-danger btn-xs ' + editFlag + '" href="#" onclick="removeOne(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
+		            	// if(row.status==3){
+                        //     actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="printInfo(\'' + row.id + '\')"><i class="fa fa-edit"></i>打印</a> ');
+						// }
+		            	// if(row.status ==1){
+		            	//     if(row.stationStatus!='OUT'){
+                        //         // actions.push('<a class="btn btn-danger btn-xs ' + editFlag + '" href="#" onclick="removeOne(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
+                        //         actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="outside(\'' + row.id + '\')"><i class="fa fa-edit"></i>出站</a> ');
+						// 	}else{
+                        //         actions.push('<a class="btn btn-danger btn-xs ' + editFlag + '" href="#" onclick="arrived(\'' + row.id + '\')"><i class="fa fa-remove"></i>到达</a> ');
+						// 	}
+						// }
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+		var LODOP; // 打印
+		var styles = '<!DOCTYPE html><head><meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"><style>.order {width: 100%;margin: 0 auto;background: transparent;font-size: 13px;width: 190mm;}.title {text-align: center;font-weight: bold;font-size: 17px;padding-top: 8px;}.table {border: 1px solid #000000;width: 100%;background-color: transparent;border-spacing: 0;border-collapse: collapse;}.table td {border: 1px solid #000000;padding: 2px;line-height: 1.42857143;vertical-align: middle;text-align: center;}.subtitle {width: 100%;margin-bottom: 4px;}.subtitle td {/*border: 0;*/width: 50%;}.subtitle-time {text-align: right;}.foot {text-align: center;}.foot p {margin: 4px auto 0;}.foot-lian span {padding: 0 50px;}.shouhuo {vertical-align: middle;}.test-box {text-align: center;}.test-box a {display: inline-block;padding: 10px 20px;border: 1px solid #000;margin: 10px 50px;}.row {display: flex;list-style: none;padding: 0;margin: 0;text-align: center;}.row li {display: inline-block;border: 1px solid #000000;border-right-width: 0;border-bottom-width: 0;padding: 7px 0;}.label1 {text-align: center;width: 10%;}.value1 {width: 15%;/* flex: 1; */}.value4 {width: 40%;}.row1 li.b-r-n {border-right-width: 1px;}.rowb {display: flex;overflow: hidden;border-bottom: 1px solid #000;}.rowb .col1 {width: 74.8%;}.rowb .col2 {width: 25.2%;}.rowb .label2 {width: 13.2%;text-align: center;}.rowb .value2 {width: 19.84%;}.rowb .label3 {width: 20%;justify-content: center;}.rowb .value3 {width: 80%;}.row3 {/* height: 100%; */}.row3 li {display: flex;align-items: center;}</style></head>';
+        /**打印函数**/
+        function printInfo(id) {
+            console.log(id)
+			//todo  post print request api   /web/printInfo?taskCarId=id
+            $.get("/web/printInfo?taskCarId="+id).success (function (r) {
+                if(r.code=='0'||r.code==0){
+                    console.log(r.data)
+					printOrder(r.data);
+				}
+                layer.msg(r.msg);
+            });
+        }
+
+        /**打印函数**/
+        function removeOne(id) {
+            console.log(id)
+			//todo  post print request api   /web/printInfo?taskCarId=id
+            $.post(prefix+"/removeOne/"+id).success (function (r) {
+                if(r.code=='0'||r.code==0){
+                    $.table.refresh(false);
+				}
+                layer.msg(r.msg);
+            });
+        }
+
+
+
+        /**打印函数**/
+        function arrived(id) {
+			//todo  post print request api   /web/printInfo?taskCarId=id
+            $.post(prefix+"/arrived/"+id).success (function (r) {
+                if(r.code=='0'||r.code==0){
+                    $.table.refresh(false);
+				}
+                layer.msg(r.msg);
+            });
+        }
+
+        //定时刷新
+        setInterval(function () {
+            $.table.refresh();
+        }, 30000)
+
+        /**出站函数**/
+        function outside(id) {
+			//todo  post print request api   /web/printInfo?taskCarId=id
+            var url = "duties/doweight";
+            createMenuItem(url, "过磅操作");
+        }
+
+		/**
+		 * 打印数据
+		 */
+		function printOrder(order) {
+			// console.log('printer::', order);
+			var orderHtml = `<div class="order">
+			  <div id="title">
+				<div class="title">混凝土发货单</div>
+			  </div>
+			  <div id="subtitle">
+				<table class="subtitle">
+				  <tr>
+					<td>序号：${order.orderNo}</td>
+					<td class="subtitle-time">时间：${order.dateTime}</td>
+				  </tr>
+				</table>
+			  </div>
+			  <div class="tableul">
+				<ul class="row row1">
+				  <li class="label1">收货单位</li>
+				  <li class="value4">${order.receivingCompany}</li>
+				  <li class="label1">电话</li>
+				  <li class="value1">${order.telephone}</li>
+				  <li class="label1">到达时间</li>
+				  <li class="b-r-n value1"></li>
+				</ul>
+				<ul class="row row1">
+				  <li class="label1">工程名称</li>
+				  <li class="value4">${order.engineeringName}</li>
+				  <li class="label1">强度等级</li>
+				  <li class="value1">${order.strengthGrade}</li>
+				  <li class="label1">单价</li>
+				  <li class="b-r-n value1">${order.unitPrice ? order.unitPrice : ''}</li>
+				</ul>
+				<ul class="row row1">
+				  <li class="label1">浇筑部位</li>
+				  <li class="value4">${order.pouringSite}</li>
+				  <li class="label1">浇筑方式</li>
+				  <li class="value1">${order.pouringMethod}</li>
+				  <li class="label1">备注</li>
+				  <li class="b-r-n value1">${order.remarks}</li>
+				</ul>
+				<div class="rowb">
+				  <div class="col col1">
+					<ul class="row row1 row2">
+					  <li class="label2">毛重</li>
+					  <li class="value2">${order.grossWeight}</li>
+					  <li class="label2">皮重</li>
+					  <li class="value2">${order.tare}</li>
+					  <li class="label2">净重</li>
+					  <li class="value2">${order.stdWeight}</li>
+					</ul>
+					<ul class="row row1 row2">
+					  <li class="label2">车号</li>
+					  <li class="value2">${order.licenseNumber}</li>
+					  <li class="label2">车次</li>
+					  <li class="value2">${order.trainNumber}</li>
+					  <li class="label2">方量</li>
+					  <li class="value2">${order.squareQuantity}</li>
+					</ul>
+					<ul class="row row1 row2">
+					  <li class="label2">业务经理</li>
+					  <li class="value2">${order.serviceManager}</li>
+					  <li class="label2">电话</li>
+					  <li class="value2">${order.managerTelephone}</li>
+					  <li class="label2">累计方量</li>
+					  <li class="value2">${order.accumulatedVolume}</li>
+					</ul>
+				  </div>
+				  <ul class="col col2 row row1 row3">
+					<li class="label3">收<br>货<br>人</li>
+					<li class="value3 b-r-n"></li>
+				  </ul>
+				</div>
+			  </div>
+			  <div id="footer">
+				<div class="foot">
+				  <p class="foot-lian"><span>白联：存根╱记账</span> <span>粉联：工地</span> <span>黄联：车辆</span></p>
+				  <p>说明：未经本公司许可不得在混凝土中加水或其他材料，否则本公司对此引起的质量问题概不负责</p>
+				</div>
+			  </div>
+			</div>`;
+			var domStr = styles + "<body>" + orderHtml + "</body>";
+			LODOP = getLodop();
+			LODOP.SET_PRINT_PAGESIZE(1, '241mm', '93mm', 'CreateCustomPage');
+			LODOP.ADD_PRINT_HTM("2%", "7mm", "200mm", "96%", domStr);
+			LODOP.PRINT();
+			// LODOP.PREVIEW();
+			// LODOP.PRINT_DESIGN();
+		}
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: header('新增任务单')"/>
+</head>
+<body>
+<div class="form-content">
+    <form class="form-horizontal" id="form-tasks-add">
+        <div class="row">
+            <div class="col-md-10">
+                <h4 class="form-header h4">报料单信息</h4>
+                <div class="row taskadd-listinfo">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">收货单位：</label>
+                            <div class="col-sm-9">
+                                <input id="receiver" name="receiver" class="form-control" type="text" placeholder="收货单位">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">工程名称：</label>
+                            <div class="col-sm-9">
+                                <input id="name" name="name" class="form-control" type="text" placeholder="">
+                                <!--<input id="name" name="name" class="form-control" type="text" placeholder="请输入然后地图选点">
+                                <input type="hidden" name="lon" id="lon">
+                                <input type="hidden" name="lat" id="lat">-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">收货人电话：</label>
+                            <div class="col-sm-6">
+                                <input id="receivorMobile" name="receivorMobile" class="form-control" type="number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">浇筑部位：</label>
+                            <div class="col-sm-6">
+                                <input id="waterPart" name="waterPart" class="form-control" type="text"
+                                       placeholder="浇筑部位">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">浇筑方式：</label>
+                            <div class="col-sm-6">
+                                <input id="waterMethod" name="waterMethod" class="form-control" type="text"
+                                       placeholder="浇筑方式">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">现场坍落度：</label>
+                            <div class="col-sm-6">
+                                <input id="locationTanluodu" name="locationTanluodu" class="form-control" type="text"
+                                       value="180±20">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">用砼时间：</label>
+                            <div class="col-sm-6">
+                                <input id="arriveTime" name="arriveTime" autocomplete="off" class="time-input form-control" type="text"
+                                       placeholder="预计用砼时间">
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">砼标号：</label>
+                            <div class="col-sm-6">
+                                <input id="productKind" name="productKind" class="form-control" type="text"
+                                       placeholder="C25,C25P6,C25细石...">
+                            </div>
+                        </div>
+                    </div>-->
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">砼标号：</label>
+                            <div class="col-sm-6">
+                                <select name="productKind" class="form-control m-b">
+                                    <option th:each="c : ${comList}" th:text="${c.strengthNo}" th:value="${c.strengthNo}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">预计方量（m³）：</label>
+                            <div class="col-sm-6">
+                                <input id="totalFl" name="totalFl" class="form-control" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">单价（元/m³）：</label>
+                            <div class="col-sm-6">
+                                <input id="price" name="price" class="form-control" type="number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label">只能以下车拉：</label>
+                            <div class="col-xs-9">
+                                <select id="carList" class="form-control select2-hidden-accessible" multiple="">
+                                    <option th:each="car:${carList}" th:value="${car.carNo}" th:text="${car.carNo}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">增加优先权（/次）：</label>
+                            <div class="col-sm-6">
+                                <input id="privilege" name="privilege" class="form-control" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">工地停车数：</label>
+                            <div class="col-sm-6">
+                                <input id="targetCarcnt" name="targetCarcnt" class="form-control"  type="number" value="2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">润泵砂浆（m³）：</label>
+                            <div class="col-sm-6">
+                                <input id="shajiangfl" name="shajiangfl" class="form-control" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">掐方方量（m³）：</label>
+                            <div class="col-sm-6">
+                                <input id="pinchFl" name="pinchFl" class="form-control" type="number" placeholder="m³">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">开始时间：</label>
+                            <div class="col-sm-6">
+                                <input id="startTime" name="startTime" class="time-input form-control" type="text" autocomplete="off" placeholder="任务开始时间">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">派发间隔(分钟)：</label>
+                            <div class="col-sm-6">
+                                <input id="subTime" name="subTime" class="form-control" type="number" value="20">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">车辆方量区间：（m³）</label>
+                            <div class="col-sm-6">
+                                <div class="form-inline" style="display: flex; align-items: center;">
+                                    <input style="width:73px;" id="fangliangMin" name="mixCar" class="form-control" type="number" placeholder="">
+                                    <span>&nbsp;至&nbsp;</span>
+                                    <input style="width:73px;" id="fangliangMax" name="maxCar" class="form-control" type="number" placeholder="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">限高：（m）</label>
+                            <div class="col-sm-6">
+                                <input id="height" name="height" class="form-control" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">业务经理：</label>
+                            <div class="col-sm-6">
+                                <input id="officer" name="officer" class="form-control" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">业务经理电话：</label>
+                            <div class="col-sm-6">
+                                <input id="officerMobile" name="officerMobile" class="form-control" type="number">
+                            </div>
+                        </div>
+                    </div>-->
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">预计用车数：</label>
+                            <div class="col-sm-6">
+                                <input id="planCarCnt" name="planCarCnt" class="form-control" type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">预计结束时间：</label>
+                            <div class="col-sm-6">
+                                <input id="planEndTime" autocomplete="off" name="planEndTime" class="time-input form-control" type="text" placeholder="任务开始时间">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">每车最大拉的方量：</label>
+                            <div class="col-sm-6">
+                                <input id="maxcarfl" name="maxcarfl"  class="form-control" type="number"  >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">每辆车需要减少的方量(倒车进工地用)：</label>
+                            <div class="col-sm-6">
+                                <input id="carsubfl" name="carsubfl" class="form-control"  type="number" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12"></div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">是否车带钱：</label>
+                            <div class="col-sm-6">
+                                <div class="radio-box" th:each="dict : ${@dict.getType('sys_yes_no')}">
+                                    <input type="radio" th:id="${dict.dictCode}" name="isCarMoney"
+                                           th:value="${dict.dictValue}"
+                                           th:checked="${dict.isDefault == 'Y' ? false : true}">
+                                    <label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">是否鹅卵石/湿拌砂浆：</label>
+                            <div class="col-sm-6">
+                                <div class="radio-box" th:each="dict : ${@dict.getType('sys_yes_no')}">
+                                    <input type="radio" th:id="${dict.dictCode}" name="isCobblestone"
+                                           th:value="${dict.dictValue}"
+                                           th:checked="${dict.isDefault == 'Y' ? false : true}">
+                                    <label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label">是否需要加长斗：</label>
+                            <div class="col-sm-6">
+                                <div class="radio-box" th:each="dict : ${@dict.getType('sys_yes_no')}">
+                                    <input type="radio" th:id="${dict.dictCode}" name="isJcdou"
+                                           th:value="${dict.dictValue}"
+                                           th:checked="${dict.isDefault == 'Y' ? false : true}">
+                                    <label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label">是否跨县：</label>
+                            <div class="col-sm-6">
+                                <div class="radio-box" th:each="dict : ${@dict.getType('sys_yes_no')}">
+                                    <input type="radio" th:id="${dict.dictCode}" name="isOtherArea"
+                                           th:value="${dict.dictValue}"
+                                           th:checked="${dict.isDefault == 'Y' ? false : true}">
+                                    <label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-offset-5 col-sm-11">
+                        <button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-check"></i>保 存
+                        </button>&nbsp;
+                        <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="col-md-6 hide">
+                <h4 class="form-header h4">地图选点</h4>
+                <div class="row" style="margin: auto;width: 100%;">
+                    &lt;!&ndash;地图嵌入&ndash;&gt;
+                    <div id="allmap" style="height: 500px; height: 87vh;"></div>
+                    <div style="position:absolute;width: 240px;height: 20px; top: 460px;">
+                        &lt;!&ndash;<div id="r-result" style="margin: 10px;"><span style="float:left;width: 50px;">请输入:</span><input type="text" id="suggestId" size="20" value="百度" style="width:150px;" /></div>&ndash;&gt;
+                        <div id="searchResultPanel"
+                             style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+    </form>
+</div>
+
+<div th:include="include::footer"></div>
+<th:block th:include="include :: select2-js" />
+<!--<script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=dlriuGKWgEEMa38d5RMGHzZ5520bp5D3"></script>-->
+<!--<script th:src="@{../../ruoyi/map.js}"></script>-->
+<script type="text/javascript">
+    var prefix = ctx + "duties/tasks"
+    $("#form-tasks-add").validate({
+        rules: {
+            name: {
+                required: true,
+            },
+            totalFl: {
+                required: true,
+            },
+            productKind: {
+                required: true,
+            },
+            // targetAddr:{
+            // 	required:true,
+            // },
+            contact: {
+                required: true,
+            },
+            startTime: {
+                required: true,
+            },
+            pinchFl: {
+                required: true,
+            },
+            subTime: {
+                required: true,
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        // console.log($("#lat").val())
+        /*if (!$("#lat").val() || !$("#lon").val()) {
+            $.modal.alertWarning("请输入工程名，然后地图选择精确点");
+        }*/
+        // var cartypeList = $.form.selectSelects("cartypeList");
+        var data = $("#form-tasks-add").serializeArray();
+        var carList = $.form.selectSelects("carList");
+        data.push({"name": "carList", "value": carList});
+        // data.push({"name": "cartypeList", "value": cartypeList});
+        if ($.validate.form()) {
+            // $.operate.saveTab(prefix + "/add", $('#form-tasks-add').serialize());
+            $.operate.saveTab(prefix + "/add", data);
+        }
+    }
+
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+            laydate.render({
+                elem: '#startTime',
+                type: 'datetime',
+                format: 'yyyy-MM-dd HH:mm:ss'
+            });
+
+            laydate.render({
+                elem: '#arriveTime',
+                type: 'datetime',
+                format: 'yyyy-MM-dd HH:mm:ss'
+            });
+
+            laydate.render({
+                elem: '#planEndTime',
+                type: 'datetime',
+                format: 'yyyy-MM-dd HH:mm:ss'
+            });
+    });
+
+
+    // 隐藏底部 footer 为了一屏显示表单和地图
+    (function(){
+        var topwindow = window.top;
+        topwindow.document.querySelector('#content-main').style.height = 'calc(100% - 100px)'
+        topwindow.document.querySelector('.footer').style.display = 'none'
+    })()
+    // 去掉 radio 标签的 label 选择功能
+    $('.radio-box label').attr('for', '')
+</script>
+</body>
+</html>

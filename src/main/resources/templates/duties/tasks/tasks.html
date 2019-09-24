@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('任务单列表')" />
+	<style>
+		.top-hover{
+			background: #CECECE;
+		}
+        .mixlist{
+            position: absolute;
+            top: 30px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: 0 auto;
+            width: 600px;
+            max-height: 90vh;
+            background: #fff;
+            padding: 30px 40px;
+            display: none;
+            z-index: 19891018;
+        }
+        .mixrows{
+            height: 100%;
+            overflow-y: scroll;
+        }
+        .mixlist.active{
+            display: block;
+        }
+        .mixlist .mixrows .table tr.active{
+            background-color: #f5f5f5;
+        }
+        .mix-bg{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,.5);
+            z-index: 19891016;
+            display: none;
+        }
+        .mix-bg.active{
+            display: block;
+        }
+        .bzr-add-tools .btn{
+            margin: 0 20px;
+        }
+		.mix-line-no{
+			display: inline-block;
+			border: 1px solid #f00;
+			line-height: 22px;
+			width: 22px;
+			height: 22px;
+			text-align: center;
+			border-radius: 50%;
+			background: #f66;
+			color: #fff;
+			font-weight: bold;
+			font-size: 16px;
+			margin: 0 4px 0 0;
+		}
+		#mixlist .mixlist-row{
+			height: 96%;
+		}
+		#mixlist .bzr-tools{
+			margin: 10px 0;
+		}
+		.mixtabcon{
+			display: none;
+			border: 0 !important;
+		}
+		.mixtabconshow{
+			display: table;
+		}
+	</style>
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		 <audio id="task_audio" src="/css/webapp/msg.mp3" loop preload="auto"></audio>
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								工程名：<input type="text" name="name"/>
+							</li>
+							<li>
+								任务状态：
+								<select name="status" th:with="type=${@dict.getType('tasks_status')}">
+									<option value="">所有</option>
+									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+								</select>
+							</li>
+							<li>
+								配比状态：
+								<select name="isMixture" th:with="type=${@dict.getType('sys_yes_no')}">
+									<option value="">所有</option>
+									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+								</select>
+							</li>
+							<li>
+								审核状态：
+								<select name="isSchedule" th:with="type=${@dict.getType('sys_yes_no')}">
+									<option value="">所有</option>
+									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+								</select>
+							</li>
+
+							<li class="select-time">
+								<label>创建时间： </label>
+								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+								<span>-</span>
+								<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+								<a class="btn btn-warning btn-sm" onclick="deleteRedis()" shiro:hasPermission="duties:taks:clearredis"><i class="fa fa-refresh"></i>&nbsp;清空redis</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<!--<a class="btn btn-success" onclick="$.operate.addWeight('',1200)" shiro:hasPermission="duties:tasks:add">-->
+				<a class="btn btn-success" onclick="$.operate.addTab()" shiro:hasPermission="duties:tasks:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.editTab()" shiro:hasPermission="duties:tasks:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="duties:tasks:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<!--<a class="btn btn-success btn-del btn-del disabled" onclick="$.operate.dispathAll()" shiro:hasPermission="cemslink:task:dispath">-->
+					<!--<i class="fa fa-download"></i> 下发-->
+				<!--</a>-->
+				<!--<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="duties:tasks:export">-->
+						<!--<i class="fa fa-download"></i> 导出-->
+				 <!--</a>-->
+			</div>
+			<div class="col-sm-12 select-table table-striped tasklist-table">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+		 <!--配比单-->
+         <div class="mixlist" :class="{active: showAeapp}" id="mixlist">
+             <div class="row mixlist-row">
+                 <div class="col-md-12 mixrows">
+					 <ul class="nav nav-tabs" id="mixtab">
+						 <li :class="{active: lineIndex == tabActiveLineNo}" @click="clickTab(lineIndex)" v-for="(mixrows, lineIndex) in mixLines"><a href="#">{{ lineIndex }}号线</a></li>
+					 </ul>
+                     <table class="table table-hover mixtabcon" :class="{mixtabconshow: tabActiveLineNo == lineConIndex}" v-for="(mixrows, lineConIndex) in mixLines">
+                         <tr v-for="(row, rowIndex) in mixrows" @click="activeMixrow(row)" :class="{active: row.activeRow}">
+                             <td>{{row.mixNumber}}</td>
+                             <td>{{row.concreteLabel}}</td>
+							 <td><span class="mix-line-no"> {{row.productLine}}</span>号线</td>
+                         </tr>
+                     </table>
+                 </div>
+             </div>
+             <div class="bzr-tools bzr-add-tools text-center">
+                 <button type="button" @click="mixOk" class="btn btn-primary">确定</button>
+                 <button type="button" @click="mixCancel" class="btn btn-warning">取消</button>
+             </div>
+         </div>
+     </div>
+     <div class="mix-bg"></div>
+
+    <div th:include="include :: footer"></div>
+	 <script src="/js/lodash.min.js"></script>
+     <script src="/js/vue.js"></script>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('duties:tasks:edit')}]];
+        var topFlag = [[${@permission.hasPermi('duties:tasks:topping')}]];
+        var removeFlag = [[${@permission.hasPermi('duties:tasks:remove')}]];
+        var mixFlag = [[${@permission.hasPermi('duties:tasks:mixture')}]]; //配比权限
+        var dispathFlag = [[${@permission.hasPermi('cemslink:task:dispath')}]]; //配比权限
+        var prefix = ctx + "duties/tasks";
+        var yesnodata = [[${@dict.getType('sys_yes_no')}]];
+
+        $(function() {
+        	// 交互打开声音
+			var task_audio = document.getElementById('task_audio');
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+				dispathUrl: prefix + "/dispath",
+                sortName: "topping desc,createTime",
+                sortOrder: "desc",
+                rowStyle: rowStyle,
+                modalName: "任务单",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'id',
+					title : '序号',
+					sortable: true
+				},
+				{
+					field : 'productKind',
+					title : '产品型号',
+					sortable: true
+				},
+				{
+					field : 'name',
+					title : '工程名',
+					sortable: true
+				},
+				{
+					field : 'status',
+					title : '任务状态',
+					sortable: true,
+					formatter: function(value, item, index) {
+						if (item.status == 0 && item.isMixture == 'Y' && item.isSchedule == 'Y' ) {
+							return '<span style="font-weight: 800;color: #f40;")>等待开始</span>';
+						}else if (item.status == 0 && item.isMixture == 'N' && item.isSchedule == 'Y' ) {
+                            return '<span style="font-weight: 800;color: #f40;")>待配比</span>';
+                        }else if (item.status == 0 && item.isSchedule == 'N' ) {
+                            return '<span style="font-weight: 800;color: #f40;")>待审核</span>';
+                        }else if (item.status == 1) {
+							if(item.pause == 'Y'){
+								return '<span style="color:#ed5565;font-weight: 800;color: #f40;")>暂停</span>';
+							}
+							return '<span style="color:#1ab394;font-weight: 800;color: #00ff00;")>进行中</span>';
+						}
+						else if (item.status == 3) {
+							return '<span style="color:#67b168;font-weight: 800;color: #00a65a;")>已完成</span>';
+						}
+					}
+				},
+				/*{
+					field : 'isMixture',
+					title : '是否配比',
+					sortable: true,
+					formatter: function (value, row, index) {
+						return row.isMixture=='Y'? '已配比':'<span style="color: red;">未配比</span>';
+					}
+				},
+				{
+					field : 'isSchedule',
+					title : '调度审核',
+					sortable: true,
+					formatter: function (value, row, index) {
+						return row.isSchedule=='Y'? '已审核':'<span style="color:red;">未审核</span>';
+					}
+				},*/
+				{
+					field : 'privilege',
+					title : '特权值',
+					sortable: true,
+                    formatter: function(value, item, index) {
+					    if(!item.privilege||item.privilege==0){
+                            var d = item.privilege
+					        return '<span style="color:#1ab394;font-weight: 800")>+'+item.privilege+'</span>';
+						}else{
+                            return '<span style="color:#ed5565;font-weight: 800")>+'+item.privilege+'</span>';
+						}
+                    }
+				},
+				{
+					field : 'totalFl',
+					title : '任务总方量',
+					sortable: true,
+					formatter: function(value, item, index) {
+						return item.totalFl+'m³';
+					}
+				},
+				{
+					field : 'pinchFl',
+					title : '掐方方量',
+					sortable: true,
+                    formatter: function(value, item, index) {
+                        return item.pinchFl+'m³';
+                    }
+				},
+				{
+					field : 'ljfangliang',
+					title : '累计方量',
+					sortable: true,
+					formatter: function(value, item, index) {
+						return item.ljfangliang+'m³';
+					}
+				},
+				{
+					field : 'carCnt',
+					title : '累计车次',
+					sortable: true
+				},
+				{
+					field : 'startTime', 
+					title : '开始时间',
+					sortable: true
+				},
+				{
+					field : 'arriveTime',
+					title : '用砼时间',
+					sortable: true
+				},
+				// {
+				// 	field : 'targetAddr',
+				// 	title : '目的地',
+				// 	sortable: true
+				// },
+				{
+					field : 'remark',
+					title : '备注',
+					sortable: true
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+					with: '200px',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	//只有任务没开始的时候可以删除任务
+		            	if(row.status == 0){
+                            actions.push('<a class="btn btn-action btn-success btn-xs ' + editFlag + '" href="#" onclick="editTask(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+							// actions.push('<a class="btn btn-action btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                            // actions.push('<a class="btn btn-action btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                            //  if(row.isMixture=='N'){
+                                 actions.push('<a class="btn btn-primary btn-edit btn-xs ' + mixFlag + '" href="#" onclick="mixture(\'' + row.id + '\')"><i class="fa fa-edit"></i>配比</a>');
+							 // }
+							/*if(row.isSchedule =='N'){
+                                actions.push('<a class="btn btn-primary btn-success btn-xs ' + dispathFlag + '" href="#" onclick="dispath(\'' + row.id + '\')"><i class="fa fa-download"></i>下发</a>');
+							}*/
+						}else if(row.status == 1){
+                            actions.push('<a class="btn btn-action btn-success btn-xs ' + editFlag + '" href="#" onclick="editTask(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+						}
+                        actions.push('<a class="btn btn-info btn-xs " href="#" onclick="detail(\'' + row.id + '\')"><i class="fa fa-list-ul"></i>记录</a> ');
+		            	if((!row.topping||row.topping==0||row.topping=='0')&&row.status!=3){
+                            actions.push('<a class="btn btn-action btn-success btn-xs ' + topFlag + '" href="#" onclick="topTask(\'' + row.id + '\')"><i class="fa fa-edit"></i>置顶</a> ');
+						}else if(row.topping==1||row.topping=='1'){
+                            actions.push('<a class="btn btn-action btn-success btn-xs topping-class' + topFlag + '" href="#" onclick="cancelTopTasks(\'' + row.id + '\')"><i class="fa fa-edit"></i>取消置顶</a> ');
+						}
+
+						//只有任务暂停时才可以手动分配任务
+						/*if(row.pause == 'Y'){
+							actions.push('<a class="btn btn-action btn-info btn-xs ' + removeFlag + '" href="#" onclick="sendTask(\'' + row.id + '\')"><i class="fa fa-list"></i>派单</a>');
+						}
+						*/
+						return actions.join('');
+		            }
+		        }]
+            };
+            function rowStyle(row, index) {
+                if(row.topping==1){
+                    return {
+                        classes: 'top-hover'
+                    }
+                }
+                return {
+                    classes: ''
+                }
+            }
+            $.table.init(options);
+        });
+
+
+        /* 任务状态显示 */
+        function pauseTools(row) {
+            if (row.pause == 'N') {
+                return '<i class=\"fa fa-toggle-off text-info fa-2x\" onclick="dopause(\'' + row.id + '\')"></i> ';
+            } else {
+                return '<i class=\"fa fa-toggle-on text-info fa-2x\" onclick="doopen(\'' + row.id + '\')"></i> ';
+            }
+        }
+        //配比
+		function mixture(id) {
+            $.post(ctx +"cemslink/mixformula/selectall"
+			).success (function (r) {
+				if(r.code==0){
+				    // console.log(r.mixList);
+                    // var mixLine1List = r.mixList.filter(function(item){
+                    //     return item.productLine == 1
+                    // })
+					var sortMixList = r.mixList.sort(function(a,b){
+						return a.productLine - b.productLine;
+					})
+                    aeapp.formatMixRows(sortMixList);
+                    aeapp.taskid = id;
+				}
+				//layer.msg(r.msg);
+			}).fail(function (r) {
+				//layer.msg(r.msg)
+			});
+        }
+        //配比
+		function dispath(id) {
+            $.post(prefix+"/dispath",{
+                ids: id
+			}).success (function (r) {
+                layer.msg(r.msg);
+            }).fail(function (r) {
+				layer.msg(r.msg)
+            });
+        }
+        /* 任务状态-停用 */
+        function dopause(taskId) {
+            $.modal.confirm("确认要暂停任务单吗？", function() {
+                $.operate.post(prefix + "/changeStatus", { "id": taskId, "pause": 'Y' });
+            })
+        }
+
+        /* 任务状态启用 */
+        function doopen(taskId) {
+            $.modal.confirm("确认要开启任务单吗？", function() {
+                $.operate.post(prefix + "/changeStatus", { "id": taskId, "pause": 'N' });
+            })
+        }
+
+        /**
+		 * 手动派单
+		 * */
+        function sendTask(taskId) {
+        	console.log(taskId, '手动派单tab', prefix + '/handTask')
+        	$.modal.openTab('手动派单1', prefix + '/handTask')
+        }
+        // 编辑
+		function editTask(taskId) {
+			console.log(taskId, '编辑任务单tab', prefix + '/edit/' + taskId)
+			$.modal.openTab('编辑任务单', prefix + '/edit/' + taskId)
+		}
+
+
+		/**清空缓存，开发用*/
+		function deleteRedis() {
+            console.log("dsfdsafdsa")
+			$.get(prefix+"/deleteAllRedis").success (function (r) {
+                layer.msg(r.msg);
+            });
+        }
+
+        /*任务修改记录-列表*/
+        function detail(dictId) {
+            var url = prefix + '/detail/' + dictId;
+            createMenuItem(url, "修改记录");
+        }
+        /**
+		 * 置顶
+		 * */
+        function topTask(id){
+            $.post(prefix+"/topping/"+id+"/1").success(function (r) {
+                layer.msg(r.msg);
+                $.table.refresh();
+            })
+		}
+        /**
+         * 取消置顶
+         * */
+        function cancelTopTasks(id){
+            $.post(prefix+"/topping/"+id+"/0").success(function (r) {
+                layer.msg(r.msg);
+                $.table.refresh();
+            })
+        }
+
+
+        setInterval(function () {
+        	console.log('定时刷新页面');
+            $.table.refresh();
+		}, 30000)
+		// 检测是否有新任务待审核,并铃声提醒
+		var notScheduleIds = [];
+		$('#bootstrap-table').on('load-success.bs.table', function (data,rows) {
+			console.log(233,rows)
+			var rowarr = rows.rows || [];
+			var hadNew = false;
+			for (var i = 0; i < rowarr.length; i++) {
+				if(notScheduleIds.indexOf(rowarr[i].id) === -1 && rowarr[i].isSchedule === 'N'){
+					hadNew = true;
+					notScheduleIds.push(rowarr[i].id);
+				}
+			}
+			if(hadNew){
+				task_audio.play();
+				layer.alert('有新的任务等待您审核,请及时处理', function(index){
+					task_audio.currentTime = 0;
+					task_audio.pause();
+					layer.close(index);
+				});
+			}
+
+			console.log('未审核数组::', notScheduleIds)
+		})
+
+		/**
+		 * 配比单
+		 */
+		window.aeapp = new Vue({
+            el: '#mixlist',
+            data: {
+                mixrows: [],
+				mixLines: [],
+				tabActiveLineNo: 1,
+                activedMixRow: {},
+                taskid: '',
+                showAeapp: false, // 显示添加和删除
+                curAction: 'edit', // 当前是添加还是编辑
+                editObj: '', // 需要编辑的任务单
+                tableFilds: [
+                    {inputval: '', value: 'mixNumber', label: '配比编号',},
+                    {inputval: '', value: 'concreteLabel', label: '砼强度',},
+                ],
+                tableHeader: [
+                    {label: '种类', value: 'type'},
+                    {label: '料仓(原料)', value: 'label'},
+                    {label: '生产(kg)', value: 'value'},
+                ],
+                tableTh: [
+                    {inputval: '', value: 'ag1Dosage', type: '骨料', label: '石粉',},
+                    {inputval: '', value: 'ag2Dosage', type: '骨料', label: '1-2石子',},
+                    {inputval: '', value: 'ag3Dosage', type: '骨料', label: '0-5石子',},
+                    {inputval: '', value: 'ag4Dosage', type: '骨料', label: '米石',},
+                    {inputval: '', value: 'ag5Dosage', type: '骨料', label: '面沙',},
+                    {inputval: '', value: 'cement1Dosage', type: '粉料', label: '水泥',},
+                    {inputval: '', value: 'cement2Dosage', type: '粉料', label: '水泥',},
+                    {inputval: '', value: 'mix1Dosage', type: '粉料', label: '粉煤灰',},
+                    {inputval: '', value: 'mix2Dosage', type: '粉料', label: '矿粉',},
+                    {inputval: '', value: 'mix3Dosage', type: '水', label: '污水',},
+                    {inputval: '', value: 'water1Dosage', type: '水', label: '水M1',},
+                    {inputval: '', value: 'water2Dosage', type: '水', label: '水M2',},
+                    {inputval: '', value: 'additive1Dosage', type: '外加剂', label: '减水剂',},
+                    {inputval: '', value: 'additive2Dosage', type: '外加剂', label: '减浆剂',},
+                    {inputval: '', value: 'additive3Dosage', type: '外加剂', label: '减胶剂1',},
+                    {inputval: '', value: 'additive4Dosage', type: '外加剂', label: '减胶剂2',},
+                ],
+            },
+            methods: {
+				clickTab: function(tabIndex){
+					this.tabActiveLineNo = tabIndex
+				},
+                formatMixRows: function(rows){
+                    var This = this;
+                    var formatRows = rows.map(function(item, index){
+                        item.activeRow = (index === 0);
+                        // if(index === 0){
+                        //     This.activedMixRow = item;
+                        //     This.mixEditShow();
+                        // }
+                        return item;
+                    });
+					var mixLines = _.groupBy(formatRows, 'productLine');
+                    this.mixrows = formatRows;
+                    this.mixLines = mixLines;
+                    this.showAeapp = true;
+                    this.showMixBg();
+                },
+                activeMixrow: function(row){
+                    // console.log(2333, index)
+					this.activedMixRow = row;
+					// row.activeRow = true;
+                    for (var i = 0; i < this.mixrows.length; i++) {
+                        if(this.mixrows[i].sid == row.sid){
+                            this.mixrows[i].activeRow = true;
+                        }else{
+                            this.mixrows[i].activeRow = false;
+                        }
+                    }
+                },
+                mixEditShow: function () {
+                    // 赋值
+                    var editObj = this.activedMixRow;
+                    var tableTh = this.tableTh;
+                    var tableFilds = this.tableFilds;
+                    for (var i = 0; i < tableTh.length; i++) {
+                        tableTh[i].inputval = editObj[tableTh[i].value]
+                    }
+                    for (var j = 0; j < tableFilds.length; j++) {
+                        tableFilds[j].inputval = editObj[tableFilds[j].value]
+                    }
+                    this.editObj = editObj;
+                },
+                showMixBg: function(){
+                    if(this.showAeapp){
+                        $('.mix-bg').addClass('active');
+                    }else{
+                        $('.mix-bg').removeClass('active');
+                    }
+
+                },
+                mixOk: function () {// 添加配比
+                    var taskid = this.taskid;
+                    var mixId = this.activedMixRow.sid;
+                    var mixNumber = this.activedMixRow.mixNumber;
+                    var productLine = this.activedMixRow.productLine;
+                    console.log(taskid, mixId)
+                    if(!mixId){
+                        layer.alert('zhibo');
+                    }
+					var This = this;
+					layer.load(1);
+					var request = $.ajax({
+						url: '/webapp/mixformulaTask', // 任务单配比
+						type: "POST",
+						data: {
+							taskId: taskid,
+							mixNumber: mixNumber,
+							productLine: productLine,
+						},
+						dataType: "json"
+					});
+					request.done(function(data) {
+						This.showAeapp = false;
+						This.showMixBg()
+						layer.closeAll();
+						if (data.code !== 0) {
+							layer.alert('错误,' + data.msg);
+							return false;
+						}
+						// 刷新table状态
+						$.table.refresh();
+						layer.msg(data.msg);
+					});
+
+					request.fail(function(jqXHR, textStatus) {
+						console.log('网络失败', jqXHR);
+					});
+                },
+                mixCancel: function () {//取消
+                    this.showAeapp = false;
+                    this.showMixBg()
+                },
+            },
+        })
+    </script>
+</body>
+</html>

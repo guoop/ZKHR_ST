@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.cars.appVersion.mapper.AppVersionMapper">
+    
+    <resultMap type="AppVersion" id="AppVersionResult">
+        <result property="id"    column="id"    />
+        <result property="version"    column="version"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="url"    column="url"    />
+        <result property="target_size"    column="target_size"    />
+        <result property="update"    column="update"    />
+        <result property="constraint"    column="constraint"    />
+        <result property="new_version"    column="new_version"    />
+        <result property="apk_file_url"    column="apk_file_url"    />
+        <result property="update_log"    column="update_log"    />
+        <result property="new_md5"    column="new_md5"    />
+    </resultMap>
+	
+	<sql id="selectAppVersionVo">
+        select id, version, create_time,
+              url,remark,`update` as `update`,`constraint` as `constraint`,
+              new_version as new_version,apk_file_url as apk_file_url,
+              update_log as update_log,new_md5 as new_md5
+        from tb_app_version
+    </sql>
+	
+    <select id="selectAppVersionList" parameterType="AppVersion" resultMap="AppVersionResult">
+        <include refid="selectAppVersionVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="version != null  and version != '' "> and version = #{version}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="url != null  and url != '' "> and url = #{url}</if>
+             <if test="remark != null  and remark != '' "> and remark = #{remark}</if>
+             <if test="update != null  and update != '' "> and `update` = #{update}</if>
+             <if test="constraint != null  and constraint != '' "> and `constraint` = #{constraint}</if>
+             <if test="new_version != null  and new_version != '' "> and new_version = #{new_version}</if>
+             <if test="apk_file_url != null  and apk_file_url != '' "> and apk_file_url = #{apk_file_url}</if>
+             <if test="update_log != null  and update_log != '' "> and update_log = #{update_log}</if>
+             <if test="new_md5 != null  and new_md5 != '' "> and new_md5 = #{new_md5}</if>
+             <if test="sqlWhere != null  and sqlWhere != '' "> ${sqlWhere}</if>
+         </where>
+    </select>
+    
+    <select id="selectAppVersionById" parameterType="Long" resultMap="AppVersionResult">
+        <include refid="selectAppVersionVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAppVersion" parameterType="AppVersion" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_app_version
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="version != null  and version != ''  ">version,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="url != null  and url != ''  ">url,</if>
+            <if test="update != null  and update != '' "> `update`,</if>
+            <if test="constraint != null  and constraint != '' ">  `constraint`,</if>
+            <if test="new_version != null  and new_version != '' ">  new_version,</if>
+            <if test="apk_file_url != null  and apk_file_url != '' "> apk_file_url,</if>
+            <if test="update_log != null  and update_log != '' ">  update_log ,</if>
+            <if test="new_md5 != null  and new_md5 != '' ">  new_md5 =,</if>
+            <if test="sqlWhere != null  and sqlWhere != '' "> ${sqlWhere}</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="version != null  and version != ''  ">#{version},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="remark != null  ">#{remark},</if>
+			<if test="url != null  and url != ''  ">#{url},</if>
+            <if test="update != null  and update != '' "> #{update},</if>
+            <if test="constraint != null  and constraint != '' ">  #{constraint},</if>
+            <if test="new_version != null  and new_version != '' "> #{new_version},</if>
+            <if test="apk_file_url != null  and apk_file_url != '' "> #{apk_file_url},</if>
+            <if test="update_log != null  and update_log != '' ">  #{update_log},</if>
+            <if test="new_md5 != null  and new_md5 != '' "> #{new_md5},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateAppVersion" parameterType="AppVersion">
+        update tb_app_version
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="version != null  and version != ''  ">version = #{version},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="remark != null  ">remark = #{remark},</if>
+            <if test="url != null  and url != ''  ">url = #{url},</if>
+            <if test="update != null  and update != '' "> `update` = #{update},</if>
+            <if test="constraint != null  and constraint != '' ">  `constraint` = #{constraint},</if>
+            <if test="new_version != null  and new_version != '' ">  new_version = #{new_version},</if>
+            <if test="apk_file_url != null  and apk_file_url != '' ">  apk_file_url = #{apk_file_url},</if>
+            <if test="update_log != null  and update_log != '' ">  update_log = #{update_log},</if>
+            <if test="new_md5 != null  and new_md5 != '' ">  new_md5 = #{new_md5},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteAppVersionById" parameterType="Long">
+        delete from tb_app_version where id = #{id}
+    </delete>
+	
+    <delete id="deleteAppVersionByIds" parameterType="String">
+        delete from tb_app_version where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

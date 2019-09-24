@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.duties.contract.mapper.ContractMapper">
+    
+    <resultMap type="Contract" id="ContractResult">
+        <result property="conId"    column="con_id"    />
+        <result property="conNo"    column="con_no"    />
+        <result property="conName"    column="con_name"    />
+        <result property="conType"    column="con_type"    />
+        <result property="conMoney"    column="con_money"    />
+        <result property="conStatus"    column="con_status"    />
+        <result property="yzUnitName"    column="yz_unit_name"    />
+        <result property="jlUnitName"    column="jl_unit_name"    />
+        <result property="cbUnitName"    column="cb_unit_name"    />
+        <result property="signDate"    column="sign_date"    />
+        <result property="planStartDate"    column="plan_start_date"    />
+        <result property="planEndDate"    column="plan_end_date"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="creater"    column="creater"    />
+        <result property="isDelete"    column="is_delete"    />
+    </resultMap>
+	
+	<sql id="selectContractVo">
+        select con_id, con_no, con_name, con_type, con_money, con_status, yz_unit_name, jl_unit_name, cb_unit_name, sign_date, plan_start_date, plan_end_date, create_time, creater, is_delete from tb_contract
+    </sql>
+	
+    <select id="selectContractList" parameterType="Contract" resultMap="ContractResult">
+        <include refid="selectContractVo"/>
+        <where>  
+            <if test="conId != null "> and con_id = #{conId}</if>
+             <if test="conNo != null "> and con_no = #{conNo}</if>
+             <if test="conName != null  and conName != '' "> and con_name = #{conName}</if>
+             <if test="conType != null "> and con_type = #{conType}</if>
+             <if test="conMoney != null "> and con_money = #{conMoney}</if>
+             <if test="conStatus != null "> and con_status = #{conStatus}</if>
+             <if test="yzUnitName != null  and yzUnitName != '' "> and yz_unit_name = #{yzUnitName}</if>
+             <if test="jlUnitName != null  and jlUnitName != '' "> and jl_unit_name = #{jlUnitName}</if>
+             <if test="cbUnitName != null  and cbUnitName != '' "> and cb_unit_name = #{cbUnitName}</if>
+             <if test="signDate != null "> and sign_date = #{signDate}</if>
+             <if test="planStartDate != null "> and plan_start_date = #{planStartDate}</if>
+             <if test="planEndDate != null "> and plan_end_date = #{planEndDate}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="creater != null  and creater != '' "> and creater = #{creater}</if>
+             <if test="isDelete != null "> and is_delete = #{isDelete}</if>
+         </where>
+    </select>
+    
+    <select id="selectContractById" parameterType="Long" resultMap="ContractResult">
+        <include refid="selectContractVo"/>
+        where con_id = #{conId}
+    </select>
+        
+    <insert id="insertContract" parameterType="Contract" useGeneratedKeys="true" keyProperty="conId">
+        insert into tb_contract
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="conNo != null  ">con_no,</if>
+			<if test="conName != null  and conName != ''  ">con_name,</if>
+			<if test="conType != null  ">con_type,</if>
+			<if test="conMoney != null  ">con_money,</if>
+			<if test="conStatus != null  ">con_status,</if>
+			<if test="yzUnitName != null  and yzUnitName != ''  ">yz_unit_name,</if>
+			<if test="jlUnitName != null  and jlUnitName != ''  ">jl_unit_name,</if>
+			<if test="cbUnitName != null  and cbUnitName != ''  ">cb_unit_name,</if>
+			<if test="signDate != null  ">sign_date,</if>
+			<if test="planStartDate != null  ">plan_start_date,</if>
+			<if test="planEndDate != null  ">plan_end_date,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="creater != null  and creater != ''  ">creater,</if>
+			<if test="isDelete != null  ">is_delete,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="conNo != null  ">#{conNo},</if>
+			<if test="conName != null  and conName != ''  ">#{conName},</if>
+			<if test="conType != null  ">#{conType},</if>
+			<if test="conMoney != null  ">#{conMoney},</if>
+			<if test="conStatus != null  ">#{conStatus},</if>
+			<if test="yzUnitName != null  and yzUnitName != ''  ">#{yzUnitName},</if>
+			<if test="jlUnitName != null  and jlUnitName != ''  ">#{jlUnitName},</if>
+			<if test="cbUnitName != null  and cbUnitName != ''  ">#{cbUnitName},</if>
+			<if test="signDate != null  ">#{signDate},</if>
+			<if test="planStartDate != null  ">#{planStartDate},</if>
+			<if test="planEndDate != null  ">#{planEndDate},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="creater != null  and creater != ''  ">#{creater},</if>
+			<if test="isDelete != null  ">#{isDelete},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateContract" parameterType="Contract">
+        update tb_contract
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="conNo != null  ">con_no = #{conNo},</if>
+            <if test="conName != null  and conName != ''  ">con_name = #{conName},</if>
+            <if test="conType != null  ">con_type = #{conType},</if>
+            <if test="conMoney != null  ">con_money = #{conMoney},</if>
+            <if test="conStatus != null  ">con_status = #{conStatus},</if>
+            <if test="yzUnitName != null  and yzUnitName != ''  ">yz_unit_name = #{yzUnitName},</if>
+            <if test="jlUnitName != null  and jlUnitName != ''  ">jl_unit_name = #{jlUnitName},</if>
+            <if test="cbUnitName != null  and cbUnitName != ''  ">cb_unit_name = #{cbUnitName},</if>
+            <if test="signDate != null  ">sign_date = #{signDate},</if>
+            <if test="planStartDate != null  ">plan_start_date = #{planStartDate},</if>
+            <if test="planEndDate != null  ">plan_end_date = #{planEndDate},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="creater != null  and creater != ''  ">creater = #{creater},</if>
+            <if test="isDelete != null  ">is_delete = #{isDelete},</if>
+        </trim>
+        where con_id = #{conId}
+    </update>
+
+	<delete id="deleteContractById" parameterType="Long">
+        delete from tb_contract where con_id = #{conId}
+    </delete>
+	
+    <delete id="deleteContractByIds" parameterType="String">
+        delete from tb_contract where con_id in 
+        <foreach item="conId" collection="array" open="(" separator="," close=")">
+            #{conId}
+        </foreach>
+    </delete>
+    
+</mapper>

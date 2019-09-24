@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.duties.tasksCarsLogs.mapper.TasksCarsLogsMapper">
+    
+    <resultMap type="TasksCarsLogs" id="TasksCarsLogsResult">
+        <result property="taskCarId"    column="task_car_id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="carId"    column="car_id"    />
+        <result property="carNo"    column="car_no"    />
+        <result property="carCnt"    column="car_cnt"    />
+        <result property="carBrand"    column="car_brand"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="stopStartTime"    column="stop_start_time"    />
+        <result property="times"    column="times"    />
+        <result property="lng"    column="lng"    />
+        <result property="lat"    column="lat"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+	
+	<sql id="selectTasksCarsLogsVo">
+        select task_car_id, task_id, car_id, car_no, car_cnt, car_brand, mobile, stop_start_time, times, lng, lat, create_time, update_time from tb_tasks_cars_logs
+    </sql>
+	
+    <select id="selectTasksCarsLogsList" parameterType="TasksCarsLogs" resultMap="TasksCarsLogsResult">
+        <include refid="selectTasksCarsLogsVo"/>
+        <where>  
+            <if test="taskCarId != null "> and task_car_id = #{taskCarId}</if>
+             <if test="taskId != null "> and task_id = #{taskId}</if>
+             <if test="carId != null "> and car_id = #{carId}</if>
+             <if test="carNo != null  and carNo != '' "> and car_no = #{carNo}</if>
+             <if test="carCnt != null "> and car_cnt = #{carCnt}</if>
+             <if test="carBrand != null  and carBrand != '' "> and car_brand = #{carBrand}</if>
+             <if test="mobile != null  and mobile != '' "> and mobile = #{mobile}</if>
+             <if test="stopStartTime != null "> and stop_start_time = #{stopStartTime}</if>
+             <if test="times != null "> and times = #{times}</if>
+             <if test="lng != null "> and lng = #{lng}</if>
+             <if test="lat != null "> and lat = #{lat}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="updateTime != null "> and update_time = #{updateTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectTasksCarsLogsById" parameterType="Long" resultMap="TasksCarsLogsResult">
+        <include refid="selectTasksCarsLogsVo"/>
+        where task_car_id = #{taskCarId}
+    </select>
+        
+    <insert id="insertTasksCarsLogs" parameterType="TasksCarsLogs">
+        insert into tb_tasks_cars_logs
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="taskCarId != null  ">task_car_id,</if>
+			<if test="taskId != null  ">task_id,</if>
+			<if test="carId != null  ">car_id,</if>
+			<if test="carNo != null  and carNo != ''  ">car_no,</if>
+			<if test="carCnt != null  ">car_cnt,</if>
+			<if test="carBrand != null  and carBrand != ''  ">car_brand,</if>
+			<if test="mobile != null  and mobile != ''  ">mobile,</if>
+			<if test="stopStartTime != null  ">stop_start_time,</if>
+			<if test="times != null  ">times,</if>
+			<if test="lng != null  ">lng,</if>
+			<if test="lat != null  ">lat,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="taskCarId != null  ">#{taskCarId},</if>
+			<if test="taskId != null  ">#{taskId},</if>
+			<if test="carId != null  ">#{carId},</if>
+			<if test="carNo != null  and carNo != ''  ">#{carNo},</if>
+			<if test="carCnt != null  ">#{carCnt},</if>
+			<if test="carBrand != null  and carBrand != ''  ">#{carBrand},</if>
+			<if test="mobile != null  and mobile != ''  ">#{mobile},</if>
+			<if test="stopStartTime != null  ">#{stopStartTime},</if>
+			<if test="times != null  ">#{times},</if>
+			<if test="lng != null  ">#{lng},</if>
+			<if test="lat != null  ">#{lat},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTasksCarsLogs" parameterType="TasksCarsLogs">
+        update tb_tasks_cars_logs
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="taskId != null  ">task_id = #{taskId},</if>
+            <if test="carId != null  ">car_id = #{carId},</if>
+            <if test="carNo != null  and carNo != ''  ">car_no = #{carNo},</if>
+            <if test="carCnt != null  ">car_cnt = #{carCnt},</if>
+            <if test="carBrand != null  and carBrand != ''  ">car_brand = #{carBrand},</if>
+            <if test="mobile != null  and mobile != ''  ">mobile = #{mobile},</if>
+            <if test="stopStartTime != null  ">stop_start_time = #{stopStartTime},</if>
+            <if test="times != null  ">times = #{times},</if>
+            <if test="lng != null  ">lng = #{lng},</if>
+            <if test="lat != null  ">lat = #{lat},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+        </trim>
+        where task_car_id = #{taskCarId}
+    </update>
+
+	<delete id="deleteTasksCarsLogsById" parameterType="Long">
+        delete from tb_tasks_cars_logs where task_car_id = #{taskCarId}
+    </delete>
+	
+    <delete id="deleteTasksCarsLogsByIds" parameterType="String">
+        delete from tb_tasks_cars_logs where task_car_id in 
+        <foreach item="taskCarId" collection="array" open="(" separator="," close=")">
+            #{taskCarId}
+        </foreach>
+    </delete>
+    
+</mapper>

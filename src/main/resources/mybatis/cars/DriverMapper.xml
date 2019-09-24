@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.cars.driver.mapper.DriverMapper">
+    
+    <resultMap type="Driver" id="DriverResult">
+        <result property="id"    column="id"    />
+        <result property="dName"    column="d_name"    />
+        <result property="dMobile"    column="d_mobile"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="privilegeCnt"    column="privilegeCnt"    />
+    </resultMap>
+	
+	<sql id="selectDriverVo">
+        select id, d_name, d_mobile, create_time, update_time ,privilegeCnt from tb_driver
+    </sql>
+    <select id="selectDriversByCarId" parameterType="Long" resultMap="DriverResult">
+		SELECT d.id, d.d_name,d.d_mobile,d.create_time,d.update_time,d.status,d.privilegeCnt
+		FROM tb_driver d
+			 LEFT JOIN tb_driver_car c ON d.id = c.driver_id
+		WHERE c.car_id = #{carId}
+	</select>
+	
+    <select id="selectDriverList" parameterType="Driver" resultMap="DriverResult">
+        <include refid="selectDriverVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="dName != null  and dName != '' "> and d_name = #{dName}</if>
+             <if test="dMobile != null  and dMobile != '' "> and d_mobile = #{dMobile}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="updateTime != null "> and update_time = #{updateTime}</if>
+             <if test="privilegeCnt != null "> and privilegeCnt = #{privilegeCnt}</if>
+         </where>
+    </select>
+    
+    <select id="selectDriverById" parameterType="Long" resultMap="DriverResult">
+        <include refid="selectDriverVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDriver" parameterType="Driver" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_driver
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="dName != null  and dName != ''  ">d_name,</if>
+			<if test="dMobile != null  and dMobile != ''  ">d_mobile,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="privilegeCnt != null  ">privilegeCnt,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="dName != null  and dName != ''  ">#{dName},</if>
+			<if test="dMobile != null  and dMobile != ''  ">#{dMobile},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="privilegeCnt != null  ">#{privilegeCnt},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateDriver" parameterType="Driver">
+        update tb_driver
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dName != null  and dName != ''  ">d_name = #{dName},</if>
+            <if test="dMobile != null  and dMobile != ''  ">d_mobile = #{dMobile},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="privilegeCnt != null  ">privilegeCnt = #{privilegeCnt},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteDriverById" parameterType="Long">
+        delete from tb_driver where id = #{id}
+    </delete>
+	
+    <delete id="deleteDriverByIds" parameterType="String">
+        delete from tb_driver where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

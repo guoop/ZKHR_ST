@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('新增库存')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-instore-add">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="instoreNum" name="instoreNum" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">：</label>
+				<div class="col-sm-8">
+					<input id="instoreTime" name="instoreTime" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="suppID" name="suppID" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="materialID" name="materialID" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="materialNum" name="materialNum" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="materialName" name="materialName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="spec" name="spec" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="gross" name="gross" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="tare" name="tare" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="trans" name="trans" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="net" name="net" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="sPOS" name="sPOS" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="vehiNum" name="vehiNum" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="instoreMan" name="instoreMan" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="remark" name="remark" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="lineID" name="lineID" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">：</label>
+				<div class="col-sm-8">
+					<input id="syncStatus" name="syncStatus" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">：</label>
+				<div class="col-sm-8">
+					<input id="syncStatus2" name="syncStatus2" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "cemslink/instore"
+		$("#form-instore-add").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-instore-add').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

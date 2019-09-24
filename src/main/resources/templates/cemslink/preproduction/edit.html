@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改生产指令数据')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-preproduction-edit" th:object="${preproduction}">
+            <input id="sID" name="sID" th:field="*{sID}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">运输单号：</label>
+				<div class="col-sm-8">
+					<input id="productNumber" name="productNumber" th:field="*{productNumber}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">生产线：</label>
+				<div class="col-sm-8">
+					<input id="productLine" name="productLine" th:field="*{productLine}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">任务单号：</label>
+				<div class="col-sm-8">
+					<input id="taskNumber" name="taskNumber" th:field="*{taskNumber}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">配合比编号：</label>
+				<div class="col-sm-8">
+					<input id="mixNumber" name="mixNumber" th:field="*{mixNumber}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">是否润泵砂浆：</label>
+				<div class="col-sm-8">
+					<input id="isMortar" name="isMortar" th:field="*{isMortar}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">客户名称：</label>
+				<div class="col-sm-8">
+					<input id="customerName" name="customerName" th:field="*{customerName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">工程名称：</label>
+				<div class="col-sm-8">
+					<input id="projectName" name="projectName" th:field="*{projectName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">施工单位：</label>
+				<div class="col-sm-8">
+					<input id="unitName" name="unitName" th:field="*{unitName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">浇注部位：</label>
+				<div class="col-sm-8">
+					<input id="constructionPart" name="constructionPart" th:field="*{constructionPart}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">施工地址：</label>
+				<div class="col-sm-8">
+					<input id="constructionAddress" name="constructionAddress" th:field="*{constructionAddress}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">浇注方式：</label>
+				<div class="col-sm-8">
+					<input id="pouringWay" name="pouringWay" th:field="*{pouringWay}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">砼标号：</label>
+				<div class="col-sm-8">
+					<input id="concreteLabel" name="concreteLabel" th:field="*{concreteLabel}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">坍落度：</label>
+				<div class="col-sm-8">
+					<input id="slump" name="slump" th:field="*{slump}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">运输距离：</label>
+				<div class="col-sm-8">
+					<input id="distance" name="distance" th:field="*{distance}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">内部车号：</label>
+				<div class="col-sm-8">
+					<input id="innerNumber" name="innerNumber" th:field="*{innerNumber}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">车牌号：</label>
+				<div class="col-sm-8">
+					<input id="plateNumber" name="plateNumber" th:field="*{plateNumber}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">驾驶员：</label>
+				<div class="col-sm-8">
+					<input id="driver" name="driver" th:field="*{driver}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">发货方量：</label>
+				<div class="col-sm-8">
+					<input id="transportAmount" name="transportAmount" th:field="*{transportAmount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">本车生产方量：</label>
+				<div class="col-sm-8">
+					<input id="productAmount" name="productAmount" th:field="*{productAmount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">PieceAmount：</label>
+				<div class="col-sm-8">
+					<input id="pieceAmount" name="pieceAmount" th:field="*{pieceAmount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="pieceCount" name="pieceCount" th:field="*{pieceCount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">发货车次：</label>
+				<div class="col-sm-8">
+					<input id="transportOrder" name="transportOrder" th:field="*{transportOrder}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">序号：</label>
+				<div class="col-sm-8">
+					<input id="sort" name="sort" th:field="*{sort}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">状态:1 为正在生产 3.为排单已手动删除(未生产),4.为排单生产完删除,5.为排单生产完，删除后，打开拌缸下料：</label>
+				<div class="col-sm-8">
+					<input id="state" name="state" th:field="*{state}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">累计方量：</label>
+				<div class="col-sm-8">
+					<input id="accumulativeAmount" name="accumulativeAmount" th:field="*{accumulativeAmount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">工控小票编号：</label>
+				<div class="col-sm-8">
+					<input id="ipcProductNumber" name="ipcProductNumber" th:field="*{ipcProductNumber}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注：</label>
+				<div class="col-sm-8">
+					<input id="remark" name="remark" th:field="*{remark}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">同步状态：</label>
+				<div class="col-sm-8">
+					<input id="syncStatus" name="syncStatus" th:field="*{syncStatus}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">从机同步状态：</label>
+				<div class="col-sm-8">
+					<input id="syncStatus2" name="syncStatus2" th:field="*{syncStatus2}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "cemslink/preproduction";
+		$("#form-preproduction-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-preproduction-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

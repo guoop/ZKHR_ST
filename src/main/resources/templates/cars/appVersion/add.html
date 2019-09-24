@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('新增app版本')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-appVersion-add">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">版本号：</label>
+				<div class="col-sm-8">
+					<input id="new_version" name="new_version" class="form-control" type="text" value="2.3.5">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">下载地址：</label>
+				<div class="col-sm-8">
+					<input id="apk_file_url" name="apk_file_url" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">更新log：</label>
+				<div class="col-sm-8">
+					<input id="update_log" name="update_log" class="form-control" type="text" value="更新新版本">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">new_md5：</label>
+				<div class="col-sm-8">
+					<input id="new_md5" name="new_md5" class="form-control" type="text" value="b97bea014531123f94c3ba7b7afbaad2">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">是否强制更新：</label>
+				<div class="col-sm-8">
+					<input id="constraint" name="constraint" class="form-control" type="text" value="false">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">本次更新标志位：</label>
+				<div class="col-sm-8">
+					<input id="update" name="update" class="form-control" type="text" value="true">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">target_size：</label>
+				<div class="col-sm-8">
+					<textarea cols="7" id="target_size" name="target_size" class="form-control" type="text" value="23"/>
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "cars/appVersion"
+		$("#form-appVersion-add").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-appVersion-add').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

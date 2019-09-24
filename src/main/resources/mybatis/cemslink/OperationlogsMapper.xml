@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.cemslink.operationlogs.mapper.OperationlogsMapper">
+    
+    <resultMap type="Operationlogs" id="OperationlogsResult">
+        <result property="sID"    column="SID"    />
+        <result property="createTime"    column="CreateTime"    />
+        <result property="objective"    column="Objective"    />
+        <result property="keyNum"    column="KeyNum"    />
+        <result property="isMortar"    column="IsMortar"    />
+        <result property="lineID"    column="LineID"    />
+        <result property="operation"    column="Operation"    />
+        <result property="operator"    column="Operator"    />
+        <result property="syncState"    column="SyncState"    />
+        <result property="errLog"    column="ErrLog"    />
+        <result property="remark"    column="Remark"    />
+    </resultMap>
+	
+	<sql id="selectOperationlogsVo">
+        select SID, CreateTime, Objective, KeyNum, IsMortar, LineID, Operation, Operator, SyncState, ErrLog, Remark from operationlogs
+    </sql>
+	
+    <select id="selectOperationlogsList" parameterType="Operationlogs" resultMap="OperationlogsResult">
+        <include refid="selectOperationlogsVo"/>
+        <where>  
+            <if test="sID != null "> and SID = #{sID}</if>
+             <if test="createTime != null "> and CreateTime = #{createTime}</if>
+             <if test="objective != null  and objective != '' "> and Objective = #{objective}</if>
+             <if test="keyNum != null  and keyNum != '' "> and KeyNum = #{keyNum}</if>
+             <if test="isMortar != null "> and IsMortar = #{isMortar}</if>
+             <if test="lineID != null "> and LineID = #{lineID}</if>
+             <if test="operation != null "> and Operation = #{operation}</if>
+             <if test="operator != null  and operator != '' "> and Operator = #{operator}</if>
+             <if test="syncState != null "> and SyncState = #{syncState}</if>
+             <if test="errLog != null  and errLog != '' "> and ErrLog = #{errLog}</if>
+             <if test="remark != null  and remark != '' "> and Remark = #{remark}</if>
+         </where>
+    </select>
+    
+    <select id="selectOperationlogsById" parameterType="Long" resultMap="OperationlogsResult">
+        <include refid="selectOperationlogsVo"/>
+        where SID = #{sID}
+    </select>
+        
+    <insert id="insertOperationlogs" parameterType="Operationlogs" useGeneratedKeys="true" keyProperty="sID">
+        insert into operationlogs
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="createTime != null  ">CreateTime,</if>
+			<if test="objective != null  and objective != ''  ">Objective,</if>
+			<if test="keyNum != null  and keyNum != ''  ">KeyNum,</if>
+			<if test="isMortar != null  ">IsMortar,</if>
+			<if test="lineID != null  ">LineID,</if>
+			<if test="operation != null  ">Operation,</if>
+			<if test="operator != null  and operator != ''  ">Operator,</if>
+			<if test="syncState != null  ">SyncState,</if>
+			<if test="errLog != null  and errLog != ''  ">ErrLog,</if>
+			<if test="remark != null  and remark != ''  ">Remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="objective != null  and objective != ''  ">#{objective},</if>
+			<if test="keyNum != null  and keyNum != ''  ">#{keyNum},</if>
+			<if test="isMortar != null  ">#{isMortar},</if>
+			<if test="lineID != null  ">#{lineID},</if>
+			<if test="operation != null  ">#{operation},</if>
+			<if test="operator != null  and operator != ''  ">#{operator},</if>
+			<if test="syncState != null  ">#{syncState},</if>
+			<if test="errLog != null  and errLog != ''  ">#{errLog},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateOperationlogs" parameterType="Operationlogs">
+        update operationlogs
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="createTime != null  ">CreateTime = #{createTime},</if>
+            <if test="objective != null  and objective != ''  ">Objective = #{objective},</if>
+            <if test="keyNum != null  and keyNum != ''  ">KeyNum = #{keyNum},</if>
+            <if test="isMortar != null  ">IsMortar = #{isMortar},</if>
+            <if test="lineID != null  ">LineID = #{lineID},</if>
+            <if test="operation != null  ">Operation = #{operation},</if>
+            <if test="operator != null  and operator != ''  ">Operator = #{operator},</if>
+            <if test="syncState != null  ">SyncState = #{syncState},</if>
+            <if test="errLog != null  and errLog != ''  ">ErrLog = #{errLog},</if>
+            <if test="remark != null  and remark != ''  ">Remark = #{remark},</if>
+        </trim>
+        where SID = #{sID}
+    </update>
+
+	<delete id="deleteOperationlogsById" parameterType="Long">
+        delete from operationlogs where SID = #{sID}
+    </delete>
+	
+    <delete id="deleteOperationlogsByIds" parameterType="String">
+        delete from operationlogs where SID in 
+        <foreach item="sID" collection="array" open="(" separator="," close=")">
+            #{sID}
+        </foreach>
+    </delete>
+    
+</mapper>

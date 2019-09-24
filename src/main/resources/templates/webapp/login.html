@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>登录</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/webapp/webapp.css">
+  <link rel="stylesheet" href="/css/webapp/webapp.css">
+  <script src="/css/webapp/webapp.js"></script>
+  <style>
+    html,body{
+      height: 100%;
+    }
+    .wp-login{
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .panel-default{
+      width: 80%;
+    }
+    #login_btn{
+      margin-top: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wp-login">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form>
+          <div class="form-group">
+            <label for="username">用户名</label>
+            <input type="text" class="form-control" name="username" placeholder="用户名">
+          </div>
+          <div class="form-group">
+            <label for="password">密码</label>
+            <input type="password" class="form-control" name="password" placeholder="密码">
+          </div>
+          <div class="row">
+            <div class="col-xs-6">
+              <input type="text" class="form-control" name="validateCode" placeholder="验证码" autocomplete="off" title="点击更换验证码">
+            </div>
+            <div class="col-xs-6">
+              <img src="/captcha/captchaImage?type=math" class="imgcode" width="85%" />
+            </div>
+          </div>
+        </form>
+        <button class="btn btn-primary btn-block" id="login_btn">登录</button>
+      </div>
+    </div>
+  </div>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/ajax/libs/layer/layer.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script>
+  // layer.load(1, { shade: 0.8 });
+  var ajaxUrls = {
+    login: "/login", // 登录
+    index: '/webapp/iframe', // 首页
+    // manager: "/webapp/manager?auth=manager", // 页面-业务员
+    // laboratory: "/webapp/laboratory?auth=laboratory", // 页面-实验室
+    // banzhuren: "/webapp/laboratory?auth=banzhuren", // 页面-实验室
+  };
+  if (com_devEnv && com_devEnv === 'dev') {
+    ajaxUrls = {
+      login: "./api/login.php", // 登录
+      index: './iframe.html',
+    };
+  }
+  // 检测是否登录过
+  var last_login_time = localStorage.getItem('last_login_time');
+  // 25*24*3600*1000 如果登录没有超过 25 天 就直接跳转到对应的页面
+  if (last_login_time && (Date.now() - last_login_time < 2160000000)) {
+    var last_login_page = localStorage.getItem('last_login_page');
+    document.location.replace(last_login_page);
+  } else {
+    layer.closeAll();
+  }
+  // 更换验证码
+  $('.imgcode').click(function() {
+    var url = "/captcha/captchaImage?type=math&s=" + Math.random();
+    $(".imgcode").attr("src", url);
+  });
+  setTimeout(function() {
+    $('.imgcode').trigger('click');
+  }, 100);
+
+  $('input[name=validateCode]').click(function() {
+    $(this).val('');
+  });
+
+  $('#login_btn').click(function() {
+    var request = $.ajax({
+      url: ajaxUrls.login, // 开始暂停任务接口
+      type: "POST",
+      data: {
+        username: $('input[name=username]').val(),
+        password: $('input[name=password]').val(),
+        rememberMe: true,
+        validateCode: $('input[name=validateCode]').val(),
+      },
+      dataType: "json"
+    });
+
+    request.done(function(data) {
+      console.log(data);
+      if (data.code !== 0) {
+        layer.alert(data.msg);
+        return;
+      }
+      var userAuths = [];
+      data.post.forEach(function(ele) {
+        userAuths.push(ele.postCode);
+      });
+      var pageHref = ajaxUrls.index + '?auth=' + encodeURI(JSON.stringify(userAuths));
+      localStorage.setItem('last_login_time', Date.now());
+      localStorage.setItem('last_login_page', pageHref);
+      document.location.replace(pageHref);
+    });
+
+    request.fail(function(jqXHR, textStatus) {
+      console.log('网络失败', jqXHR);
+    });
+  });
+  </script>
+</body>
+
+</html>

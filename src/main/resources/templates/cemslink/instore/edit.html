@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改库存')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-instore-edit" th:object="${instore}">
+            <input id="sID" name="sID" th:field="*{sID}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="instoreNum" name="instoreNum" th:field="*{instoreNum}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">：</label>
+				<div class="col-sm-8">
+					<input id="instoreTime" name="instoreTime" th:field="*{instoreTime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="suppID" name="suppID" th:field="*{suppID}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="materialID" name="materialID" th:field="*{materialID}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="materialNum" name="materialNum" th:field="*{materialNum}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="materialName" name="materialName" th:field="*{materialName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="spec" name="spec" th:field="*{spec}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="gross" name="gross" th:field="*{gross}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="tare" name="tare" th:field="*{tare}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="trans" name="trans" th:field="*{trans}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="net" name="net" th:field="*{net}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="sPOS" name="sPOS" th:field="*{sPOS}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="vehiNum" name="vehiNum" th:field="*{vehiNum}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="instoreMan" name="instoreMan" th:field="*{instoreMan}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="remark" name="remark" th:field="*{remark}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="lineID" name="lineID" th:field="*{lineID}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">：</label>
+				<div class="col-sm-8">
+					<input id="syncStatus" name="syncStatus" th:field="*{syncStatus}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">：</label>
+				<div class="col-sm-8">
+					<input id="syncStatus2" name="syncStatus2" th:field="*{syncStatus2}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "cemslink/instore";
+		$("#form-instore-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-instore-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('生产消耗数据列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								生产线：<input type="text" name="productLine"/>
+							</li>
+							<input type="hidden" name="notCamelCase" value="true"/>
+							<li>
+								配合比编号：<input type="text" name="mixNumber"/>
+							</li>
+							<li>
+								砼标号：<input type="text" name="concreteLabel"/>
+							</li>
+							<li class="select-time">
+								<label>时间范围： </label>
+								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+								<span>-</span>
+								<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+
+			<div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="cemslink:consumption:export">
+					<i class="fa fa-download"></i> 导出
+				</a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('cemslink:consumption:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('cemslink:consumption:remove')}]];
+        var prefix = ctx + "cemslink/consumptionreport";
+		$(function() {
+			var options = {
+				url: prefix + '/report',
+				exportUrl: prefix + "/export",
+				modalName: "生产消耗数据",
+				pagination: false,
+				queryParams: queryParams,
+				columns: [
+					{
+						field : 'label',
+						title : '物料名称',
+						sortable: true
+					},
+					{
+						field : 'designValue',
+						title : '目标值kg',
+						sortable: true
+					},
+					{
+						field : 'actualValue',
+						title : '称量值kg',
+						sortable: true
+					},
+					{
+						field : 'errorValue',
+						title : '误差值kg',
+						sortable: true
+					},
+					{
+						field : 'errorRate',
+						title : '误差率',
+						sortable: true,
+						formatter: function (value,row,index) {
+							return value+'%'
+                        }
+					}
+				],
+			};
+			$.table.init(options);
+		});
+
+        function queryParams(params) {
+            var search = $.table.queryParams(params);
+            search.notCamelCase = true;
+            return search;
+        }
+		$.table.responseHandler = function(res) {
+			if (res.code == 0) {
+				if ($.common.isNotEmpty($.table._option.sidePagination) && $.table._option.sidePagination == 'client') {
+					return res.rows;
+				} else {
+					if ($.common.isNotEmpty($.table._option.rememberSelected) && $.table._option.rememberSelected) {
+						var column = $.common.isEmpty($.table._option.uniqueId) ? $.table._option.columns[1].field : $.table._option.uniqueId;
+						$.each(res.rows, function(i, row) {
+							row.state = $.inArray(row[column], selectionIds) !== -1;
+						})
+					}
+					return { rows: res.reportList, total: 10000 };
+				}
+			} else {
+				$.modal.alertWarning(res.msg);
+				return { rows: [], total: 0 };
+			}
+		}
+    </script>
+</body>
+</html>

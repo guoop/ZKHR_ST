@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改生产消耗数据')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-consumption-edit" th:object="${consumption}">
+            <input id="sID" name="sID" th:field="*{sID}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">生产线：</label>
+				<div class="col-sm-8">
+					<input id="productLine" name="productLine" th:field="*{productLine}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="erpProductNumber" name="erpProductNumber" th:field="*{erpProductNumber}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">工控小票编号：</label>
+				<div class="col-sm-8">
+					<input id="ipcProductNumber" name="ipcProductNumber" th:field="*{ipcProductNumber}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">生产盘编号：</label>
+				<div class="col-sm-8">
+					<input id="pieceNumber" name="pieceNumber" th:field="*{pieceNumber}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">本车盘号：</label>
+				<div class="col-sm-8">
+					<input id="pieceOrder" name="pieceOrder" th:field="*{pieceOrder}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">本盘生产方量：</label>
+				<div class="col-sm-8">
+					<input id="pieceAmount" name="pieceAmount" th:field="*{pieceAmount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="vehiAmount" name="vehiAmount" th:field="*{vehiAmount}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="vehiNum" name="vehiNum" th:field="*{vehiNum}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="driver" name="driver" th:field="*{driver}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">本盘生产时间：</label>
+				<div class="col-sm-8">
+					<input id="productDateTime" name="productDateTime" th:field="*{productDateTime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">任务单号：</label>
+				<div class="col-sm-8">
+					<input id="taskNumber" name="taskNumber" th:field="*{taskNumber}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">本车配合比编号：</label>
+				<div class="col-sm-8">
+					<input id="mixNumber" name="mixNumber" th:field="*{mixNumber}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">操作员：</label>
+				<div class="col-sm-8">
+					<input id="operator" name="operator" th:field="*{operator}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">砼标号：</label>
+				<div class="col-sm-8">
+					<input id="concreteLabel" name="concreteLabel" th:field="*{concreteLabel}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">是否润泵砂浆：</label>
+				<div class="col-sm-8">
+					<input id="isMortar" name="isMortar" th:field="*{isMortar}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水泥 1 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="cementActualDosage1" name="cementActualDosage1" th:field="*{cementActualDosage1}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水泥 1 设定用量：</label>
+				<div class="col-sm-8">
+					<input id="cementDesignDosage1" name="cementDesignDosage1" th:field="*{cementDesignDosage1}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水泥 2 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="cementActualDosage2" name="cementActualDosage2" th:field="*{cementActualDosage2}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水泥 2 设定用量：</label>
+				<div class="col-sm-8">
+					<input id="cementDesignDosage2" name="cementDesignDosage2" th:field="*{cementDesignDosage2}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水泥 3 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="cementActualDosage3" name="cementActualDosage3" th:field="*{cementActualDosage3}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水泥 3 设定用量：</label>
+				<div class="col-sm-8">
+					<input id="cementDesignDosage3" name="cementDesignDosage3" th:field="*{cementDesignDosage3}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水泥 4 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="cementActualDosage4" name="cementActualDosage4" th:field="*{cementActualDosage4}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水泥 4 设定用量：</label>
+				<div class="col-sm-8">
+					<input id="cementDesignDosage4" name="cementDesignDosage4" th:field="*{cementDesignDosage4}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水泥 5 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="cementActualDosage5" name="cementActualDosage5" th:field="*{cementActualDosage5}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水泥 5 设定用量：</label>
+				<div class="col-sm-8">
+					<input id="cementDesignDosage5" name="cementDesignDosage5" th:field="*{cementDesignDosage5}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">掺合料 1 实际用：</label>
+				<div class="col-sm-8">
+					<input id="mixActualDosage1" name="mixActualDosage1" th:field="*{mixActualDosage1}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">掺合料 1 设定用：</label>
+				<div class="col-sm-8">
+					<input id="mixDesignDosage1" name="mixDesignDosage1" th:field="*{mixDesignDosage1}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">掺合料 2 实际用：</label>
+				<div class="col-sm-8">
+					<input id="mixActualDosage2" name="mixActualDosage2" th:field="*{mixActualDosage2}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">掺合料 2 设定用：</label>
+				<div class="col-sm-8">
+					<input id="mixDesignDosage2" name="mixDesignDosage2" th:field="*{mixDesignDosage2}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">掺合料 3 实际用：</label>
+				<div class="col-sm-8">
+					<input id="mixActualDosage3" name="mixActualDosage3" th:field="*{mixActualDosage3}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">掺合料 3 设定用：</label>
+				<div class="col-sm-8">
+					<input id="mixDesignDosage3" name="mixDesignDosage3" th:field="*{mixDesignDosage3}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">掺合料 4 实际用：</label>
+				<div class="col-sm-8">
+					<input id="mixActualDosage4" name="mixActualDosage4" th:field="*{mixActualDosage4}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">掺合料 4 设定用：</label>
+				<div class="col-sm-8">
+					<input id="mixDesignDosage4" name="mixDesignDosage4" th:field="*{mixDesignDosage4}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">掺合料 5 实际用：</label>
+				<div class="col-sm-8">
+					<input id="mixActualDosage5" name="mixActualDosage5" th:field="*{mixActualDosage5}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">掺合料 5 设定用：</label>
+				<div class="col-sm-8">
+					<input id="mixDesignDosage5" name="mixDesignDosage5" th:field="*{mixDesignDosage5}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 1 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="aGActualDosage1" name="aGActualDosage1" th:field="*{aGActualDosage1}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 1 设定用量：</label>
+				<div class="col-sm-8">
+					<input id="aGDesignDosage1" name="aGDesignDosage1" th:field="*{aGDesignDosage1}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">AGHSL1：</label>
+				<div class="col-sm-8">
+					<input id="aGHSL1" name="aGHSL1" th:field="*{aGHSL1}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 2 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="aGActualDosage2" name="aGActualDosage2" th:field="*{aGActualDosage2}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 2 设定用量：</label>
+				<div class="col-sm-8">
+					<input id="aGDesignDosage2" name="aGDesignDosage2" th:field="*{aGDesignDosage2}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">AGHSL2：</label>
+				<div class="col-sm-8">
+					<input id="aGHSL2" name="aGHSL2" th:field="*{aGHSL2}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 3 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="aGActualDosage3" name="aGActualDosage3" th:field="*{aGActualDosage3}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 3 设定用量：</label>
+				<div class="col-sm-8">
+					<input id="aGDesignDosage3" name="aGDesignDosage3" th:field="*{aGDesignDosage3}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">AGHSL3：</label>
+				<div class="col-sm-8">
+					<input id="aGHSL3" name="aGHSL3" th:field="*{aGHSL3}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 4 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="aGActualDosage4" name="aGActualDosage4" th:field="*{aGActualDosage4}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 4 设定用量：</label>
+				<div class="col-sm-8">
+					<input id="aGDesignDosage4" name="aGDesignDosage4" th:field="*{aGDesignDosage4}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">AGHSL4：</label>
+				<div class="col-sm-8">
+					<input id="aGHSL4" name="aGHSL4" th:field="*{aGHSL4}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 5 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="aGActualDosage5" name="aGActualDosage5" th:field="*{aGActualDosage5}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 5 设计用量：</label>
+				<div class="col-sm-8">
+					<input id="aGDesignDosage5" name="aGDesignDosage5" th:field="*{aGDesignDosage5}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">AGHSL5：</label>
+				<div class="col-sm-8">
+					<input id="aGHSL5" name="aGHSL5" th:field="*{aGHSL5}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 6 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="aGActualDosage6" name="aGActualDosage6" th:field="*{aGActualDosage6}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 6 设计用量：</label>
+				<div class="col-sm-8">
+					<input id="aGDesignDosage6" name="aGDesignDosage6" th:field="*{aGDesignDosage6}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">AGHSL6：</label>
+				<div class="col-sm-8">
+					<input id="aGHSL6" name="aGHSL6" th:field="*{aGHSL6}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 7 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="aGActualDosage7" name="aGActualDosage7" th:field="*{aGActualDosage7}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 7 设计用量：</label>
+				<div class="col-sm-8">
+					<input id="aGDesignDosage7" name="aGDesignDosage7" th:field="*{aGDesignDosage7}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">AGHSL7：</label>
+				<div class="col-sm-8">
+					<input id="aGHSL7" name="aGHSL7" th:field="*{aGHSL7}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 8 设计用量：</label>
+				<div class="col-sm-8">
+					<input id="aGActualDosage8" name="aGActualDosage8" th:field="*{aGActualDosage8}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">骨料 8 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="aGDesignDosage8" name="aGDesignDosage8" th:field="*{aGDesignDosage8}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">AGHSL8：</label>
+				<div class="col-sm-8">
+					<input id="aGHSL8" name="aGHSL8" th:field="*{aGHSL8}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">外加剂 1 实际用 ：</label>
+				<div class="col-sm-8">
+					<input id="additiveActualDosage1" name="additiveActualDosage1" th:field="*{additiveActualDosage1}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">外加剂 1 设计用 ：</label>
+				<div class="col-sm-8">
+					<input id="additiveDesignDosage1" name="additiveDesignDosage1" th:field="*{additiveDesignDosage1}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">外加剂 2 实际用 ：</label>
+				<div class="col-sm-8">
+					<input id="additiveActualDosage2" name="additiveActualDosage2" th:field="*{additiveActualDosage2}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">外加剂 2 设计用 ：</label>
+				<div class="col-sm-8">
+					<input id="additiveDesignDosage2" name="additiveDesignDosage2" th:field="*{additiveDesignDosage2}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">外加剂 3 实际用 ：</label>
+				<div class="col-sm-8">
+					<input id="additiveActualDosage3" name="additiveActualDosage3" th:field="*{additiveActualDosage3}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">外加剂 3 设计用 ：</label>
+				<div class="col-sm-8">
+					<input id="additiveDesignDosage3" name="additiveDesignDosage3" th:field="*{additiveDesignDosage3}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">外加剂 4 实际用 ：</label>
+				<div class="col-sm-8">
+					<input id="additiveActualDosage4" name="additiveActualDosage4" th:field="*{additiveActualDosage4}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">外加剂 4 设计用 ：</label>
+				<div class="col-sm-8">
+					<input id="additiveDesignDosage4" name="additiveDesignDosage4" th:field="*{additiveDesignDosage4}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水 1 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="waterActualDosage1" name="waterActualDosage1" th:field="*{waterActualDosage1}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水 1 设计用量：</label>
+				<div class="col-sm-8">
+					<input id="waterDesignDosage1" name="waterDesignDosage1" th:field="*{waterDesignDosage1}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水 2 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="waterActualDosage2" name="waterActualDosage2" th:field="*{waterActualDosage2}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水 2 设计用量：</label>
+				<div class="col-sm-8">
+					<input id="waterDesignDosage2" name="waterDesignDosage2" th:field="*{waterDesignDosage2}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水 3 实际用量：</label>
+				<div class="col-sm-8">
+					<input id="waterActualDosage3" name="waterActualDosage3" th:field="*{waterActualDosage3}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水 3 设计用量：</label>
+				<div class="col-sm-8">
+					<input id="waterDesignDosage3" name="waterDesignDosage3" th:field="*{waterDesignDosage3}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "cemslink/consumption";
+		$("#form-consumption-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-consumption-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

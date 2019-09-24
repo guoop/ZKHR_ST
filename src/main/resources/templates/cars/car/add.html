@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: select2-css" />
+	<th:block th:include="include :: header('新增车辆')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-car-add">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">车牌号：</label>
+						<div class="col-sm-8">
+							<input id="carNum" name="carNum" class="form-control" type="text">
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">车号：</label>
+						<div class="col-sm-8">
+							<input id="carNo" name="carNo" class="form-control" type="text">
+						</div>
+					</div>
+				</div>
+
+
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">车架号：</label>
+						<div class="col-sm-8">
+							<input id="vin" name="vin" class="form-control" type="text">
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">SIM卡号：</label>
+						<div class="col-sm-8">
+							<input id="mobile" name="mobile" class="form-control" type="text">
+						</div>
+					</div>
+				</div>
+
+
+
+
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">设备号：</label>
+						<div class="col-sm-8">
+							<input id="imei" name="imei" class="form-control" type="text">
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">设备型号：</label>
+						<div class="col-sm-8">
+							<input id="type" name="type" class="form-control" type="text">
+						</div>
+					</div>
+				</div>
+
+
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">高度：</label>
+						<div class="col-sm-8">
+							<input id="height" name="height" class="form-control" type="number">
+						</div>
+					</div>
+				</div>
+				<!--<div class="form-group">
+					<label class="col-sm-3 control-label">车辆类型：</label>
+					<div class="col-sm-8">
+						<div class="radio-box" th:each="dict : ${@dict.getType('shangtong_cars_types')}">
+							<input type="radio" th:id="${dict.dictCode}" name="carType" th:value="${dict.dictValue}">
+							<label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
+						</div>
+					</div>
+				</div>-->
+				<!--<div class="col-sm-6">-->
+					<!--<div class="form-group">-->
+						<!--<label class="col-sm-3 control-label">车辆所属：</label>-->
+						<!--<div class="col-sm-8">-->
+							<!--<div class="radio-box" th:each="dict : ${@dict.getType('shangtong_suoshu')}">-->
+								<!--<input type="radio" th:id="${dict.dictCode}" name="nature" th:value="${dict.dictValue}">-->
+								<!--<label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+
+				<!--<div class="col-sm-6">-->
+					<!--<div class="form-group">-->
+						<!--<label class="col-sm-3 control-label">车主：</label>-->
+						<!--<div class="col-sm-8">-->
+							<!--<input id="owner" name="owner" class="form-control" type="text">-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<!--<div class="col-sm-6">-->
+					<!--<div class="form-group">-->
+						<!--<label class="col-sm-3 control-label">车主电话：</label>-->
+						<!--<div class="col-sm-8">-->
+							<!--<input id="ownerPhone" name="ownerPhone" class="form-control" type="number">-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">混凝土方量：</label>
+						<div class="col-sm-8">
+							<input id="fangl" name="fangl" class="form-control" type="number" >
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">湿拌砂浆方量：</label>
+						<div class="col-sm-8">
+							<input id="shibanfl" name="shibanfl" class="form-control" type="number">
+						</div>
+					</div>
+				</div>
+				<!--<div class="col-sm-6">-->
+					<!--<div class="form-group">-->
+						<!--<label class="col-sm-4 control-label">是否跨县车：</label>-->
+						<!--<div class="col-sm-8">-->
+							<!--<div class="radio-box" th:each="dict : ${@dict.getType('sys_yes_no')}">-->
+								<!--<input type="radio" th:id="${dict.dictCode}" name="isOtherCar"-->
+									   <!--th:value="${dict.dictValue}"-->
+									   <!--th:checked="${dict.isDefault == 'Y' ? true : false}">-->
+								<!--<label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">是否有加长抖：</label>
+						<div class="col-sm-8">
+							<div class="radio-box" th:each="dict : ${@dict.getType('sys_yes_no')}">
+								<input type="radio" th:id="${dict.dictCode}" name="jcdou" th:value="${dict.dictValue}">
+								<label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12">
+					<!--润泵砂浆方量是为了润泵用的，防止粘泵-->
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">拉砂浆减m³：</label>
+							<div class="col-sm-8">
+								<input id="shajiangfl" name="shajiangfl" class="form-control" type="number" value="1">
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">优先权加次数：</label>
+							<div class="col-sm-8">
+								<input id="everyPrivilege" name="everyPrivilege" class="form-control" type="number" value="1">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-12">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">司机：</label>
+						<div class="col-sm-10">
+							<select id="driver" class="form-control select2-hidden-accessible" multiple="">
+								<option th:each="driver:${drivers}" th:value="${driver.id}" th:text="${driver.dName}" th:disabled="${driver.status == '1'}"></option>
+							</select>
+
+						</div>
+					</div>
+				</div>
+
+				<!--<div class="form-group">
+					<label class="col-xs-2 control-label">岗位：</label>
+					<div class="col-xs-4">
+						<select id="driver" class="form-control select2-hidden-accessible" multiple="">
+							<option th:each="driver:${drivers}" th:value="${driver.id}" th:text="${driver.dName}" th:disabled="${driver.status == '1'}"></option>
+						</select>
+					</div>
+				</div>-->
+				<!--<div class="form-group">
+					<label class="col-xs-2 control-label">司机：</label>
+					<div class="col-xs-4">
+						<select id="driver" class="form-control select2-hidden-accessible" multiple="">
+							<option th:each="driver:${drivers}" th:value="${driver.id}" th:text="${driver.dname}" th:disabled="${driver.status == '1'}"></option>
+						</select>
+					</div>
+				</div>-->
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <th:block th:include="include :: select2-js" />
+    <script type="text/javascript">
+		var prefix = ctx + "cars/car"
+        // var driverIds = $.form.selectSelects("driver");
+		$("#form-car-add").validate({
+			rules:{
+                ownerPhone:{
+                    isPhone:true,
+                    remote: {
+                        url: ctx +  "system/user/checkPhoneUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            name: function () {
+                                return $.common.trim($("#ownerPhone").val());
+                            }
+                        },
+                        dataFilter: function (data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
+                },
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		/*
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-car-add').serialize());
+	        }
+	    }*/
+
+        function submitHandler() {
+            if ($.validate.form()) {
+                var data = $("#form-car-add").serializeArray();
+                var driverIds = $.form.selectSelects("driver");
+                data.push({"name": "driverIds", "value": driverIds});
+                $.operate.save(prefix + "/add", data);
+            }
+        }
+	</script>
+</body>
+</html>

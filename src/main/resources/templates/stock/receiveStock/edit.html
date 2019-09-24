@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改进货库存')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-receiveStock-edit" th:object="${receiveStock}">
+            <input id="id" name="id" th:field="*{id}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">收货单位：</label>
+				<div class="col-sm-8">
+					<input id="offerDept" name="offerDept" th:field="*{offerDept}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">车牌号：</label>
+				<div class="col-sm-8">
+					<input id="carBrand" name="carBrand" th:field="*{carBrand}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">货名：</label>
+				<div class="col-sm-8">
+					<input id="goodsName" name="goodsName" th:field="*{goodsName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">送货人：</label>
+				<div class="col-sm-8">
+					<input id="driver" name="driver" th:field="*{driver}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">等级：</label>
+				<div class="col-sm-8">
+					<input id="level" name="level" th:field="*{level}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">收货单位：</label>
+				<div class="col-sm-8">
+					<input id="receiveDept" name="receiveDept" th:field="*{receiveDept}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">收货人：</label>
+				<div class="col-sm-8">
+					<input id="receiver" name="receiver" th:field="*{receiver}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">产地：</label>
+				<div class="col-sm-8">
+					<input id="place" name="place" th:field="*{place}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">验收人：</label>
+				<div class="col-sm-8">
+					<input id="acceptor" name="acceptor" th:field="*{acceptor}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">监磅员：</label>
+				<div class="col-sm-8">
+					<input id="bangyuan" name="bangyuan" th:field="*{bangyuan}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">毛重：</label>
+				<div class="col-sm-8">
+					<input id="grossWeight" name="grossWeight" th:field="*{grossWeight}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">皮重：</label>
+				<div class="col-sm-8">
+					<input id="carWeight" name="carWeight" th:field="*{carWeight}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">净重：</label>
+				<div class="col-sm-8">
+					<input id="netWeight" name="netWeight" th:field="*{netWeight}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">扣杂：</label>
+				<div class="col-sm-8">
+					<input id="takeOff" name="takeOff" th:field="*{takeOff}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">扣杂百分比：</label>
+				<div class="col-sm-8">
+					<input id="takeoffRate" name="takeoffRate" th:field="*{takeoffRate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">结算净重：</label>
+				<div class="col-sm-8">
+					<input id="settleNetweight" name="settleNetweight" th:field="*{settleNetweight}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">原发净重：</label>
+				<div class="col-sm-8">
+					<input id="sendNetweight" name="sendNetweight" th:field="*{sendNetweight}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">方量：</label>
+				<div class="col-sm-8">
+					<input id="fangliang" name="fangliang" th:field="*{fangliang}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">单价：</label>
+				<div class="col-sm-8">
+					<input id="price" name="price" th:field="*{price}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">总金额：</label>
+				<div class="col-sm-8">
+					<input id="totalFee" name="totalFee" th:field="*{totalFee}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注：</label>
+				<div class="col-sm-8">
+					<input id="remark" name="remark" th:field="*{remark}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "stock/receiveStock";
+		$("#form-receiveStock-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-receiveStock-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.duties.taskNotification.mapper.TaskNotificationMapper">
+    
+    <resultMap type="TaskNotification" id="TaskNotificationResult">
+        <result property="id"    column="id"    />
+        <result property="msg"    column="msg"    />
+        <result property="notifyId"    column="notify_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="msgtype"    column="msgtype"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+	
+	<sql id="selectTaskNotificationVo">
+        select id, msg, notify_id, create_time,msgtype,remark from tb_task_notification
+    </sql>
+	
+    <select id="selectTaskNotificationList" parameterType="TaskNotification" resultMap="TaskNotificationResult">
+        <include refid="selectTaskNotificationVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="msg != null  and msg != '' "> and msg = #{msg}</if>
+             <if test="notifyId != null "> and notify_id = #{notifyId}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="msgtype != null "> #{msgtype}</if>
+            <if test="remark != null "> #{remark}</if>
+             <if test="sqlWhere != null "> ${sqlWhere}</if>
+         </where>
+    </select>
+    
+    <select id="selectTaskNotificationById" parameterType="Long" resultMap="TaskNotificationResult">
+        <include refid="selectTaskNotificationVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTaskNotification" parameterType="TaskNotification" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_task_notification
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="msg != null  and msg != ''  ">msg,</if>
+			<if test="msgtype != null  and msgtype != ''  ">msgtype,</if>
+			<if test="notifyId != null  ">notify_id,</if>
+			<if test="remark != null  ">remark,</if>
+			<if test="createTime != null  ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="msg != null  and msg != ''  ">#{msg},</if>
+			<if test="msgtype != null  and msgtype != ''  ">#{msgtype},</if>
+			<if test="notifyId != null  ">#{notifyId},</if>
+			<if test="remark != null  ">#{remark},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTaskNotification" parameterType="TaskNotification">
+        update tb_task_notification
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="msg != null  and msg != ''  ">msg = #{msg},</if>
+            <if test="msgtype != null  and msgtype != ''  ">msgtype = #{msgtype},</if>
+            <if test="notifyId != null  ">notify_id = #{notifyId},</if>
+            <if test="remark != null  ">remark = #{remark},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteTaskNotificationById" parameterType="Long">
+        delete from tb_task_notification where id = #{id}
+    </delete>
+	
+    <delete id="deleteTaskNotificationByIds" parameterType="String">
+        delete from tb_task_notification where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

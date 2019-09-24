@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>任务单管理</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/webapp/vant.min.css">
+  <link rel="stylesheet" href="/css/webapp/webapp.css">
+  <script src="/css/webapp/webapp.js"></script>
+  <style>
+    html{
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" class="manager-stop-list">
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+      <div class="manager-stop-list-header">
+        <van-row type="flex" justify="space-around">
+          <van-col v-for="(thItem, index) in listfm">{{thItem.label}}</van-col>
+        </van-row>
+      </div>
+      <van-row @click.native="clickList(index)" type="flex" gutter="10" justify="space-around" v-for="(item, index) in list">
+        <van-col v-for="fm in listfm" span="6">
+          <template v-if="fm.value === 'pause'">
+            <van-switch :value="item.financePause === 'Y' ? true : false" @input="onInput(index,item)" />
+          </template>
+          <template v-else>
+            {{item[fm.value]}}
+          </template>
+        </van-col>
+      </van-row>
+    </van-list>
+    <van-popup v-model="viewShow" position="right" :style="{ width: '100%', height: '100%' }">
+      <van-cell-group>
+        <template v-for="(fieldItem, fieldIndex) in viewfm">
+          <template v-if="fieldItem.value === 'arriveTime'">
+            <van-field @click.native="clickTime(fieldIndex)" disabled v-model="fieldItem.val" :label="fieldItem.label" label-width="100px" />
+          </template>
+          <template v-else-if="fieldItem.value === 'carList'">
+            <!-- <div>车辆列表</div> -->
+          </template>
+          <template v-else>
+            <van-field v-model="fieldItem.val" :label="fieldItem.label" label-width="100px" />
+          </template>
+        </template>
+      </van-cell-group>
+      <div class=" btn-center">
+        <van-button type="warning" @click="editTask">修 改</van-button>
+        <van-button type="primary" @click="viewShow = false">返 回</van-button>
+        <van-button type="info" @click="showTaskCar">任务状态</van-button>
+      </div>
+      <van-popup v-model="timepk.timeShow" position="bottom">
+        <van-datetime-picker v-model="timepk.currentDate" @confirm="chioceTime" type="datetime" :min-date="timepk.minDate" :max-date="timepk.maxDate" />
+      </van-popup>
+    </van-popup>
+  </div>
+  <!-- 百度地图 -->
+  <div class="manager_map_box" id="manager_map_box">
+    <div class="map-header">
+      <div class="map-header-txt" onclick="hideMap()">返回</div>
+      <div>车辆配送信息</div>
+      <div class="map-header-txt"><span id="curfl">380</span> / <span id="totalfl">500</span></div>
+    </div>
+    <div id="manager_map"></div>
+  </div>
+  <script src="/js/vue.js"></script>
+  <script src="/css/webapp/vant.min.js"></script>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/ajax/libs/layer/layer.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/lodash.min.js"></script>
+  <script src="https://api.map.baidu.com/api?v=2.0&ak=dlriuGKWgEEMa38d5RMGHzZ5520bp5D3&s=1"></script>
+  <script src="https//api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
+  <script>
+  var Vue = window.Vue;
+  var vant = window.vant;
+  Vue.use(vant);
+  try {
+    isCEO = window.top.auths.indexOf('ceo') > -1;
+  } catch (err) {
+    isCEO = false;
+  }
+  var global_var = {
+    startInfo: '',
+    endInfo: '',
+    mapTimer: '',
+  };
+
+  var ajaxUrls = {
+    list: "/webapp/taskList", // 任务列表
+    listAll: '/webapp/laboratoryTaskList', // ceo 查看所有任务列表
+    puse: "/webapp/financePause", // 暂停
+    start: "/webapp/financeStart", // 开始
+    edit: "/webapp/addTask", // 编辑修改任务单
+    getCars: "/webapp/getLatLngCars", // 获取车辆实时状态信息
+    // getCars: "http://101.200.50.35/api2.php", // 获取车辆实时状态信息
+  };
+  if (com_devEnv && com_devEnv === 'dev') {
+    ajaxUrls = {
+      list: "./api/tasklist.php",
+      puse: "./api/ok.json",
+    };
+  }
+
+  function hideMap() {
+    clearInterval(global_var.mapTimer);
+    document.querySelector('#manager_map_box').classList.remove('show-map');
+  }
+
+  // 百度地图
+  var Mmap = new BMap.Map("manager_map"); // 创建地图实例
+  // var point = new BMap.Point(114.426468, 35.094869); // 创建点坐标
+  // Mmap.centerAndZoom(point, 15); // 初始化地图，设置中心点坐标和地图级别
+  Mmap.enableScrollWheelZoom(); // pc 滚轮缩放,调试用
+  // Mmap.addOverlay(new BMap.Marker(114.434409, 35.109782));
+  // Mmap.addOverlay(new BMap.Marker(point)); // 定点坐标红点覆盖
+  Mmap.enablePinchToZoom();
+  Mmap.enableDoubleClickZoom();
+  // 百度地图 - 点击获取经纬度
+  Mmap.addEventListener("click", function(e) {
+    var pt = e.point;
+    console.log(pt);
+    if (!global_var.endInfo) {
+      return;
+    }
+    var point_end = new BMap.Point(global_var.endInfo.lng, global_var.endInfo.lat);
+    var juli = Mmap.getDistance(pt, point_end);
+    layer.msg('距离工地直线距离:' + (juli / 1000).toFixed(2) + '千米');
+  });
+  /**
+   * 添加车辆点
+   */
+  function addCar(map, markerInfo) {
+    //创建自定义图标
+    // var carIcon = new BMap.Icon("/img/tasks/car.png", new BMap.Size(37, 24.5), { imageSize: 'contain', backgroundSize: 'contain' });
+    let point = new BMap.Point(markerInfo.lng, markerInfo.lat);
+    // let marker = new BMap.Marker(point, { icon: carIcon });
+    let marker = new BMap.Marker(point);
+    let label = new BMap.Label(markerInfo.label, { offset: new BMap.Size(-5, 0) });
+    label.setStyle({ fontSize: "12px", maxWidth: "50px", textAlign: "center", background: " #33f", border: "0", padding: "6px", color: "#fff", borderRadius: "50%" });
+    marker.setLabel(label);
+    Mmap.addOverlay(marker);
+  }
+
+  /**
+   * 删除特定车辆点
+   * @param  {[type]} labelContent [label内容]
+   */
+  function removeCar(map, labelContent) {
+    var allOverlay = map.getOverlays();
+    for (var i = 0; i < allOverlay.length - 1; i++) {
+      if (allOverlay[i].getLabel().content == labelContent) {
+        map.removeOverlay(allOverlay[i]);
+        return false;
+      }
+    }
+  }
+
+  // 删除所有点除了起始点
+  function deleteAllcars(map) {
+    map.clearOverlays();
+    // var allOverlay = map.getOverlays();
+    // console.log(allOverlay)
+    // for (var i = 0; i < allOverlay.length - 1; i++) {
+    //   if (['起点', '终点'].indexOf(allOverlay[i].getLabel().content) === -1) {
+    //     map.removeOverlay(allOverlay[i]);
+    //   }
+    // }
+  }
+
+  // 删除所有点,包括起始点
+  function deleteAllPoint(map) {
+    let allOverlay = map.getOverlays()
+    for (let overlay of allOverlay) {
+      if (overlay instanceof BMap.Label) {
+        overlay.enableMassClear()
+      } else {
+        overlay.remove()
+      }
+    }
+    map.clearOverlays();
+  }
+
+  // 起点终点
+  function makeStartEndPoint(startInfo, endInfo, point_start, point_end) {
+    var marker_start = new BMap.Marker(point_start);
+    var marker_end = new BMap.Marker(point_end);
+    var label_start = new BMap.Label(startInfo.label, { offset: new BMap.Size(-5, -24) });
+    var label_end = new BMap.Label(endInfo.label, { offset: new BMap.Size(-5, -24) });
+    label_start.setStyle({ fontSize: "12px", maxWidth: "50px", textAlign: "center" });
+    label_end.setStyle({ fontSize: "12px", maxWidth: "50px", textAlign: "center" });
+    marker_start.disableMassClear();
+    marker_end.disableMassClear();
+    label_start.disableMassClear();
+    marker_end.disableMassClear();
+    marker_start.setLabel(label_start);
+    marker_end.setLabel(label_end);
+    Mmap.addOverlay(marker_start);
+    Mmap.addOverlay(marker_end);
+    // 起点终点连线
+    var polyline = new BMap.Polyline([point_start, point_end], { strokeColor: "red", strokeWeight: 2, strokeOpacity: 0.5 });
+    polyline.disableMassClear();
+    Mmap.addOverlay(polyline);
+  }
+
+  window.app = new Vue({
+    el: '#app',
+    data: {
+      listfm: [
+        { label: '工程名称', value: 'name' },
+        { label: '使用单位', value: 'receiver' },
+        { label: '收货人电话', value: 'receivorMobile' },
+        { label: '是否中止', value: 'pause' },
+      ],
+      list: [],
+      viewfm: [
+        { label: '工程名称：', value: 'name', val: '' },
+        { label: '使用单位：', value: 'receiver', val: '' },
+        { label: '工程部位：', value: 'waterPart', val: '' },
+        { label: '强度等级：', value: 'productKind', val: '' },
+        { label: '使用方量：', value: 'totalFl', val: '' },
+        { label: '润泵砂浆：', value: 'shajiangfl', val: '' },
+        { label: '塌落度：', value: 'locationTanluodu', val: '' },
+        { label: '浇筑方式：', value: 'waterMethod', val: '' },
+        { label: '使用时间：', value: 'arriveTime', val: '' },
+        { label: '收货人电话：', value: 'receivorMobile', val: '' },
+        { label: '备注：', value: 'remark', val: '' },
+        { label: '选用车辆号码：', value: 'carList', val: '' },
+        { label: '每车最大方量：', value: 'maxcarfl', val: '' },
+        { label: '每车需减方量：', value: 'carsubfl', val: '' },
+      ],
+      editTimeIndex: '', // 修改时间时使用
+      view: {},
+      viewObj: {},
+      viewShow: false,
+      ajaxPage: {
+        pageSize: 10,
+        pageNum: 1,
+        orderByColumn: '',
+        isAsc: 'asc',
+      },
+      loading: false,
+      finished: false,
+      timepk: {
+        timeShow: false,
+        minDate: new Date(),
+        maxDate: new Date(Date.now() + 31622400000),
+        currentDate: new Date(),
+        currentDateFm: '',
+      },
+      taskCars: {
+        visibility: false,
+      },
+    },
+    computed: {},
+    created: function() {
+      // this.showTaskCar();
+    },
+    methods: {
+      onLoad() {
+        var This = this;
+        // 异步更新数据
+        var request = $.ajax({
+          url: isCEO ? ajaxUrls.listAll : ajaxUrls.list,
+          type: "POST",
+          data: {
+            pageSize: This.ajaxPage.pageSize,
+            pageNum: This.ajaxPage.pageNum,
+            orderByColumn: This.ajaxPage.orderByColumn,
+            isAsc: This.ajaxPage.isAsc,
+          },
+          dataType: "json"
+        });
+        request.done(function(data) {
+          if (data.code !== 0) {
+            layer.alert(data.msg);
+            This.finished = true; // 没有更多数据了
+            return;
+          }
+          var list = data.rows;
+          for (var i = 0; i < list.length; i++) {
+            This.list.push(list[i]);
+          }
+          if (list.length < This.ajaxPage.pageSize || (This.ajaxPage.pageSize * This.ajaxPage.pageNum >= data.total)) {
+            This.finished = true; // 没有更多数据了
+            This.loading = false;
+          } else {
+            This.loading = false;
+          }
+          This.ajaxPage.pageNum += 1;
+        });
+        request.fail(function(jqXHR, textStatus) {
+          layer.msg('网络失败');
+          console.warn('网络失败', jqXHR);
+        });
+      },
+      puseTask(taskIndex, taskItem) {
+        console.log(taskIndex, taskItem);
+        var This = this;
+        layer.load(1);
+        var request = $.ajax({
+          url: ajaxUrls.puse,
+          type: "POST",
+          data: {
+            id: taskItem.id,
+          },
+          dataType: "json"
+        });
+        request.done(function(data) {
+          layer.closeAll('loading');
+          if (data.code !== 0) {
+            layer.alert(data.msg);
+            return;
+          }
+          This.list[taskIndex]
+        });
+        request.fail(function(jqXHR, textStatus) {
+          layer.msg('网络失败');
+          console.warn('网络失败', jqXHR);
+        });
+      },
+      onInput(index, item) {
+        console.log(index, item, item.financePause);
+        // var checkedYN = checked === true ? 'Y' : 'N';
+        var This = this;
+        var apiUrl = '';
+        var msg = '';
+        if (item.financePause === 'Y') {
+          // 请求开始接口
+          apiUrl = ajaxUrls.start;
+          item.financePause = 'N';
+          msg = '确定开始此任务单吗?';
+        } else {
+          // 请求暂停接口
+          apiUrl = ajaxUrls.puse;
+          item.financePause = 'Y';
+          msg = '确定暂停此任务单吗?';
+        }
+        vant.Dialog.confirm({
+          title: '提醒',
+          message: '是否改变任务状态?'
+        }).then(() => {
+          layer.load(1);
+          var request = $.ajax({
+            url: apiUrl,
+            type: "POST",
+            data: {
+              id: item.id,
+            },
+            dataType: "json"
+          });
+          request.done(function(data) {
+            layer.closeAll('loading');
+            if (data.code !== 0) {
+              layer.alert(data.msg);
+              return;
+            }
+            This.list.splice(index, 1, item);
+          });
+          request.fail(function(jqXHR, textStatus) {
+            layer.msg('网络失败');
+            console.warn('网络失败', jqXHR);
+          });
+        }).catch(() => {
+          item.financePause = item.financePause === 'Y' ? 'N' : 'Y';
+          This.list.splice(index, 1, item);
+        });
+
+        // console.log(taskIndex, taskItem);
+        // var This = this;
+        // layer.load(1);
+        // var request = $.ajax({
+        //   url: ajaxUrls.puse,
+        //   type: "POST",
+        //   data: {
+        //     id: taskItem.id,
+        //   },
+        //   dataType: "json"
+        // });
+        // request.done(function(data) {
+        //   layer.closeAll('loading');
+        //   if (data.code !== 0) {
+        //     layer.alert(data.msg);
+        //     return;
+        //   }
+        //   This.list[taskIndex]
+        // });
+        // request.fail(function(jqXHR, textStatus) {
+        //   layer.msg('网络失败');
+        //   console.warn('网络失败', jqXHR);
+        // });
+      },
+      clickList(index) {
+        this.view = this.list[index];
+        var viewfm = this.viewfm;
+        for (var key in this.viewfm) {
+          this.viewfm[key].val = this.view[this.viewfm[key].value];
+        }
+        console.log(index, viewfm);
+        this.viewShow = true;
+      },
+      editTask() {
+        var viewfm = this.viewfm;
+        var formData = {};
+        viewfm.forEach(function(item) {
+          formData[item.value] = item.val;
+        });
+        console.log(formData);
+        formData.id = this.view.id;
+        var This = this;
+        layer.load(1);
+        var request = $.ajax({
+          url: ajaxUrls.edit,
+          type: "POST",
+          data: formData,
+          dataType: "json"
+        });
+        request.done(function(data) {
+          layer.closeAll('loading');
+          console.log(23333, data);
+          // if (data.code !== 0) {
+          //   layer.alert(data.msg);
+          //   return;
+          // }
+          // This.list[taskIndex]
+        });
+        request.fail(function(jqXHR, textStatus) {
+          layer.msg('网络失败');
+          console.warn('网络失败', jqXHR);
+        });
+      },
+      clickTime: function(index) {
+        this.timepk.timeShow = !this.timepk.timeShow;
+        this.editTimeIndex = index;
+      },
+      chioceTime: function(timev) {
+        var arriveTime = formatDate(timev);
+        console.log(arriveTime);
+        this.timepk.currentDateFm = arriveTime;
+        this.viewfm[this.editTimeIndex].val = arriveTime;
+        this.timepk.timeShow = false;
+      },
+      showTaskCar: function() { // 显示车辆状态弹出层
+        this.viewShow = false;
+        var This = this;
+        var thisTask = this.view;
+        document.querySelector('#curfl').innerHTML = thisTask.ljfangliang;
+        document.querySelector('#totalfl').innerHTML = thisTask.totalFl;
+        // var taskId = this.view.id;
+        // 清除地图上的所有点
+        deleteAllPoint(Mmap);
+
+        getCarsDate(thisTask);
+        global_var.mapTimer = setInterval(function() {
+          getCarsDate(thisTask);
+        }, 8000);
+
+        // 弹出地图
+        document.querySelector('#manager_map_box').classList.add('show-map');
+
+        function getCarsDate(thisTask) {
+          var request = $.ajax({
+            url: ajaxUrls.getCars,
+            type: "POST",
+            data: {
+              taskId: thisTask.id,
+            },
+            dataType: "json"
+          });
+          request.done(function(data) {
+            // console.log(23333, data);
+            if (data.code !== 0) {
+              layer.alert(data.msg);
+              return;
+            }
+
+            // var startInfo = data.start; // startInfo = {lng: "114.426432", lat: "35.094958", label: "起点"}
+            // var endInfo = data.end; // endInfo = {lng: "114.42442", lat: "35.032972", label: "终点"}
+            var carArr = data.list; // [{carId: 74, carNo: 898, lng: 114.426385, lat: 35.093949}]
+            for (var j = 0; j < carArr.length; j++) {
+              carArr[j].lng = carArr[j].lon;
+            }
+            var startInfo = { lng: data.lng, lat: data.lat, label: "终点" };
+            var endInfo = { lng: data.startLng, lat: data.startLat, label: "起点" };
+
+            // 起点终点,缩放地图
+            if (!_.isEqual(global_var.startInfo, startInfo) || !_.isEqual(global_var.endInfo, endInfo)) {
+              global_var.startInfo = startInfo;
+              global_var.endInfo = endInfo;
+
+              var point_start = new BMap.Point(startInfo.lng, startInfo.lat);
+              var point_end = new BMap.Point(endInfo.lng, endInfo.lat);
+              var pointsArr = [point_start, point_end];
+
+              // 起点 终点
+              makeStartEndPoint(startInfo, endInfo, point_start, point_end);
+
+              try {
+                // 地图显示区域
+                var mapArea = new BMap.Bounds(point_start, point_end);
+                // 设置地图显示区域
+                BMapLib.AreaRestriction.setBounds(Mmap, mapArea);
+                Mmap.setViewport(pointsArr);
+              } catch (e) {
+                alert('地图绘制错误,请稍后重试');
+              }
+            }
+
+            // 绘制每辆车
+            deleteAllcars(Mmap);
+            for (var i = 0; i < carArr.length; i++) {
+              let car = carArr[i];
+              addCar(Mmap, { lng: car.lng, lat: car.lat, label: car.carNo });
+            }
+          });
+        }
+
+      },
+    }
+  })
+  </script>
+</body>
+
+</html>

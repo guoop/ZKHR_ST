@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.stock.sendStoneLevel.mapper.SendStoneLevelMapper">
+    
+    <resultMap type="SendStoneLevel" id="SendStoneLevelResult">
+        <result property="id"    column="id"    />
+        <result property="stoneLevel"    column="stone_level"    />
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+	
+	<sql id="selectSendStoneLevelVo">
+        select id, stone_level, user_id, dept_id, update_by, create_time, update_time from tb_send_stone_level
+    </sql>
+	
+    <select id="selectSendStoneLevelList" parameterType="SendStoneLevel" resultMap="SendStoneLevelResult">
+        <include refid="selectSendStoneLevelVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="stoneLevel != null  and stoneLevel != '' "> and stone_level = #{stoneLevel}</if>
+             <if test="userId != null "> and user_id = #{userId}</if>
+             <if test="deptId != null "> and dept_id = #{deptId}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="updateTime != null "> and update_time = #{updateTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectSendStoneLevelById" parameterType="Long" resultMap="SendStoneLevelResult">
+        <include refid="selectSendStoneLevelVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSendStoneLevel" parameterType="SendStoneLevel" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_send_stone_level
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
+			<if test="stoneLevel != null  and stoneLevel != ''  ">stone_level,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="deptId != null  ">dept_id,</if>
+			<if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
+			<if test="stoneLevel != null  and stoneLevel != ''  ">#{stoneLevel},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="deptId != null  ">#{deptId},</if>
+			<if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateSendStoneLevel" parameterType="SendStoneLevel">
+        update tb_send_stone_level
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stoneLevel != null  and stoneLevel != ''  ">stone_level = #{stoneLevel},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="deptId != null  ">dept_id = #{deptId},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteSendStoneLevelById" parameterType="Long">
+        delete from tb_send_stone_level where id = #{id}
+    </delete>
+	
+    <delete id="deleteSendStoneLevelByIds" parameterType="String">
+        delete from tb_send_stone_level where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

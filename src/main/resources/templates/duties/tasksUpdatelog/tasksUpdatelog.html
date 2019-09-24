@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('任务单修改记录列表')" />
+	<style>
+		.fixed-table-toolbar{
+			display: none;
+		}
+	</style>
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								任务名称：
+								<select id="taskId" name="taskId">
+									<option th:each="task : ${tasksList}" th:text="${task['name']}" th:value="${task['id']}" th:field="*{task.id}"></option>
+								</select>
+							</li>
+							<li>
+								任务单号：<input type="text" name="taskNumber"/>
+							</li>
+							<li>
+								修改人：<input type="text" name="updateBy"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('duties:tasksUpdatelog:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('duties:tasksUpdatelog:remove')}]];
+        var prefix = ctx + "duties/tasksUpdatelog";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add/{id}",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "任务单修改记录",
+                queryParams: queryParams,
+                sortName: "createTime",
+                sortOrder: "desc",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				/*{
+					field : 'id', 
+					title : '序号',
+					visible: false
+				},
+				{
+					field : 'taskId', 
+					title : '任务id',
+					sortable: true
+				},*/
+				{
+					field : 'taskName', 
+					title : '任务名',
+					sortable: true
+				},
+				{
+					field : 'oriFangliang', 
+					title : '改前方量',
+					sortable: true
+				},
+				{
+					field : 'fangliang', 
+					title : '改后方量',
+					sortable: true
+				},
+				{
+					field : 'oriCarcnt', 
+					title : '改前车次',
+					sortable: true
+				},
+				{
+					field : 'carcnt', 
+					title : '改后车次',
+					sortable: true
+				},
+				{
+					field : 'updateBy', 
+					title : '修改人',
+					sortable: true
+				},
+				{
+					field : 'createTime', 
+					title : '修改时间',
+					sortable: true
+				},
+				{
+					field : 'remark',
+					with: '400',
+					title : '备注'
+				}]
+            };
+            $.table.init(options);
+        });
+
+
+
+        function queryParams(params) {
+            var search = $.table.queryParams(params);
+            search.taskId = $("#taskId").val();
+            return search;
+        }
+    </script>
+</body>
+</html>

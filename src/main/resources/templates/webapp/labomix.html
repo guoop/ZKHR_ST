@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>配比单管理</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/webapp/vant.min.css">
+  <link rel="stylesheet" href="/css/webapp/webapp.css">
+  <script src="/css/webapp/webapp.js"></script>
+</head>
+
+<body>
+  <div id="app" class="bzr_root container">
+    <div class="bzr-tools">
+      <button type="button" @click="mixAdd" class="btn btn-primary">新增</button>
+      <button type="button" @click="mixEdit" class="btn btn-warning">修改</button>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-condensed table-bordered table-striped">
+        <tr class="table-head">
+          <th v-for="th in tableTh">{{th.label}}</th>
+        </tr>
+        <tr v-for="(tr, index) in tableTr" :data-index="index" class="bzr-tr" @click="activeTr">
+          <td v-for="th in tableTh">{{tr[th.value]}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="bzr-add-table" :class="{active: showAeapp}" id="aeapp">
+    <div class="bzr_root container">
+      <div class="table-responsive">
+        <table class="table table-bordered table-condensed table-striped">
+          <tr class="table-head">
+            <th v-for="th in tableHeader">{{th.label}}</th>
+          </tr>
+          <tr v-for="(tr, index) in tableTh" :data-index="index" class="bzr-tr">
+            <td v-for="th in tableHeader">
+              <input v-model="tr.inputval" class="bzr-add-input" type="number" v-if="th.value === 'value'">
+              <span v-else>
+                {{tr[th.value]}}
+              </span>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <van-cell-group v-for="fild in tableFilds">
+          <van-field v-model="fild.inputval" :disabled="curAction === 'edit' ? true : false" required clearable :label="fild.label" :placeholder="'请输入'+fild.label" />
+        </van-cell-group>
+      </div>
+      <div class="bzr-tools bzr-add-tools">
+        <button type="button" @click="mixAdd" class="btn btn-primary">确定</button>
+        <button type="button" @click="mixCancel" class="btn btn-warning">取消</button>
+      </div>
+    </div>
+  </div>
+  <script src="/js/vue.js"></script>
+  <script src="/css/webapp/vant.min.js"></script>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/ajax/libs/layer/layer.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+  var Vue = window.Vue;
+  var vant = window.vant;
+  Vue.use(vant);
+  var ajaxUrls = {
+    list: "/webapp/mixFormulaList", // 配比单列表
+    add: '/webapp/addMixformula', // 新增接口
+    edit: '/webapp/editMixformula', // 编辑接口
+  };
+  if (com_devEnv && com_devEnv === 'dev') {
+    ajaxUrls = {
+      list: "./api/mix-list.json", //
+      add: './api/ok.json', //
+      edit: './api/ok.json', //
+      del: './api/ok.json', //
+    };
+  }
+  var tableTh = [
+    { value: 'mixNumber', type: 'NOTYPE', label: '配比编号', },
+    { value: 'concreteLabel', type: 'NOTYPE', label: '砼强度', },
+    { value: 'ag1Dosage', type: '骨料', label: '石粉', },
+    { value: 'ag2Dosage', type: '骨料', label: '1-2石子', },
+    { value: 'ag3Dosage', type: '骨料', label: '0-5石子', },
+    { value: 'ag4Dosage', type: '骨料', label: '米石', },
+    { value: 'ag5Dosage', type: '骨料', label: '面沙', },
+    { value: 'cement1Dosage', type: '粉料', label: '水泥', },
+    { value: 'cement2Dosage', type: '粉料', label: '水泥', },
+    { value: 'mix1Dosage', type: '粉料', label: '粉煤灰', },
+    { value: 'mix2Dosage', type: '粉料', label: '矿粉', },
+    { value: 'mix3Dosage', type: '水', label: '污水', },
+    { value: 'water1Dosage', type: '水', label: '水M1', },
+    { value: 'water2Dosage', type: '水', label: '水M2', },
+    { value: 'additive1Dosage', type: '外加剂', label: '减水剂', },
+    { value: 'additive2Dosage', type: '外加剂', label: '减浆剂', },
+    { value: 'additive3Dosage', type: '外加剂', label: '减胶剂1', },
+    { value: 'additive4Dosage', type: '外加剂', label: '减胶剂2', },
+  ];
+  var app = new Vue({
+    el: '#app',
+    data: {
+      tableTh: tableTh,
+      tableTr: [],
+      curTr: '', // 当前选择的节点
+    },
+    created: function() {
+      this.mixList(); // 加载配比单列表
+    },
+    methods: {
+      mixList: function() {
+        var This = this;
+        layer.load(1);
+        var request = $.ajax({
+          url: ajaxUrls.list,
+          type: "POST",
+          data: {},
+          dataType: "json"
+        });
+        request.done(function(data) {
+          layer.closeAll('loading');
+          if (data.code !== 0) {
+            layer.alert(data.msg);
+            return;
+          }
+          This.tableTr = data.list;
+        });
+        request.fail(function(jqXHR, textStatus) {
+          layer.msg('网络失败');
+          console.warn('网络失败', jqXHR);
+        });
+      },
+      activeTr: function(e) {
+        // 选择tr
+        var index = e.target.parentNode.dataset.index;
+        this.curTr = this.tableTr[index];
+        $(e.target.parentNode).addClass('activety').siblings().removeClass('activety');
+      },
+      mixAdd: function() {
+        aeapp.showAeappMe('add');
+      },
+      mixEdit: function() {
+        if (!this.curTr) {
+          layer.alert('请点击需要操作的配比单')
+          return
+        }
+        aeapp.mixEditShow(this.curTr)
+      },
+      mixDelete: function() {
+        if (!this.curTr) {
+          layer.alert('请点击需要操作的配比单')
+          return
+        }
+      },
+      methodName: function() {},
+    },
+  })
+
+  /**
+   * 添加和编辑
+   */
+  window.aeapp = new Vue({
+    el: '#aeapp',
+    data: {
+      showAeapp: false, // 显示添加和删除
+      curAction: '', // 当前是添加还是编辑
+      editObj: '', // 需要编辑的任务单
+      tableFilds: [
+        { inputval: '', value: 'mixNumber', label: '配比编号', },
+        { inputval: '', value: 'concreteLabel', label: '砼强度', },
+      ],
+      tableHeader: [
+        { label: '种类', value: 'type' },
+        { label: '料仓(原料)', value: 'label' },
+        { label: '生产(kg)', value: 'value' },
+      ],
+      tableTh: [
+        { inputval: '', value: 'ag1Dosage', type: '骨料', label: '石粉', },
+        { inputval: '', value: 'ag2Dosage', type: '骨料', label: '1-2石子', },
+        { inputval: '', value: 'ag3Dosage', type: '骨料', label: '0-5石子', },
+        { inputval: '', value: 'ag4Dosage', type: '骨料', label: '米石', },
+        { inputval: '', value: 'ag5Dosage', type: '骨料', label: '面沙', },
+        { inputval: '', value: 'cement1Dosage', type: '粉料', label: '水泥', },
+        { inputval: '', value: 'cement2Dosage', type: '粉料', label: '水泥', },
+        { inputval: '', value: 'mix1Dosage', type: '粉料', label: '粉煤灰', },
+        { inputval: '', value: 'mix2Dosage', type: '粉料', label: '矿粉', },
+        { inputval: '', value: 'mix3Dosage', type: '水', label: '污水', },
+        { inputval: '', value: 'water1Dosage', type: '水', label: '水M1', },
+        { inputval: '', value: 'water2Dosage', type: '水', label: '水M2', },
+        { inputval: '', value: 'additive1Dosage', type: '外加剂', label: '减水剂', },
+        { inputval: '', value: 'additive2Dosage', type: '外加剂', label: '减浆剂', },
+        { inputval: '', value: 'additive3Dosage', type: '外加剂', label: '减胶剂1', },
+        { inputval: '', value: 'additive4Dosage', type: '外加剂', label: '减胶剂2', },
+      ],
+    },
+    created: function() {
+      var editMixId = new URLSearchParams(document.location.search).get('mix_id');
+      console.log('editMixId::', editMixId);
+      if (editMixId) {
+
+      }
+    },
+    methods: {
+      showAeappMe: function(action) {
+        this.showAeapp = true;
+        this.curAction = action;
+        for (var i = 0; i < this.tableTh.length; i++) {
+          this.tableTh[i].inputval = '';
+        }
+      },
+      mixAdd: function() {
+        var This = this;
+        var tableTh = this.tableTh;
+        var tableFilds = this.tableFilds;
+        var inputs = {};
+        tableTh.forEach(function(ele) {
+          inputs[ele.value] = ele.inputval;
+        });
+        tableFilds.forEach(function(ele) {
+          inputs[ele.value] = ele.inputval;
+        });
+        console.log(1111, inputs);
+        if (This.curAction === 'add') {
+          url = ajaxUrls.add;
+        } else {
+          url = ajaxUrls.edit;
+          inputs['sID'] = this.editObj.sid;
+        }
+        // 添加和修改时需要将 G 改为 大写字母;
+        inputs.aG1Dosage = inputs.ag1Dosage;
+        inputs.aG2Dosage = inputs.ag2Dosage;
+        inputs.aG3Dosage = inputs.ag3Dosage;
+        inputs.aG4Dosage = inputs.ag4Dosage;
+        inputs.aG5Dosage = inputs.ag5Dosage;
+        console.log(22222, inputs);
+        layer.load(1);
+        var request = $.ajax({
+          url: url,
+          type: "POST",
+          data: inputs,
+          dataType: "json"
+        });
+        request.done(function(data) {
+          layer.closeAll('loading');
+          layer.alert(data.msg, function() {
+            This.showAeapp = false;
+            // 更新配比单列表
+            app.mixList();
+            layer.closeAll();
+          });
+        });
+        request.fail(function(jqXHR, textStatus) {
+          layer.msg('网络失败');
+          console.warn('网络失败', jqXHR);
+        });
+      },
+      mixEditShow: function(editObj) {
+        this.curAction = 'edit';
+        // console.log('编辑对象::', editObj);
+        // 赋值
+        var tableTh = this.tableTh;
+        var tableFilds = this.tableFilds;
+        for (var i = 0; i < tableTh.length; i++) {
+          tableTh[i].inputval = editObj[tableTh[i].value]
+        }
+        for (var j = 0; j < tableFilds.length; j++) {
+          tableFilds[j].inputval = editObj[tableFilds[j].value]
+        }
+        this.showAeapp = true;
+        this.editObj = editObj;
+      },
+      mixCancel: function() {
+        this.showAeapp = false;
+      },
+      methodName: function() {},
+    },
+  })
+  </script>
+</body>
+
+</html>

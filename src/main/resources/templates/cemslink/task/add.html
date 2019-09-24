@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('新增任务单数据')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-task-add">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">生产线：</label>
+				<div class="col-sm-8">
+					<input id="productLine" name="productLine" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">任务单号：</label>
+				<div class="col-sm-8">
+					<input id="taskNumber" name="taskNumber" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">合同编号：</label>
+				<div class="col-sm-8">
+					<input id="contractNumber" name="contractNumber" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">客户名称：</label>
+				<div class="col-sm-8">
+					<input id="customerName" name="customerName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">工程名称：</label>
+				<div class="col-sm-8">
+					<input id="projectName" name="projectName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">施工单位 （客户）：</label>
+				<div class="col-sm-8">
+					<input id="unitName" name="unitName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">施工部位：</label>
+				<div class="col-sm-8">
+					<input id="constructionPart" name="constructionPart" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">施工地址：</label>
+				<div class="col-sm-8">
+					<input id="constructionAddress" name="constructionAddress" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">浇注方式：</label>
+				<div class="col-sm-8">
+					<input id="pouringWay" name="pouringWay" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">砼标号：</label>
+				<div class="col-sm-8">
+					<input id="concreteLabel" name="concreteLabel" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">坍落度：</label>
+				<div class="col-sm-8">
+					<input id="slump" name="slump" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">运输距离：</label>
+				<div class="col-sm-8">
+					<input id="distance" name="distance" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">送货工具：</label>
+				<div class="col-sm-8">
+					<input id="deliveryMode" name="deliveryMode" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">水泥品种：</label>
+				<div class="col-sm-8">
+					<input id="cementGrade" name="cementGrade" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">AGSize：</label>
+				<div class="col-sm-8">
+					<input id="aGSize" name="aGSize" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">技术要求：</label>
+				<div class="col-sm-8">
+					<input id="techRequest" name="techRequest" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">配比比例：</label>
+				<div class="col-sm-8">
+					<input id="peibiScale" name="peibiScale" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">抗渗等级：</label>
+				<div class="col-sm-8">
+					<input id="contraLeakLevel" name="contraLeakLevel" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">外加剂品种：</label>
+				<div class="col-sm-8">
+					<input id="additionSort" name="additionSort" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">配合比编号：</label>
+				<div class="col-sm-8">
+					<input id="mixNumber" name="mixNumber" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">砂浆配合比编号：</label>
+				<div class="col-sm-8">
+					<input id="mortarMixNumber" name="mortarMixNumber" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">计划方量：</label>
+				<div class="col-sm-8">
+					<input id="planAmount" name="planAmount" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">计划开盘时间：</label>
+				<div class="col-sm-8">
+					<input id="planDateTime" name="planDateTime" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">任务登记人：</label>
+				<div class="col-sm-8">
+					<input id="booker" name="booker" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">联系人：</label>
+				<div class="col-sm-8">
+					<input id="contact" name="contact" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">联系方式：</label>
+				<div class="col-sm-8">
+					<input id="contactPhone" name="contactPhone" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">最后一次修改时：</label>
+				<div class="col-sm-8">
+					<input id="lastModifiedTime" name="lastModifiedTime" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">备注：</label>
+				<div class="col-sm-8">
+					<input id="remark" name="remark" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">创建时间：</label>
+				<div class="col-sm-8">
+					<input id="createdTime" name="createdTime" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">Type：</label>
+				<div class="col-sm-8">
+					<input id="type" name="type" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">同步标识：</label>
+				<div class="col-sm-8">
+					<input id="syncStatus" name="syncStatus" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">从机同步标识：</label>
+				<div class="col-sm-8">
+					<input id="syncStatus2" name="syncStatus2" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "cemslink/task"
+		$("#form-task-add").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-task-add').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <head>
+        <th:block th:include="include :: header('手动派单')"/>
+        <script type="text/javascript" src="/js/vue.js"></script>
+        <style>
+            .hand-badge{
+                margin-left: 10px;
+                color: #000;
+            }
+        </style>
+    </head>
+    <body class="gray-bg">
+
+        <div class="form-content" id="sheelinfo">
+            <form class="form-horizontal">
+                <h4 class="form-header h4">报料单信息</h4>
+                <div class="row handtask-listinfo">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">派单车辆：</label>
+                            <div class="col-sm-8">
+                                <div id="taskcar" name="taskcar" class="form-control">{{task.taskcar}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">方量：</label>
+                            <div class="col-sm-8">
+                                <input type="number" id="fangliang" name="fangliang" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">工程名称：</label>
+                            <div class="col-sm-8">
+                                <div id="name" name="name" class="form-control">{{task.name}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">累计车次：</label>
+                            <div class="col-sm-8">
+                                <div id="status" name="status" class="form-control">{{task.carCnt}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">砼标号：</label>
+                            <div class="col-sm-8">
+                                <div id="productKind" name="productKind" class="form-control">{{task.productKind}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">计划单号：</label>
+                            <div class="col-sm-8">
+                                <div id="planOrderNo" name="planOrderNo" class="form-control">{{task.planOrderNo}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">当前方量：</label>
+                            <div class="col-sm-8">
+                                <div id="curcount" name="curcount" class="form-control">{{task.ljfangliang}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">砂浆方量：</label>
+                            <div class="col-sm-8">
+                                <input id="shajiangfl" type="number" name="shajiangfl" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h4 class="form-header h4">可用车辆</h4>
+                <div id="choicecar" class="row handtask-cars text-center">
+                    <div class="row">
+                        <div class="col-md-2" v-for="car in availableCars">
+                            <button type="button" class="btn btn-info" :data-carid="car.carId" :data-notifyid="car.notifyId" :data-carno="car.carNo" :data-fangliang="car.fangl">{{car.carNo}}<span class="badge hand-badge">{{car.fangl}}</span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <a type="button" href="javascript:;" id="sendTaskBtn" class="btn btn-success">确 定</a>
+                </div>
+                <h4 class="form-header h4"><a href="javascript:;" class="btn btn-warning btn-xs" id="showBadCars">查看不可用车辆</a></h4>
+                <div id="badcars" style="display: none;" class="row handtask-cars text-center">
+                    <div class="row">
+                        <div class="col-md-2" v-for="car in unavailablCars">
+                            <button type="button" class="btn btn-warning">{{car.carNo}}<span class="badge hand-badge">{{car.fangl}}</span></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="form-content" id="vue_carlineinfo" style="display: none;">
+            <h4 class="form-header h4">接料车辆排队信息</h4>
+            <div class="row">
+                <div class="col-sm-3">
+                    <ul class="list-group">
+                      <li class="list-group-item active">北门</li>
+                      <li class="list-group-item carlineinfo-list">
+                        <div><b>车号： </b><a class="btn btn-primary btn-sm">1号车</a></div>
+                        <div><b>工程名称: </b>新乡市封丘县封丘县人民医院</div>
+                        <div><b>砼标号: </b>98</div>
+                        <div><b>方量: </b>16.2</div>
+                      </li>
+                      <li class="list-group-item carlineinfo-list">
+                        <div><b>车号： </b><a class="btn btn-primary btn-sm">2号车</a></div>
+                        <div><b>工程名称: </b>新乡市封丘县封丘县人民医院</div>
+                        <div><b>砼标号: </b>98</div>
+                        <div><b>方量: </b>16.2</div>
+                      </li>
+                    </ul>
+                </div>    
+                <div class="col-sm-3">
+                    <ul class="list-group">
+                      <li class="list-group-item active">1号门</li>
+                    </ul>
+                </div>    
+                <div class="col-sm-3">
+                    <ul class="list-group">
+                      <li class="list-group-item active">2号门</li>
+                    </ul>
+                </div>    
+                <div class="col-sm-3">
+                    <ul class="list-group">
+                      <li class="list-group-item active">南门</li>
+                      <li class="list-group-item carlineinfo-list">
+                        <div><b>车号： </b><a class="btn btn-primary btn-sm">3号车</a></div>
+                        <div><b>工程名称: </b>新乡市封丘县封丘县人民医院</div>
+                        <div><b>砼标号: </b>98</div>
+                        <div><b>方量: </b>16.2</div>
+                      </li>
+                    </ul>
+                </div>    
+            </div>
+        </div>
+
+        <div th:include="include :: footer"></div>
+        <script src="/js/lodash.min.js"></script>
+        <script th:inline="javascript">
+            var golbal_var = {
+                searchParams: new URLSearchParams(location.search),
+                prefix: '/duties/',
+            }
+            console.log('手动派单', golbal_var, golbal_var.searchParams.get('taskid'))
+
+            // 报料单数据
+            var app = new Vue({
+              el: '#sheelinfo',
+              data: {
+                message: 'Hello Vue!',
+                task: { // 任务详情
+                    name: 'name',
+                    status: 'status',
+                    productKind: 'productKind',
+                    planOrderNo: 'planOrderNo',
+                    ljfangliang: 'curcount',
+                    taskcar: '',
+                    carCnt: '',
+                },
+                availableCars:[
+                ],
+                unavailablCars:[
+                ],
+              },
+              created: function () {
+                  var This = this;
+                  var taskId = golbal_var.searchParams.get('taskid');
+                  // 任务详情
+                  var request = $.ajax({
+                    url: "/web/freeCars",
+                    // url: global_var.prefix + "tasks/", // 查询任务详情
+                    type: "POST",
+                    data: {
+                        taskId: taskId,
+                    },
+                    dataType: "json"
+                  });
+
+                  request.done(function (data) {
+                      This.task = data.task;
+                      var availableCars = data.avilibleCarlist;
+                      var avilibleCarlistIds = [];
+                      for(var j = 0; j < availableCars.length; j++){
+                          avilibleCarlistIds.push( String(availableCars[j].carNo) );
+                      }
+
+                      var allCarList = data.allCarList;
+                      var unavailablCars = [];
+                      for (var i = 0; i < allCarList.length; i++){
+                          if( avilibleCarlistIds.indexOf( String(allCarList[i].carNo) ) > -1 ){
+                              var index = _.findIndex(availableCars, ['carNo', String(allCarList[i].carNo)]);
+                              availableCars[index].fangl = allCarList[i].fangl;
+                          }else{
+                              unavailablCars.push(allCarList[i]);
+                          }
+                      }
+                      console.log(avilibleCarlistIds,availableCars,unavailablCars);
+                      This.unavailablCars = unavailablCars;
+                      This.availableCars = availableCars;
+                  });
+                  // 可用和不可用车辆 api
+              }
+            })
+            $(document).on('click', '#choicecar .btn', function(){
+                var carno = $(this).attr('data-carno');
+                var carfangliang = $(this).attr('data-fangliang');
+                $('#taskcar').text(carno);
+                $('#fangliang').val(carfangliang);
+                $('#taskcar').attr('data-carid', $(this).attr('data-carid'));
+                $('#taskcar').attr('data-notifyid', $(this).attr('data-notifyid'));
+            })
+            $(document).on('click', '#showBadCars', function(){
+                $('#badcars').toggle();
+            })
+            // sendTaskBtn 确定派单
+            $(document).on('click', '#sendTaskBtn', function(){
+                $.modal.loading('执行中,请稍后...')
+                console.log('确定派单。');
+                // if(!$('#fangliang').val()){
+                //     layer.alert('请填写方量');
+                //     return;
+                // }
+                // if(!$('#taskcar').attr('data-carid')){
+                //     layer.alert('请选择车辆');
+                //     return;
+                // }
+                  var request = $.ajax({
+                    url: "/web/handDispath",
+                    type: "POST",
+                    data: {
+                        taskId: golbal_var.searchParams.get('taskid'),
+                        carId: $('#taskcar').attr('data-carid'),
+                        notifyId: $('#taskcar').attr('data-notifyid'),
+                        fangliang: $('#fangliang').val(),
+                        shajiangfl: $('#shajiangfl').val(),
+                    },
+                    dataType: "json"
+                  });
+
+                  request.done(function (data) {
+                      layer.closeAll('loading');
+                      $.modal.closeLoading()
+                      if(data.code == 0){
+                          closeItem();
+                      }
+                    //This.availableCars = data.availableCars
+                    //This.unavailablCars = data.unavailablCars
+                  });
+            })
+
+            /*接料车辆排队信息*/
+            var appb = new Vue({
+              el: '#vue_carline',
+              data: {
+                availableCars:[
+                  {
+                    id: '1',
+                  },
+                  {
+                    id: '2',
+                  }
+                ],
+                unavailablCars:[
+                  {
+                    id: '4',
+                  },
+                  {
+                    id: '8',
+                  }
+                ],
+              },
+              created: function () {
+                  /*
+                  var This = this;
+                  var taskId = golbal_var.searchParams.get('taskid');
+                  // 任务详情
+                  var request = $.ajax({
+                    url: "http://101.200.50.35/api2.php",
+                    // url: global_var.prefix + "tasks/", // 查询任务详情
+                    type: "POST",
+                    data: {
+                      apiId: 'tasksview',
+                      id: taskId,
+                    },
+                    dataType: "json"
+                  });
+
+                  request.done(function (data) {
+                    This.task = data
+                  });
+                  */
+              }
+            })
+        </script>
+    </body>
+</html>

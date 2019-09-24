@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: select2-css" />
+	<th:block th:include="include :: header('修改车辆')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-car-edit" th:object="${car}">
+            <input id="id" name="id" th:field="*{id}"  type="hidden"><div class="row">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">车牌号：</label>
+						<div class="col-sm-8">
+							<input id="carNum" name="carNum" th:field="*{carNum}" class="form-control" type="text">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">车号：</label>
+						<div class="col-sm-8">
+							<input id="carNo" name="carNo" th:field="*{carNo}" class="form-control" type="number">
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">车架号：</label>
+						<div class="col-sm-8">
+							<input id="vin" name="vin" th:field="*{vin}" class="form-control" type="text">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">SIM卡号：</label>
+						<div class="col-sm-8">
+							<input id="mobile" name="mobile" th:field="*{mobile}" class="form-control" type="number">
+						</div>
+					</div>
+				</div>
+
+
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">设备号：</label>
+						<div class="col-sm-8">
+							<input id="imei" name="imei" th:field="*{imei}" class="form-control" type="text">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">设备型号：</label>
+						<div class="col-sm-8">
+							<!--<input id="type" name="type" th:field="*{type}" class="form-control" type="text">-->
+							<select name="type" class="form-control" th:with="dt=${@dict.getType('device_type')}" th:field="*{type}">
+								<option th:each="dict : ${dt}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+
+
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">高度：</label>
+						<div class="col-sm-8">
+							<input id="height" name="height"  th:field="*{height}" class="form-control" type="number">
+						</div>
+					</div>
+				</div>
+
+				<!--<div class="form-group">-->
+					<!--<label class="col-sm-3 control-label">车辆类型：</label>-->
+					<!--<div class="col-sm-8">-->
+						<!--<div class="radio-box" th:each="dict : ${@dict.getType('shangtong_cars_types')}">-->
+							<!--<input type="radio" th:id="${dict.dictCode}" name="carType" th:value="${dict.dictValue}" th:field="*{carType}">-->
+							<!--<label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<!--<div class="col-sm-6">-->
+					<!--<div class="form-group">-->
+						<!--<label class="col-sm-3 control-label">车辆所属：</label>-->
+						<!--<div class="col-sm-8">-->
+							<!--<div class="radio-box" th:each="dict : ${@dict.getType('shangtong_suoshu')}">-->
+								<!--<input type="radio" th:id="${dict.dictCode}" name="nature" th:value="${dict.dictValue}" th:field="*{nature}">-->
+								<!--<label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<!--<div class="col-sm-6">-->
+					<!--<div class="form-group">-->
+						<!--<label class="col-sm-3 control-label">车主：</label>-->
+						<!--<div class="col-sm-8">-->
+							<!--<input id="owner" name="owner" th:field="*{owner}" class="form-control" type="text">-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<!--<div class="col-sm-6">-->
+					<!--<div class="form-group">-->
+						<!--<label class="col-sm-3 control-label">车主电话：</label>-->
+						<!--<div class="col-sm-8">-->
+							<!--<input id="ownerPhone" name="ownerPhone" th:field="*{ownerPhone}" class="form-control" type="number">-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">方量：</label>
+						<div class="col-sm-8">
+							<input id="fangl" name="fangl" th:field="*{fangl}" class="form-control" type="number">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">湿拌砂浆方量：</label>
+						<div class="col-sm-7">
+							<input id="shibanfl" name="shibanfl" th:field="*{shibanfl}" class="form-control" type="number">
+						</div>
+					</div>
+				</div>
+
+				<!--<div class="col-sm-6">-->
+					<!--<div class="form-group">-->
+						<!--<label class="col-sm-4 control-label">是否跨县车：</label>-->
+						<!--<div class="col-sm-7">-->
+							<!--<div class="radio-box" th:each="dict : ${@dict.getType('sys_yes_no')}">-->
+								<!--<input type="radio" th:id="${dict.dictCode}" name="isOtherCar"-->
+									   <!--th:value="${dict.dictValue}"-->
+									   <!--th:field="*{isOtherCar}"-->
+									   <!--th:checked="${dict.isDefault == 'Y' ? true : false}">-->
+								<!--<label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>-->
+							<!--</div>-->
+						<!--</div>-->
+					<!--</div>-->
+				<!--</div>-->
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">是否有加长抖：</label>
+						<div class="col-sm-8">
+							<div class="radio-box" th:each="dict : ${@dict.getType('sys_yes_no')}">
+								<input type="radio" th:id="${dict.dictCode}" name="jcdou" th:value="${dict.dictValue}" th:field="*{jcdou}">
+								<label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12">
+					<!--润泵砂浆方量是为了润泵用的，防止粘泵-->
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">拉砂浆减掉m³：</label>
+							<div class="col-sm-8">
+								<input id="shajiangfl" name="shajiangfl" class="form-control" th:field="*{shajiangfl}"  type="number">
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="col-sm-4 control-label">优先权增加次数：</label>
+							<div class="col-sm-8">
+								<input id="everyPrivilege" name="everyPrivilege" th:field="*{everyPrivilege}" class="form-control" type="number">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">司机：</label>
+						<div class="col-sm-10">
+							<select id="driver" class="form-control select2-hidden-accessible" multiple="">
+								<option th:each="driver:${drivers}" th:value="${driver.id}" th:text="${driver.dName}" th:selected="${driver.flag}" th:disabled="${driver.status == '1'}"></option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+	<th:block th:include="include :: select2-js" />
+    <script type="text/javascript">
+		var prefix = ctx + "cars/car";
+		$("#form-car-edit").validate({
+			rules:{
+                ownerPhone:{
+                    isPhone:true,
+                    remote: {
+                        url: ctx +  "system/user/checkPhoneUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "ownerPhone": function() {
+                                return $.common.trim($("#ownerPhone").val());
+                            }
+                        },
+                        dataFilter: function (data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
+                },
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+                var data = $("#form-car-edit").serializeArray();
+                var driverIds = $.form.selectSelects("driver");
+                console.log(driverIds)
+                data.push({"name": "driverIds", "value": driverIds});
+	            $.operate.save(prefix + "/edit", data);
+	        }
+	    }
+	</script>
+</body>
+</html>

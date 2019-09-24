@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>实验室-任务单配比</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/webapp/webapp.css">
+  <link rel="stylesheet" href="/css/webapp/vant.min.css">
+  <script src="/css/webapp/webapp.js"></script>
+</head>
+
+<body>
+  <div id="sy_root" class="sy-root container">
+    <!--
+    <div class="table-responsive">
+      <table id="sy_table" class="table table-condensed table-bordered">
+        <tr class="table-head">
+          <th v-for="th in tableTh">{{th.label}}</th>
+        </tr>
+        <tr v-for="(tr, trIndex) in tableTr" :data-id="tr.id" class="sy-list" :class="{activety: tr.activety}" @click="showMixPop(trIndex,tr)">
+          <td v-for="th in tableTh">
+            <template v-if="th.isSwitch">
+              <van-button type="primary" v-if="tr[th.value] === 'Y'">是</van-button>
+              <van-button type="default" v-else>否</van-button>
+            </template>
+            <template v-else>
+              {{tr[th.value]}}
+            </template>
+          </td>
+        </tr>
+      </table>
+    </div>
+    -->
+    <div class="lab-tasklist">
+      <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <van-row class="lab-tasklist-row-head" type="flex" gutter="10" justify="space-around">
+          <van-col :span="thIndex === 0 ? 8 : 4" v-for="(th, thIndex) in tableTh" v-html="th.label"></van-col>
+        </van-row>
+        <van-row class="lab-tasklist-row" v-for="(tr, trIndex) in tableTr" :data-id="tr.id" :class="{activety: tr.activety}" @click.native="showMixPop(trIndex,tr)" type="flex" gutter="10" justify="space-around">
+          <van-col v-for="(th, thIndex) in tableTh" :span="thIndex === 0 ? 8 : 4">
+            <template v-if="th.isSwitch">
+              <van-button type="primary" v-if="tr[th.value] === 'Y'">是</van-button>
+              <van-button type="default" v-else>否</van-button>
+            </template>
+            <template v-else-if="th.value === 'mixList'">
+              <span v-for="mixinfo in tr[th.value]"><span class="mix-noa">{{mixinfo.productLine}}</span>: {{mixinfo.mixNumber}}</span>
+            </template>
+            <template v-else>
+              {{tr[th.value]}}
+            </template>
+          </van-col>
+        </van-row>
+      </van-list>
+    </div>
+    <van-dialog v-model="showMixs" title="选择配比单" show-cancel-button @confirm="makePdbBtn" @cancel="makePdbCancel">
+      <van-tabs v-model="linesActive" type="card">
+        <van-tab :title="line.name" v-for="line in lines">
+          <div class="sy-orders">
+            <div class="sy-orders-th">
+              <div class="sy-orders-item" v-for="th in pbdTh">{{th.label}}</div>
+            </div>
+            <div class="sy-orders-tr" v-for="tr in line.data" v-if="tr.mixNumber != 'Default'" :data-id="tr.mixNumber">
+              <div class="sy-orders-item" v-for="th in pbdTh">{{tr[th.value]}}</div>
+            </div>
+          </div>
+        </van-tab>
+      </van-tabs>
+    </van-dialog>
+    <van-dialog v-model="newTaskDialog" title="生产指令提醒" @confirm="this.newTaskDialog = false">
+      <p class="mix-notify">您有新的生产指令!请及时处理.</p>
+    </van-dialog>
+  </div>
+  <audio id="new_task_msg" src="/css/webapp/msg.mp3" loop preload="auto"></audio>
+  <script src="/js/vue.js"></script>
+  <script src="/css/webapp/vant.min.js"></script>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/ajax/libs/layer/layer.min.js"></script>
+  <script src="/js/lodash.min.js"></script>
+  <script>
+  var global_var = {
+    taskId: '',
+    taskItem: '',
+    taskIndex: '',
+    peibidanId: '',
+    notifyTasksId: []
+  };
+  var Vue = window.Vue;
+  var vant = window.vant;
+  Vue.use(vant);
+
+  var new_task_msg = document.querySelector('#new_task_msg');
+
+  function newMsg(isstop = false, msg = '有未配比的任务单,请配比!', tasks = []) {
+    if (isstop) { // 调用方法关闭
+      try {
+        new_task_msg.pause();
+        vant.Notify.clear();
+      } catch (e) {}
+      return
+    }
+
+    // 检查是否已经提醒过了
+    var isNotifyEd = true;
+    for (var i = 0; i < tasks.length; i++) {
+      if (global_var.notifyTasksId.indexOf(tasks[i].id) === -1) {
+        isNotifyEd = false;
+        break;
+      }
+    }
+    if (isNotifyEd) {
+      // console.log('这些未配比的任务单,已经被手动关闭了.');
+      return;
+    }
+
+    new_task_msg.volume = 1;
+    new_task_msg.play();
+    vant.Notify({
+      message: msg,
+      duration: 0,
+      background: '#1989fa',
+      onClick: function () { // 手动点击关闭
+        if (tasks.length > 0) {
+          console.log('手动关闭:', tasks);
+          for (var i = 0; i < tasks.length; i++) {
+            if (global_var.notifyTasksId.indexOf(tasks[i].id) === -1) {
+              global_var.notifyTasksId.push(tasks[i].id);
+            }
+          }
+        }
+        new_task_msg.pause();
+        vant.Notify.clear();
+      }
+    });
+  }
+
+  // com_devEnv = 'dev';
+  var ajaxUrls = {
+    tasks: "/webapp/laboratoryTaskList", // 任务单-list
+    // tasks: "http://101.200.50.35/api2.php", // 任务单-list
+    mixs: "/webapp/mixFormulaList", // 配比单-list
+    taskMix: "/webapp/mixformulaTask", // 任务配比
+    getPreproductioning: "/webapp/getPreproductioning", // 查询是否有新的 生产指令
+  };
+  if (com_devEnv && com_devEnv === 'dev') {
+    ajaxUrls = {
+      tasks: "./api/page-list.php", // 任务单-list
+      mixs: "./api/peibidans.json", // 配比单-list
+      taskMix: "./api/ok.json", // 任务配比
+    };
+  }
+  var data = {
+    loading: false,
+    finished: false,
+    tableTh: [
+      { label: "工程<br>名称", value: "name" },
+      { label: "是否<br>配比", value: "isMixture", isSwitch: true },
+      { label: "产品<br>型号", value: "productKind" },
+      { label: "浇筑<br>部位", value: "waterPart" },
+      // { label: "配比<br>单号", value: "mixNo" },
+      { label: "配比<br>信息", value: "mixList" },
+      { label: "总方量", value: "totalFl" }
+    ],
+    tableTr: [],
+    pbdTh: [
+      { label: "配比编号", value: "mixNumber" },
+      { label: "砼强度", value: "concreteLabel" },
+    ],
+    pbdTr: [],
+    lines: {},
+    linesActive: 0,
+    ajaxPage: {
+      pageSize: 300,
+      pageNum: 1,
+      orderByColumn: '',
+      isAsc: 'asc',
+    },
+    showMixs: false, // 是否显示配比单
+    newTaskDialog: false, // 显示新任务提醒
+  };
+  window.vm = new Vue({
+    el: '#sy_root',
+    data: data,
+    created: function () {
+      var This = this;
+      // 实时查询待配比任务
+      setInterval(function () {
+        This.autoTask();
+      }, 10000);
+
+      // 声音提醒需要用户有过一次交互才能实现
+      vant.Dialog.alert({
+        message: '打开未配比铃声提醒功能.'
+      }).then(() => {
+        document.getElementById('new_task_msg').play();
+        setTimeout(function () {
+          document.getElementById('new_task_msg').pause();
+        }, 1000);
+        newMsg(false, '测试任务铃声,3秒后自动关闭.');
+        setInterval(function () {
+          This.checkNoMixTask();
+        }, 5000);
+      });
+
+      // 实时查询是否有新的生产指令,提醒主机操作员
+      setInterval(function () {
+        This.getPreproductioningFun();
+      }, 8000);
+    },
+    methods: {
+      getPreproductioningFun() {
+        var This = this;
+        var request = $.ajax({
+          url: ajaxUrls.getPreproductioning,
+          type: "POST",
+          data: {},
+          dataType: "json"
+        });
+        request.done(function (data) {
+          if (data.code === 0 && data.preproduction) { // 有新的生产任务
+            console.log(data);
+            This.newTaskDialog = true;
+          }
+        });
+      },
+      onLoad() {
+        var This = this;
+        // 异步更新数据
+        var request = $.ajax({
+          url: ajaxUrls.tasks,
+          type: "POST",
+          data: {
+            pageSize: This.ajaxPage.pageSize,
+            pageNum: This.ajaxPage.pageNum,
+            orderByColumn: This.ajaxPage.orderByColumn,
+            isAsc: This.ajaxPage.isAsc,
+          },
+          dataType: "json"
+        });
+        request.done(function (data) {
+          if (data.code !== 0) {
+            layer.alert(data.msg);
+            This.finished = true; // 没有更多数据了
+            This.loading = false;
+            return;
+          }
+          var list = data.rows;
+          // 测试start
+          // var pageNum = This.ajaxPage.pageNum - 1;
+          // var pageSize = This.ajaxPage.pageSize;
+          // var endTotle = pageNum * pageSize;
+          // console.log(endTotle, pageNum, pageSize)
+          // for (let i = endTotle; i < (endTotle + 20); i++) {
+          //   var test_row = JSON.parse('{"searchValue":null,"createBy":"业务经理","createTime":"2019-06-04 23:48:42","updateBy":null,"updateTime":"2019-06-05 09:28:33","remark":"资料随车","params":{},"id":"62","name":"丰润豆业","planOrderNo":"T0020190604234908000002","subTime":1,"isGoodJob":"Y","isPinch":"Y","isJcdou":"N","carType":2,"pinchFl":488,"totalFl":500,"shajiangfl":0,"productKind":"C25","startTime":"2019-06-04 23:49:53","arriveTime":"2019-06-06 23:47:00","targetAddr":null,"lon":"114.426697","lat":"35.102674","createtime":"2019-06-04 23:48:42","status":1,"pause":"N","isAuto":"Y","waterMethod":"水交","waterPart":"一楼","locationTanluodu":"180±20","tanLuodu":null,"ksLevel":null,"ljfangliang":0,"sqlWhere":null,"lastCarTime":null,"privilege":0,"isCarMoney":"N","isCobblestone":"N","timeoutfee":"N","bufang":"N","price":5,"officerMobile":"18090890908","officer":null,"receivor":null,"receiver":"玻璃","receivorMobile":"18601288359","doDeptPart":null,"doDept":null,"isOtherArea":"N","financePause":"N","isMixture":"Y","isSchedule":"Y","mixNo":"测试配比-长垣C25细石","mixor":null,"mixtime":null,"cnt":0,"taskId":null,"carCnt":4,"cancelBy":null,"contact":null,"planCarCnt":12,"mixCar":6,"maxCar":20,"height":5,"createId":101,"planEndTime":"2019-06-20 02:02:00","cartypeList":null,"mixTime":null}');
+          //   var tmp = {};
+          //   test_row.name = i + '. ' + test_row.name;
+          //   test_row.id = i;
+          //   test_row.isMixture = 'N';
+          //   list.push(test_row);
+          // }
+          // 测试end
+          for (let i = 0; i < list.length; i++) {
+            This.tableTr.push(list[i]);
+          }
+          if (list.length < This.ajaxPage.pageSize || (This.ajaxPage.pageSize * This.ajaxPage.pageNum >= data.total)) {
+            This.finished = true; // 没有更多数据了
+            This.loading = false;
+          } else {
+            This.loading = false;
+          }
+          This.ajaxPage.pageNum += 1;
+        });
+        request.fail(function (jqXHR, textStatus) {
+          layer.msg('网络失败');
+          console.warn('网络失败', jqXHR);
+        });
+      },
+      showMixPop: function (trIndex, tr) {
+        console.log(trIndex, tr);
+        // if (tr.isMixture === 'Y') {
+        //   layer.msg('该任务单已经配比过了');
+        //   return false;
+        // }
+        var This = this;
+        global_var.taskId = tr.id;
+        global_var.taskItem = tr;
+        global_var.taskIndex = trIndex;
+        for (var i = 0; i < this.tableTr.length; i++) {
+          if (this.tableTr[i].id == tr.id) {
+            this.tableTr[i].activety = true;
+          } else {
+            this.tableTr[i].activety = false;
+          }
+        }
+        // $(this).addClass('activety').siblings().removeClass('activety');
+        layer.load(1);
+        var request = $.ajax({
+          url: ajaxUrls.mixs, // 配比单
+          type: "POST",
+          data: {},
+          dataType: "json"
+        });
+        request.done(function (data) {
+          layer.closeAll('loading');
+          if (data.code !== 0) {
+            layer.alert('错误,' + data.msg);
+            return false;
+          }
+          // This.lines = _.groupBy(data.list, 'productLine');
+          var prodLines = _.groupBy(data.list, 'productLine');
+          var lines = [];
+          for (var key in prodLines) {
+            var lineObj = {};
+            lineObj.id = key;
+            lineObj.name = key + ' 号线';
+            // 排序
+            for (var i = 0; i < prodLines[key].length; i++) {
+              prodLines[key][i].concreteLabelUpper = prodLines[key][i].concreteLabel.toUpperCase();
+            }
+            lineObj.data = _.orderBy(prodLines[key], ['concreteLabelUpper'], ['asc']);
+            lines.push(lineObj);
+          }
+          This.lines = lines;
+          This.pbdTr = lines[0].data;
+          This.showMixs = true;
+          // showPeibidan();
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+          console.log('网络失败', jqXHR);
+        });
+      },
+      makePdbBtn: function () { // 确认添加配比单
+        vant.Dialog.confirm({
+          title: '提示:',
+          message: '确认给该任务添加配比单吗?'
+        }).then(() => {
+          // on confirm
+          this.makePeibidan();
+        }).catch(() => {});
+      },
+      makePdbCancel: function () {
+        layer.msg('已取消');
+      },
+      makePeibidan: function () {
+        var This = this;
+        layer.load(1);
+        var postData = {
+          taskId: global_var.taskId,
+          mixNumber: global_var.peibidanId,
+          productLine: This.lines[This.linesActive].id,
+        };
+        var request = $.ajax({
+          url: ajaxUrls.taskMix, // 任务单配比
+          type: "POST",
+          data: postData,
+          dataType: "json"
+        });
+        request.done(function (data) {
+          layer.closeAll();
+          if (data.code !== 0) {
+            layer.alert('错误,' + data.msg);
+            return false;
+          }
+          // 更新状态
+          global_var.taskItem.isMixture = 'Y';
+          var curMixList = global_var.taskItem.mixList;
+          // global_var.taskItem.mixNo = global_var.peibidanId;
+          var addMixInfo = {
+            productLine: postData.productLine,
+            mixNumber: postData.mixNumber,
+          };
+          if (!Array.isArray(curMixList)) {
+            global_var.taskItem.mixList = [addMixInfo];
+          } else {
+            // 检测是否存在产线
+            var ishadMixIndex = _.findIndex(curMixList, function (o) { return o.productLine == addMixInfo.productLine; });
+            if (ishadMixIndex === -1) {
+              global_var.taskItem.mixList.push(addMixInfo);
+            } else {
+              global_var.taskItem.mixList.splice(ishadMixIndex, 1, addMixInfo);
+            }
+          }
+          // debugger
+          // global_var.taskItem.mixList = '';
+          console.log(2333, global_var.taskItem);
+          This.tableTr.splice(global_var.taskIndex, 1, global_var.taskItem);
+          layer.msg(data.msg);
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+          console.log('网络失败', jqXHR);
+        });
+      },
+      autoTask: function () {
+        var This = this;
+        // 异步更新数据
+        var request = $.ajax({
+          url: ajaxUrls.tasks,
+          type: "POST",
+          data: {
+            pageSize: This.ajaxPage.pageSize,
+            pageNum: This.ajaxPage.pageNum,
+            orderByColumn: This.ajaxPage.orderByColumn,
+            isAsc: This.ajaxPage.isAsc,
+          },
+          dataType: "json"
+        });
+        request.done(function (data) {
+          if (data.code == 0) {
+            var new_list = data.rows;
+            var old_list = This.tableTr;
+            for (var j = 0; j < new_list.length; j++) {
+              var isFind = _.find(old_list, ['id', new_list[j].id]);
+              if (!isFind) { // 有新的任务单了
+                layer.alert('有新的任务单了');
+                // console.log('新的任务单::', new_list[j]);
+                This.tableTr.push(new_list[j]);
+              } else { // 更新任务单的配比单信息
+                This.tableTr[j].isMixture = new_list[j].isMixture;
+                This.tableTr[j].mixList = new_list[j].mixList;
+              }
+            }
+          }
+        });
+        request.fail(function (jqXHR, textStatus) {
+          layer.msg('网络失败');
+          console.warn('网络失败', jqXHR);
+        });
+      },
+      checkNoMixTask: function () { // 检测没有没有配比的任务单
+        var noMixTasks = this.tableTr.filter(function (item) {
+          return (item.isMixture === 'N');
+        });
+        // console.log('提醒配比:', noMixTasks);
+        if (noMixTasks.length > 0) {
+          newMsg(false, '有未配比的任务单,请配比!', noMixTasks);
+        } else {
+          newMsg(true);
+        }
+        // return noMixTasks;
+      },
+    }
+  });
+
+  $(document).on('click', '.sy-orders-tr', function () {
+    global_var.peibidanId = $(this).attr('data-id');
+    $(this).addClass('active').siblings().removeClass('active');
+  });
+  </script>
+</body>
+
+</html>

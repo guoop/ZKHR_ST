@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<th:block th:include="include :: header('新增上班车辆')" />
+	<style>
+		.door-cars .btn{
+			margin: 10px;
+		}
+	</style>
+</head>
+
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-carSignlog-add">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">今日上班车辆：</label>
+				<div class="col-sm-8">
+					<input id="carNos" name="carNos" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+		<div class="row" id="vm_cars">
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-heading door-panel-heading">主班车辆</div>
+					<div class="panel-body">
+						<div class="door-cars" id="zhuban">
+							<button @click="changeClass(car, carIndex, 'main')" class="btn btn-primary door-car" v-for="(car, carIndex) in mainCars" :data-carno="car.carNo">{{car.carNo}}号 <span class="badge"><b class="door-fang">{{car.fangl}}</b>方</span></button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-heading door-panel-heading fuban-title">副班车辆</div>
+					<div class="panel-body fuban-body" id="fuban_body">
+						<div class="door-cars" id="fuban">
+							<button @click="changeClass(car, carIndex, 'sub')" class="btn btn-success door-car" v-for="(car, carIndex) in subCars">{{car.carNo}}号 <span class="badge"><b class="door-fang">{{car.fangl}}</b>方</span></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:include="include::footer"></div>
+	<script src="/js/lodash.min.js"></script>
+	<script src="/js/vue.js"></script>
+	<script src="/js/element-ui/element-ui.js"></script>
+	<script type="text/javascript">
+	var prefix = ctx + "cars/carSignlog"
+	$("#form-carSignlog-add").validate({
+		rules: {
+			xxxx: {
+				required: true,
+			},
+		},
+		focusCleanup: true
+	});
+
+	function submitHandler() {
+		var mainCarNos = [];
+		for (var i = 0; i < vmCar.mainCars.length; i++) {
+			mainCarNos.push(vmCar.mainCars[i].carNo)
+		}
+		var mainCarNosStr = mainCarNos.join();
+		$('#carNos').val(mainCarNosStr);
+
+		if ($.validate.form()) {
+			$.operate.save(prefix + "/add", $('#form-carSignlog-add').serialize());
+		}
+	}
+
+	// 主副班车辆交替
+	var vmCar = new Vue({
+		el: '#vm_cars',
+		data: {
+			mainCars: [], // 主班车辆
+			mainCarNos: [], // 主班车号
+			subCars: [], // 副班车辆
+			allCars: [], // 全部车辆
+		},
+		created: function () {
+			var This = this
+			// $.modal.loading('数据加载中请稍后...')
+			var request = $.ajax({
+				url: "/webapp/carlist",
+				type: "POST",
+				data: {},
+				dataType: "json"
+			});
+			request.done(function (data) {
+				// $.modal.closeLoading()
+				if (data.code === 0) {
+					This.allCars = data.list;
+					This.initCars()
+				}
+			});
+			request.fail(function (jqXHR, textStatus) {
+				console.warn('网络失败', jqXHR);
+			});
+		},
+		methods: {
+			initCars: function () { // 初始化各种类型车辆
+				var mainCarNosStr = document.getElementById('carNos').value
+				this.mainCarNos = mainCarNosStr ? mainCarNosStr.split(',').map(function (ele) { return Number(ele) }) : [];
+				var allCars = this.allCars;
+				var mainCars = [],
+					subCars = [];
+				for (var i = 0; i < allCars.length; i++) {
+					if (this.mainCarNos.indexOf(allCars[i].carNo) === -1) {
+						subCars.push(allCars[i])
+					} else {
+						mainCars.push(allCars[i])
+					}
+				}
+				this.mainCars = mainCars
+				this.subCars = subCars
+			},
+			changeClass: function (car, carindex, curClass) {
+				console.log(car, curClass)
+				if (curClass === 'main') {
+					this.mainCars.splice(carindex, 1)
+					this.subCars.push(car);
+				} else if (curClass === 'sub') {
+					this.subCars.splice(carindex, 1)
+					this.mainCars.push(car);
+				}
+			}
+		}
+	})
+	</script>
+</body>
+
+</html>

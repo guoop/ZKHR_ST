@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+	<th:block th:include="include :: header('磅房称重')" />
+	<link rel="stylesheet" href="/js/element-ui/element-ui.css">
+	<style>
+		.container-div{ background-color: #fff; }
+		.bf-app { margin: 20px 40px; }
+		.loading-rotate-container { position: fixed; top: 0; left: 0; right: 0; bottom: 0; display: flex; justify-content: center; align-items: center; background: rgba(255, 255, 255, .95); z-index: 99; }
+		.loading-rotate-full { width: 30px; height: 30px; border: 3px solid #777; border-top-color: transparent; border-radius: 50%; animation: loading-rotate 1s linear infinite; box-sizing: border-box; }
+		@keyframes loading-rotate { from { transform: rotate(0); }
+			to { transform: rotate(360deg); } }
+		.bf-weight { color: #7beb61; background: #333; text-align: center; font-size: 60px; line-height: 1; padding: 30px 0; width: 600px; font-weight: bold; display: inline-block; border-radius: 8px; }
+		.hide { display: none; }
+		.bf-weighing { display: flex; margin: 0 0 20px 0; }
+		.bf-carstop { width: 200px; display: flex; flex-direction: column; justify-content: space-between; text-align: center; }
+		.bf-carstop-item { width: 100%; }
+		.bf-tac { text-align: center; margin: 10px; }
+		.bf-carstop-item button[active=true] { color: #FFF; background-color: #67C23A; border-color: #67C23A; }
+		.bf-truebangno { text-align: left; font-size: 32px; position: absolute; padding: 12px 20px;color: #f40; }
+		.bf-weight-unit { font-size: 18px; }
+		.show-input { display: flex; height: 40px; align-items: center; }
+		.show-input-label { text-align: right; font-size: 14px; vertical-align: middle; color: #606266; line-height: 40px; padding: 0 12px 0 0; box-sizing: border-box; width: 80px; height: 100%; }
+		.show-input-value { font-size: 14px; height: 100%; color: #333; line-height: 40px; border-bottom: 1px solid #eee; flex: 1; padding: 0 0 0 10px; }
+		.show-input-b{ display: flex; height: 40px; align-items: center;}
+		.show-input-b .el-input{ flex: 1; }
+		.show-input-b .el-input__inner{ border: 0; border-bottom: 1px solid #eee; border-radius: 0; }
+	</style>
+</head>
+
+<body class="gray-bg">
+	<div class="container-div">
+		<div id="app" class="bf-app">
+			<div class="loading-rotate-container" :class="{hide: hideloading}">
+				<div class="loading-rotate-full"></div>
+			</div>
+			<!-- 称重和进出站 -->
+			<div class="bf-weighing">
+				<div class="bf-weight">
+					<div class="bf-truebangno">{{formatTrueBangNo}}</div>
+					{{weight}}
+					<span class="bf-weight-unit">(t)</span>
+				</div>
+				<div class="bf-carstop">
+					<div class="bf-carstop-item">
+						<el-button type="success" plain :active="bangNo === 'N'" @click="clickBangBtn('N')">北 磅</el-button>
+					</div>
+					<div class="bf-carstop-item">
+						<el-button type="success" plain :active="bangNo === 'S'" @click="clickBangBtn('S')">南 磅</el-button>
+					</div>
+				</div>
+			</div>
+			<!-- 当前任务单 -->
+			<el-form>
+				<el-form-item label="车&emsp;&emsp;号" width="80">
+					<el-select :class="{'carno_select': true}" @visible-change="optionschange($event)" v-model="curinfo.carNo" filterable placeholder="请输入车号并选择" :filter-method="filtermethod">
+						<el-option v-for="item in carlistOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+					</el-select>
+				</el-form-item>
+			</el-form>
+			<el-row :gutter="30">
+				<el-col :span="8">
+					<div class="grid-content">
+						<show-input label="收货单位" :value="curinfo.receiver"></show-input>
+						<show-input label="任务单号" :value="curinfo.taskNumber"></show-input>
+						<show-input label="备&emsp;&emsp;注" :value="curinfo.remark"></show-input>
+					</div>
+				</el-col>
+				<el-col :span="8">
+					<div class="grid-content">
+						<show-input label="工程名称" :value="curinfo.taskName"></show-input>
+						<show-input label="工程部位" :value="curinfo.waterPart"></show-input>
+						<show-input label="强度等级" :value="curinfo.productKind"></show-input>
+						<show-input label="浇筑方式" :value="curinfo.waterMethod"></show-input>
+					</div>
+				</el-col>
+				<el-col :span="8">
+					<div class="grid-content">
+						<show-input label="皮&emsp;&emsp;重" :value="curinfo.carWeight"></show-input>
+						<show-input label="毛&emsp;&emsp;重" :value="curinfo.grossWeight"></show-input>
+						<show-input label="净&emsp;&emsp;重" :value="curinfo.netWeight"></show-input>
+						<show-input label="实际方量" :value="curinfo.equalFangliang"></show-input>
+						<show-input label="累计车次" :value="curinfo.carCnt || ''"></show-input>
+						<show-input label="累计方量" :value="curinfo.ljfangliang"></show-input>
+					</div>
+				</el-col>
+			</el-row>
+			<!-- 进出站 -->
+			<div class="bf-tac">
+				<el-button type="primary" plain @click="showInDoor('CAR_WEIGHT')">存皮</el-button>
+				<el-button type="success" plain @click="outDoor('OUT_WEIGHT')">出站</el-button>
+			</div>
+			<el-dialog title="存皮提示" :visible.sync="dialogInDoorVisible" width="400">
+				<el-form label-width="100px" @submit.native.prevent="">
+					<el-form-item label="皮&emsp;&emsp;重">
+						<el-input v-model="piWeight"></el-input>
+					</el-form-item>
+				</el-form>
+				<div slot="footer" class="dialog-footer">
+					<el-button @click="dialogInDoorVisible = false">取 消</el-button>
+					<el-button type="primary" @click="inDoor('CAR_WEIGHT')" :class="{'cunpi_confirm': true}">确 定</el-button>
+				</div>
+			</el-dialog>
+		</div>
+	</div>
+	<script src="/js/vue.js"></script>
+	<script src="/js/element-ui/element-ui.js"></script>
+	<script src="/js/axios.min.js"></script>
+	<script src="/js/lodash.min.js"></script>
+	<script src="/js/tasks/LodopFuncs.js"></script>
+	<script>
+	var LODOP;
+	var apibase = ''
+	Vue.component('show-input', {
+		props: ['label', 'value'],
+		template: `<div class="show-input">
+				<label class="show-input-label">{{label}}</label>
+				<div class="show-input-value">{{value}}</div>
+				</div>`
+	});
+	// 监听回车键
+	function pressEnter(e) {
+		console.log('e.code::', e.code);
+		if (e.code.toLocaleLowerCase().indexOf('enter') !== -1 && (document.querySelector('.el-select-dropdown').style.display !== 'none')) {
+			// console.log('点击 enter', document.querySelector('.el-select-dropdown').style.display)
+			var click = new Event('click');
+			document.querySelector('.el-select-dropdown__item').dispatchEvent(click);
+			console.log('enter:: 查询车号信息');
+		}
+		if (e.code.toLocaleLowerCase().indexOf('enter') !== -1 && app.dialogInDoorVisible === true) {
+			// console.log('enter:: 存皮');
+			document.querySelector('.cunpi_confirm').dispatchEvent(new Event('click'));
+		}
+	}
+	document.body.addEventListener('keydown', pressEnter, false);
+	var app = new Vue({
+		el: "#app",
+		data: {
+			apis: {
+				getWeight: apibase + '/duties/doweight/getWeight/',
+				getTaskByCarNo: apibase + '/duties/doweight/taskInfo/',
+				inOutDoor: apibase + '/duties/doweight/doMethod/',
+				carlist: apibase + '/webapp/carlist',
+			},
+			hideloading: false,
+			bangNo: 'N', // 南北磅
+			trueBangNo: 'N', // 当前数据真实的磅号, 防止网络极端差的情况下数据延迟
+			weight: '0.00', // 磅上的重量
+			piWeight: '', // 点击皮重时,弹框中的临时(需要发送给后台的)皮重
+			curinfo: { // 当前车次信息
+				carNo: '', // 车号
+				receiver: '', // 收货单位
+				taskNumber: '', // 任务单号
+				remark: '', // 备注
+				taskName: '', // 工程名称
+				waterPart: '', // 工程部位
+				productKind: '', // 强度等级
+				waterMethod: '', // 浇筑方式
+				grossWeight: '', // 毛重
+				carWeight: '', // 皮重
+				netWeight: '', // 净重
+				carCnt: '', // 累计车次
+				ljfangliang: '', // 累计放量
+				equalFangliang: '', // 实际方量
+			},
+			carlist: [], // 车号列表
+			carlistOptions: [], // 筛选列表
+			dialogInDoorVisible: false, // 存皮提示
+		},
+		created: function () {
+			this.hideloading = true
+			var This = this
+			setInterval(function () {
+				This.getWeight()
+			}, 3000)
+			this.getCarList()
+		},
+		methods: {
+			getWeight: function () { // 实时获取重量
+				var This = this
+				axios({
+						method: 'get',
+						url: This.apis.getWeight + This.bangNo,
+					})
+					.then(function (res) {
+						// console.log(res);
+						if (res.data.code != 0) {
+							This.$message.error(res.data.msg);
+							return
+						}
+						let weight = res.data.weight
+						let trueBangNo = res.config.url.charAt(res.config.url.length - 1)
+						This.weight = weight
+						This.trueBangNo = trueBangNo
+					})
+					.catch(function (error) {
+						console.log(error);
+					});
+			},
+			clickBangBtn: function (bangNo) { // 点击磅
+				this.bangNo = bangNo
+				this.getWeight()
+			},
+			getTaskByCarNo: function () { // 获取车辆任务信息
+				var This = this
+				if (!This.curinfo.carNo) {
+					return
+				}
+				axios({
+						method: 'post',
+						url: This.apis.getTaskByCarNo + This.curinfo.carNo,
+					})
+					.then(function (res) {
+						// console.log(res);
+						if (res.data.code != 0) {
+							This.$message.error(res.data.msg);
+							return
+						}
+						if (!res.data.taskInfo.carNo) { // 没有任务,代表进站, 将磅读书->写入 curinfo.carWeight (皮重)
+							// var carNo = This.curinfo.carNo;
+							// var curWight = This.weight
+							// This.curinfo = {
+							// 	carNo: carNo,
+							// 	carWeight: curWight,
+							// };
+							// This.curinfo = taskInfo
+							let taskInfo = res.data.taskInfo
+							taskInfo.carNo = This.curinfo.carNo
+							This.curinfo = taskInfo
+							return
+						} else { // 有任务
+							let taskInfo = res.data.taskInfo
+							// taskInfo.grossWeight = This.weight
+							This.curinfo = taskInfo
+						}
+					})
+					.catch(function (error) {
+						console.log(error);
+					});
+			},
+			optionschange: function (isshow) {
+				console.log(isshow)
+				if (isshow || !this.curinfo.carNo) return
+				this.getTaskByCarNo()
+			},
+			showInDoor: function (type) { // 存皮 弹出确定框
+				var This = this
+				var carNo = this.curinfo.carNo
+				this.piWeight = this.weight
+				this.dialogInDoorVisible = true
+			},
+			inDoor: function (type) {
+				this.inOutDoor(type, this.piWeight)
+				this.dialogInDoorVisible = false
+			},
+			outDoor: function (type) { // 出站计算净重
+				this.inOutDoor(type, this.weight)
+			},
+			inOutDoor: function (type, weight) { // 进出站
+				var This = this
+				var carNo = this.curinfo.carNo
+				// var weight // 进站: this.curinfo.carWeight  出站: this.curinfo.grossWeight
+				// if (type === 'CAR_WEIGHT') { // 进站存皮
+				// 	weight = this.curinfo.carWeight
+				// } else if (type === 'OUT_WEIGHT') { // 出站称毛重,后计算净重,然后打印任务单
+				// 	weight = this.weight
+				// }
+				if (!carNo) {
+					this.$message.error('请选择车号');
+					return
+				}
+				if (parseFloat(weight) <= 0) {
+					this.$message.error('重量不能为0');
+					return
+				}
+				const loading = this.$loading()
+				axios({
+						method: 'post',
+						url: This.apis.inOutDoor + carNo + '/' + type + '/' + weight,
+					})
+					.then(function (res) {
+						// console.log(res);
+						loading.close();
+						if (res.data.code != 0) {
+							This.$message.error(res.data.msg);
+							return
+						}
+						This.$message({ message: res.data.msg, showClose: true, type: 'success', duration: 1500 });
+						if (type === 'CAR_WEIGHT') {
+							This.curinfo.carWeight = weight // 进站存皮
+						}
+						if (type === 'OUT_WEIGHT') { // 出站成功打印任务单
+							This.curinfo.grossWeight = weight
+							This.curinfo.netWeight = (This.curinfo.grossWeight - This.curinfo.carWeight).toFixed(2)
+							var printData = res.data.printDomain
+							This.printOrder(printData)
+						}
+					})
+					.catch(function (error) {
+						console.log(error);
+						loading.close();
+					});
+
+			},
+			getCarList: function () { // 获取车辆信息
+				var This = this
+				axios({
+						method: 'post',
+						url: This.apis.carlist,
+					})
+					.then(function (res) {
+						// console.log(res);
+						if (res.data.code != 0) {
+							This.$message.error(res.data.msg);
+							return
+						}
+						// This.$message.success(res.data.msg);
+						var carlist = res.data.list.map(function (item) {
+							return {
+								value: item.carNo,
+								label: String(item.carNo),
+							}
+						})
+						This.carlist = carlist
+						This.carlistOptions = carlist
+					})
+					.catch(function (error) {
+						console.log(error);
+					});
+			},
+			filtermethod: function (val) { // 筛选
+				this.curinfo.carNo = val;
+				if (val) {
+					var fileterOptions = this.carlist.filter(function (item) {
+						return item.label.indexOf(val) === 0
+					})
+					this.carlistOptions = fileterOptions.sort(function (o1, o2) {
+						return o1.value - o2.value;
+					})
+				} else {
+					this.carlistOptions = this.carlist
+				}
+			},
+			printOrder: function (order) { // 打印任务单
+				// order
+				var styles = '<!DOCTYPE html><head><meta charset="UTF-8"> <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"><style>.order {width: 100%;margin: 0 auto;background: transparent;font-size: 13px;width: 190mm;}.title {text-align: center;font-weight: bold;font-size: 17px;padding-top: 8px;}.table {border: 1px solid #000000;width: 100%;background-color: transparent;border-spacing: 0;border-collapse: collapse;}.table td {border: 1px solid #000000;padding: 2px;line-height: 1.42857143;vertical-align: middle;text-align: center;}.subtitle {width: 100%;margin-bottom: 4px;}.subtitle td {/*border: 0;*/width: 50%;}.subtitle-time {text-align: right;}.foot {text-align: center;}.foot p {margin: 4px auto 0;}.foot-lian span {padding: 0 50px;}.shouhuo {vertical-align: middle;}.test-box {text-align: center;}.test-box a {display: inline-block;padding: 10px 20px;border: 1px solid #000;margin: 10px 50px;}.row {display: flex;list-style: none;padding: 0;margin: 0;text-align: center;}.row li {display: inline-block;border: 1px solid #000000;border-right-width: 0;border-bottom-width: 0;padding: 7px 0;}.label1 {text-align: center;width: 10%;}.value1 {width: 15%;/* flex: 1; */}.value4 {width: 40%;}.row1 li.b-r-n {border-right-width: 1px;}.rowb {display: flex;overflow: hidden;border-bottom: 1px solid #000;}.rowb .col1 {width: 74.8%;}.rowb .col2 {width: 25.2%;}.rowb .label2 {width: 13.2%;text-align: center;}.rowb .value2 {width: 19.84%;}.rowb .label3 {width: 20%;justify-content: center;}.rowb .value3 {width: 80%;}.row3 {/* height: 100%; */}.row3 li {display: flex;align-items: center;}</style></head>';
+				var orderHtml = `<div class="order">
+					  <div id="title">
+						<div class="title">混凝土发货单</div>
+					  </div>
+					  <div id="subtitle">
+						<table class="subtitle">
+						  <tr>
+							<td>序号：${order.orderNo}</td>
+							<td class="subtitle-time">时间：${order.dateTime}</td>
+						  </tr>
+						</table>
+					  </div>
+					  <div class="tableul">
+						<ul class="row row1">
+						  <li class="label1">收货单位</li>
+						  <li class="value4">${order.receivingCompany}</li>
+						  <li class="label1">电话</li>
+						  <li class="value1">${order.telephone}</li>
+						  <li class="label1">到达时间</li>
+						  <li class="b-r-n value1"></li>
+						</ul>
+						<ul class="row row1">
+						  <li class="label1">工程名称</li>
+						  <li class="value4">${order.engineeringName}</li>
+						  <li class="label1">强度等级</li>
+						  <li class="value1">${order.strengthGrade}</li>
+						  <li class="label1">单价</li>
+						  <li class="b-r-n value1">${order.unitPrice ? order.unitPrice : ''}</li>
+						</ul>
+						<ul class="row row1">
+						  <li class="label1">浇筑部位</li>
+						  <li class="value4">${order.pouringSite}</li>
+						  <li class="label1">浇筑方式</li>
+						  <li class="value1">${order.pouringMethod}</li>
+						  <li class="label1">备注</li>
+						  <li class="b-r-n value1">${order.remarks}</li>
+						</ul>
+						<div class="rowb">
+						  <div class="col col1">
+							<ul class="row row1 row2">
+							  <li class="label2">毛重</li>
+							  <li class="value2">${order.grossWeight}</li>
+							  <li class="label2">皮重</li>
+							  <li class="value2">${order.tare}</li>
+							  <li class="label2">净重</li>
+							  <li class="value2">${order.stdWeight}</li>
+							</ul>
+							<ul class="row row1 row2">
+							  <li class="label2">车号</li>
+							  <li class="value2">${order.licenseNumber}</li>
+							  <li class="label2">车次</li>
+							  <li class="value2">${order.trainNumber}</li>
+							  <li class="label2">方量</li>
+							  <li class="value2">${order.squareQuantity}</li>
+							</ul>
+							<ul class="row row1 row2">
+							  <li class="label2">业务经理</li>
+							  <li class="value2">${order.serviceManager}</li>
+							  <li class="label2">电话</li>
+							  <li class="value2">${order.managerTelephone}</li>
+							  <li class="label2">累计方量</li>
+							  <li class="value2">${order.accumulatedVolume}</li>
+							</ul>
+						  </div>
+						  <ul class="col col2 row row1 row3">
+							<li class="label3">收<br>货<br>人</li>
+							<li class="value3 b-r-n"></li>
+						  </ul>
+						</div>
+					  </div>
+					  <div id="footer">
+						<div class="foot">
+						  <p class="foot-lian"><span>白联：存根╱记账</span> <span>粉联：工地</span> <span>黄联：车辆</span></p>
+						  <p>说明：未经本公司许可不得在混凝土中加水或其他材料，否则本公司对此引起的质量问题概不负责</p>
+						</div>
+					  </div>
+					</div>`;
+				var domStr = styles + "<body>" + orderHtml + "</body>";
+				LODOP = getLodop();
+				LODOP.SET_PRINT_PAGESIZE(1, '241mm', '93mm', 'CreateCustomPage');
+				LODOP.ADD_PRINT_HTM("2%", "7mm", "200mm", "96%", domStr);
+				LODOP.PRINT();
+				// LODOP.PREVIEW();
+				// LODOP.PRINT_DESIGN();
+			},
+		},
+		computed: {
+			formatTrueBangNo: function () { // 格式化 南北磅
+				var txts = {
+					N: '北磅',
+					S: '南磅'
+				}
+				return txts[this.trueBangNo]
+			},
+			computedNetWeight: function () { // 计算净重
+				return (this.weight - this.curinfo.carWeight).toFixed(2)
+			}
+		},
+		watch: {
+			// 'curinfo.carNo': function (val, oldVal) {
+			//   console.log(val, oldVal, this.carlistOptions)
+			// }
+		}
+
+
+	})
+	</script>
+</body>
+
+</html>

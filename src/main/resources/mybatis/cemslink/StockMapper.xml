@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.cemslink.stock.mapper.StockMapper">
+    
+    <resultMap type="Stock" id="StockResult">
+        <result property="sID"    column="SID"    />
+        <result property="lineID"    column="LineID"    />
+        <result property="stockTime"    column="StockTime"    />
+        <result property="kuChun1"    column="KuChun1"    />
+        <result property="kuChun2"    column="KuChun2"    />
+        <result property="kuChun3"    column="KuChun3"    />
+        <result property="kuChun4"    column="KuChun4"    />
+        <result property="kuChun5"    column="KuChun5"    />
+        <result property="kuChun6"    column="KuChun6"    />
+        <result property="kuChun7"    column="KuChun7"    />
+        <result property="kuChun8"    column="KuChun8"    />
+        <result property="kuChun9"    column="KuChun9"    />
+        <result property="kuChun10"    column="KuChun10"    />
+        <result property="kuChun11"    column="KuChun11"    />
+        <result property="kuChun12"    column="KuChun12"    />
+        <result property="kuChun13"    column="KuChun13"    />
+        <result property="kuChun14"    column="KuChun14"    />
+        <result property="kuChun15"    column="KuChun15"    />
+        <result property="kuChun16"    column="KuChun16"    />
+    </resultMap>
+	
+	<sql id="selectStockVo">
+        select SID, LineID, StockTime, KuChun1, KuChun2, KuChun3, KuChun4, KuChun5, KuChun6, KuChun7, KuChun8, KuChun9, KuChun10, KuChun11, KuChun12, KuChun13, KuChun14, KuChun15, KuChun16 from stock
+    </sql>
+	
+    <select id="selectStockList" parameterType="Stock" resultMap="StockResult">
+        <include refid="selectStockVo"/>
+        <where>  
+            <if test="sID != null "> and SID = #{sID}</if>
+             <if test="lineID != null "> and LineID = #{lineID}</if>
+             <if test="stockTime != null "> and StockTime = #{stockTime}</if>
+             <if test="kuChun1 != null "> and KuChun1 = #{kuChun1}</if>
+             <if test="kuChun2 != null "> and KuChun2 = #{kuChun2}</if>
+             <if test="kuChun3 != null "> and KuChun3 = #{kuChun3}</if>
+             <if test="kuChun4 != null "> and KuChun4 = #{kuChun4}</if>
+             <if test="kuChun5 != null "> and KuChun5 = #{kuChun5}</if>
+             <if test="kuChun6 != null "> and KuChun6 = #{kuChun6}</if>
+             <if test="kuChun7 != null "> and KuChun7 = #{kuChun7}</if>
+             <if test="kuChun8 != null "> and KuChun8 = #{kuChun8}</if>
+             <if test="kuChun9 != null "> and KuChun9 = #{kuChun9}</if>
+             <if test="kuChun10 != null "> and KuChun10 = #{kuChun10}</if>
+             <if test="kuChun11 != null "> and KuChun11 = #{kuChun11}</if>
+             <if test="kuChun12 != null "> and KuChun12 = #{kuChun12}</if>
+             <if test="kuChun13 != null "> and KuChun13 = #{kuChun13}</if>
+             <if test="kuChun14 != null "> and KuChun14 = #{kuChun14}</if>
+             <if test="kuChun15 != null "> and KuChun15 = #{kuChun15}</if>
+             <if test="kuChun16 != null "> and KuChun16 = #{kuChun16}</if>
+         </where>
+    </select>
+    
+    <select id="selectStockById" parameterType="Long" resultMap="StockResult">
+        <include refid="selectStockVo"/>
+        where SID = #{sID}
+    </select>
+        
+    <insert id="insertStock" parameterType="Stock" useGeneratedKeys="true" keyProperty="sID">
+        insert into stock
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="lineID != null  ">LineID,</if>
+			<if test="stockTime != null  ">StockTime,</if>
+			<if test="kuChun1 != null  ">KuChun1,</if>
+			<if test="kuChun2 != null  ">KuChun2,</if>
+			<if test="kuChun3 != null  ">KuChun3,</if>
+			<if test="kuChun4 != null  ">KuChun4,</if>
+			<if test="kuChun5 != null  ">KuChun5,</if>
+			<if test="kuChun6 != null  ">KuChun6,</if>
+			<if test="kuChun7 != null  ">KuChun7,</if>
+			<if test="kuChun8 != null  ">KuChun8,</if>
+			<if test="kuChun9 != null  ">KuChun9,</if>
+			<if test="kuChun10 != null  ">KuChun10,</if>
+			<if test="kuChun11 != null  ">KuChun11,</if>
+			<if test="kuChun12 != null  ">KuChun12,</if>
+			<if test="kuChun13 != null  ">KuChun13,</if>
+			<if test="kuChun14 != null  ">KuChun14,</if>
+			<if test="kuChun15 != null  ">KuChun15,</if>
+			<if test="kuChun16 != null  ">KuChun16,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="lineID != null  ">#{lineID},</if>
+			<if test="stockTime != null  ">#{stockTime},</if>
+			<if test="kuChun1 != null  ">#{kuChun1},</if>
+			<if test="kuChun2 != null  ">#{kuChun2},</if>
+			<if test="kuChun3 != null  ">#{kuChun3},</if>
+			<if test="kuChun4 != null  ">#{kuChun4},</if>
+			<if test="kuChun5 != null  ">#{kuChun5},</if>
+			<if test="kuChun6 != null  ">#{kuChun6},</if>
+			<if test="kuChun7 != null  ">#{kuChun7},</if>
+			<if test="kuChun8 != null  ">#{kuChun8},</if>
+			<if test="kuChun9 != null  ">#{kuChun9},</if>
+			<if test="kuChun10 != null  ">#{kuChun10},</if>
+			<if test="kuChun11 != null  ">#{kuChun11},</if>
+			<if test="kuChun12 != null  ">#{kuChun12},</if>
+			<if test="kuChun13 != null  ">#{kuChun13},</if>
+			<if test="kuChun14 != null  ">#{kuChun14},</if>
+			<if test="kuChun15 != null  ">#{kuChun15},</if>
+			<if test="kuChun16 != null  ">#{kuChun16},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateStock" parameterType="Stock">
+        update stock
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="lineID != null  ">LineID = #{lineID},</if>
+            <if test="stockTime != null  ">StockTime = #{stockTime},</if>
+            <if test="kuChun1 != null  ">KuChun1 = #{kuChun1},</if>
+            <if test="kuChun2 != null  ">KuChun2 = #{kuChun2},</if>
+            <if test="kuChun3 != null  ">KuChun3 = #{kuChun3},</if>
+            <if test="kuChun4 != null  ">KuChun4 = #{kuChun4},</if>
+            <if test="kuChun5 != null  ">KuChun5 = #{kuChun5},</if>
+            <if test="kuChun6 != null  ">KuChun6 = #{kuChun6},</if>
+            <if test="kuChun7 != null  ">KuChun7 = #{kuChun7},</if>
+            <if test="kuChun8 != null  ">KuChun8 = #{kuChun8},</if>
+            <if test="kuChun9 != null  ">KuChun9 = #{kuChun9},</if>
+            <if test="kuChun10 != null  ">KuChun10 = #{kuChun10},</if>
+            <if test="kuChun11 != null  ">KuChun11 = #{kuChun11},</if>
+            <if test="kuChun12 != null  ">KuChun12 = #{kuChun12},</if>
+            <if test="kuChun13 != null  ">KuChun13 = #{kuChun13},</if>
+            <if test="kuChun14 != null  ">KuChun14 = #{kuChun14},</if>
+            <if test="kuChun15 != null  ">KuChun15 = #{kuChun15},</if>
+            <if test="kuChun16 != null  ">KuChun16 = #{kuChun16},</if>
+        </trim>
+        where SID = #{sID}
+    </update>
+
+	<delete id="deleteStockById" parameterType="Long">
+        delete from stock where SID = #{sID}
+    </delete>
+	
+    <delete id="deleteStockByIds" parameterType="String">
+        delete from stock where SID in 
+        <foreach item="sID" collection="array" open="(" separator="," close=")">
+            #{sID}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('发货报表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								砼强度：<select name="productKind">
+								<option value="">所有</option>
+								<option th:each="com : ${comList}" th:text="${com.strengthNo}" th:value="${com.strengthNo}"></option>
+							</select>
+							</li>
+							<li>
+								工程名称：
+								<select name="taskId">
+									<option value="">所有</option>
+									<option th:each="t : ${taskList}" th:text="${t.name}" th:value="${t.id}"></option>
+								</select>
+							</li>
+
+							<li class="select-time">
+								<label>时间区间： </label>
+								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+								<span>-</span>
+								<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+							</li>
+
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="stock:receiveStock:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var prefix = ctx + "stock/receivereport";
+        $(function() {
+            var options = {
+                url: prefix + '/sendreportlist',
+                exportUrl: prefix + "/sendReportExport",
+                modalName: "收货数据",
+                pagination: false,
+                queryParams: queryParams,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'taskName',
+					title : '工程名称',
+					sortable: true
+				},
+				{
+					field : 'productKind',
+					title : '砼标号',
+					sortable: true
+				},
+				{
+					field : 'totalCarWeight',
+					title : '总皮重(t)',
+					sortable: true
+				},
+				{
+					field : 'totalGrossWeight',
+					title : '总毛重(t)',
+					sortable: true
+				},
+				{
+					field : 'totalNetWeight',
+					title : '总净重(t)',
+					sortable: true
+				},
+				{
+					field : 'totalFangLiang',
+					title : '总方量(m³)',
+					sortable: true
+				},
+				{
+					field : 'totalAmount',
+					title : '总价(元)',
+					sortable: true
+				}]
+            };
+            $.table.init(options);
+        });
+        function queryParams(params) {
+            var search = $.table.queryParams(params);
+            search.notCamelCase = true;
+            return search;
+        }
+        $.table.responseHandler = function(res) {
+            if (res.code == 0) {
+                if ($.common.isNotEmpty($.table._option.sidePagination) && $.table._option.sidePagination == 'client') {
+                    return res.rows;
+                } else {
+                    if ($.common.isNotEmpty($.table._option.rememberSelected) && $.table._option.rememberSelected) {
+                        var column = $.common.isEmpty($.table._option.uniqueId) ? $.table._option.columns[1].field : $.table._option.uniqueId;
+                        $.each(res.rows, function(i, row) {
+                            row.state = $.inArray(row[column], selectionIds) !== -1;
+                        })
+                    }
+                    return { rows: res.reportList, total: 10000 };
+                }
+            } else {
+                $.modal.alertWarning(res.msg);
+                return { rows: [], total: 0 };
+            }
+        }
+    </script>
+</body>
+</html>

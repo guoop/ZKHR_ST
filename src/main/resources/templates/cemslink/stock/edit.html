@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改库存数据')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-stock-edit" th:object="${stock}">
+            <input id="sID" name="sID" th:field="*{sID}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">ERP运输单号：</label>
+				<div class="col-sm-8">
+					<input id="lineID" name="lineID" th:field="*{lineID}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">：</label>
+				<div class="col-sm-8">
+					<input id="stockTime" name="stockTime" th:field="*{stockTime}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun1：</label>
+				<div class="col-sm-8">
+					<input id="kuChun1" name="kuChun1" th:field="*{kuChun1}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun2：</label>
+				<div class="col-sm-8">
+					<input id="kuChun2" name="kuChun2" th:field="*{kuChun2}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun3：</label>
+				<div class="col-sm-8">
+					<input id="kuChun3" name="kuChun3" th:field="*{kuChun3}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun4：</label>
+				<div class="col-sm-8">
+					<input id="kuChun4" name="kuChun4" th:field="*{kuChun4}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun5：</label>
+				<div class="col-sm-8">
+					<input id="kuChun5" name="kuChun5" th:field="*{kuChun5}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun6：</label>
+				<div class="col-sm-8">
+					<input id="kuChun6" name="kuChun6" th:field="*{kuChun6}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun7：</label>
+				<div class="col-sm-8">
+					<input id="kuChun7" name="kuChun7" th:field="*{kuChun7}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun8：</label>
+				<div class="col-sm-8">
+					<input id="kuChun8" name="kuChun8" th:field="*{kuChun8}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun9：</label>
+				<div class="col-sm-8">
+					<input id="kuChun9" name="kuChun9" th:field="*{kuChun9}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun10：</label>
+				<div class="col-sm-8">
+					<input id="kuChun10" name="kuChun10" th:field="*{kuChun10}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun11：</label>
+				<div class="col-sm-8">
+					<input id="kuChun11" name="kuChun11" th:field="*{kuChun11}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun12：</label>
+				<div class="col-sm-8">
+					<input id="kuChun12" name="kuChun12" th:field="*{kuChun12}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun13：</label>
+				<div class="col-sm-8">
+					<input id="kuChun13" name="kuChun13" th:field="*{kuChun13}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun14：</label>
+				<div class="col-sm-8">
+					<input id="kuChun14" name="kuChun14" th:field="*{kuChun14}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun15：</label>
+				<div class="col-sm-8">
+					<input id="kuChun15" name="kuChun15" th:field="*{kuChun15}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">KuChun16：</label>
+				<div class="col-sm-8">
+					<input id="kuChun16" name="kuChun16" th:field="*{kuChun16}" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "cemslink/stock";
+		$("#form-stock-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-stock-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

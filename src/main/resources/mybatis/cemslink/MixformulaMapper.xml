@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.cemslink.mixformula.mapper.MixformulaMapper">
+    
+    <resultMap type="Mixformula" id="MixformulaResult">
+        <result property="sID"    column="SID"    />
+        <result property="mixNumber"    column="MixNumber"    />
+        <result property="isMortar"    column="IsMortar"    />
+        <result property="concreteLabel"    column="ConcreteLabel"    />
+        <result property="pouringWay"    column="PouringWay"    />
+        <result property="slump"    column="Slump"    />
+        <result property="productLine"    column="ProductLine"    />
+        <result property="mixQnty"    column="MixQnty"    />
+        <result property="mixTime"    column="MixTime"    />
+        <result property="cement1Dosage"    column="Cement1Dosage"    />
+        <result property="cement2Dosage"    column="Cement2Dosage"    />
+        <result property="cement3Dosage"    column="Cement3Dosage"    />
+        <result property="cement4Dosage"    column="Cement4Dosage"    />
+        <result property="cement5Dosage"    column="Cement5Dosage"    />
+        <result property="mix1Dosage"    column="Mix1Dosage"    />
+        <result property="mix2Dosage"    column="Mix2Dosage"    />
+        <result property="mix3Dosage"    column="Mix3Dosage"    />
+        <result property="mix4Dosage"    column="Mix4Dosage"    />
+        <result property="mix5Dosage"    column="Mix5Dosage"    />
+        <result property="aG1Dosage"    column="AG1Dosage"    />
+        <result property="aG2Dosage"    column="AG2Dosage"    />
+        <result property="aG3Dosage"    column="AG3Dosage"    />
+        <result property="aG4Dosage"    column="AG4Dosage"    />
+        <result property="aG5Dosage"    column="AG5Dosage"    />
+        <result property="aG6Dosage"    column="AG6Dosage"    />
+        <result property="aG7Dosage"    column="AG7Dosage"    />
+        <result property="aG8Dosage"    column="AG8Dosage"    />
+        <result property="additive1Dosage"    column="Additive1Dosage"    />
+        <result property="additive2Dosage"    column="Additive2Dosage"    />
+        <result property="additive3Dosage"    column="Additive3Dosage"    />
+        <result property="additive4Dosage"    column="Additive4Dosage"    />
+        <result property="water1Dosage"    column="Water1Dosage"    />
+        <result property="water2Dosage"    column="Water2Dosage"    />
+        <result property="water3Dosage"    column="Water3Dosage"    />
+        <result property="type"    column="Type"    />
+        <result property="syncStatus"    column="SyncStatus"    />
+        <result property="syncStatus2"    column="SyncStatus2"    />
+        <result property="createBy"    column="createBy"    />
+        <result property="createTime"    column="createTime"    />
+        <result property="updateBy"    column="updateBy"    />
+        <result property="updateTime"    column="updateTime"    />
+    </resultMap>
+	
+	<sql id="selectMixformulaVo">
+        select SID, MixNumber, IsMortar, ConcreteLabel, PouringWay, Slump, ProductLine, MixQnty, MixTime, Cement1Dosage, Cement2Dosage, Cement3Dosage, Cement4Dosage, Cement5Dosage, Mix1Dosage, Mix2Dosage, Mix3Dosage, Mix4Dosage, Mix5Dosage, AG1Dosage, AG2Dosage, AG3Dosage, AG4Dosage, AG5Dosage, AG6Dosage, AG7Dosage, AG8Dosage, Additive1Dosage, Additive2Dosage, Additive3Dosage, Additive4Dosage, Water1Dosage, Water2Dosage, Water3Dosage, Type, SyncStatus, SyncStatus2,createBy,createTime,updateBy,updateTime from mixformula
+    </sql>
+	
+    <select id="selectMixformulaList" parameterType="Mixformula" resultMap="MixformulaResult">
+        <include refid="selectMixformulaVo"/>
+        <where>  
+            <if test="sID != null "> and SID = #{sID}</if>
+             <if test="mixNumber != null  and mixNumber != '' "> and MixNumber = #{mixNumber}</if>
+             <if test="isMortar != null "> and IsMortar = #{isMortar}</if>
+             <if test="concreteLabel != null  and concreteLabel != '' "> and ConcreteLabel = #{concreteLabel}</if>
+             <if test="pouringWay != null  and pouringWay != '' "> and PouringWay = #{pouringWay}</if>
+             <if test="slump != null  and slump != '' "> and Slump = #{slump}</if>
+             <if test="productLine != null "> and ProductLine = #{productLine}</if>
+             <if test="mixQnty != null "> and MixQnty = #{mixQnty}</if>
+             <if test="mixTime != null "> and MixTime = #{mixTime}</if>
+             <if test="cement1Dosage != null "> and Cement1Dosage = #{cement1Dosage}</if>
+             <if test="cement2Dosage != null "> and Cement2Dosage = #{cement2Dosage}</if>
+             <if test="cement3Dosage != null "> and Cement3Dosage = #{cement3Dosage}</if>
+             <if test="cement4Dosage != null "> and Cement4Dosage = #{cement4Dosage}</if>
+             <if test="cement5Dosage != null "> and Cement5Dosage = #{cement5Dosage}</if>
+             <if test="mix1Dosage != null "> and Mix1Dosage = #{mix1Dosage}</if>
+             <if test="mix2Dosage != null "> and Mix2Dosage = #{mix2Dosage}</if>
+             <if test="mix3Dosage != null "> and Mix3Dosage = #{mix3Dosage}</if>
+             <if test="mix4Dosage != null "> and Mix4Dosage = #{mix4Dosage}</if>
+             <if test="mix5Dosage != null "> and Mix5Dosage = #{mix5Dosage}</if>
+             <if test="aG1Dosage != null "> and AG1Dosage = #{aG1Dosage}</if>
+             <if test="aG2Dosage != null "> and AG2Dosage = #{aG2Dosage}</if>
+             <if test="aG3Dosage != null "> and AG3Dosage = #{aG3Dosage}</if>
+             <if test="aG4Dosage != null "> and AG4Dosage = #{aG4Dosage}</if>
+             <if test="aG5Dosage != null "> and AG5Dosage = #{aG5Dosage}</if>
+             <if test="aG6Dosage != null "> and AG6Dosage = #{aG6Dosage}</if>
+             <if test="aG7Dosage != null "> and AG7Dosage = #{aG7Dosage}</if>
+             <if test="aG8Dosage != null "> and AG8Dosage = #{aG8Dosage}</if>
+             <if test="additive1Dosage != null "> and Additive1Dosage = #{additive1Dosage}</if>
+             <if test="additive2Dosage != null "> and Additive2Dosage = #{additive2Dosage}</if>
+             <if test="additive3Dosage != null "> and Additive3Dosage = #{additive3Dosage}</if>
+             <if test="additive4Dosage != null "> and Additive4Dosage = #{additive4Dosage}</if>
+             <if test="water1Dosage != null "> and Water1Dosage = #{water1Dosage}</if>
+             <if test="water2Dosage != null "> and Water2Dosage = #{water2Dosage}</if>
+             <if test="water3Dosage != null "> and Water3Dosage = #{water3Dosage}</if>
+             <if test="type != null "> and Type = #{type}</if>
+             <if test="syncStatus != null "> and SyncStatus = #{syncStatus}</if>
+             <if test="syncStatus2 != null "> and SyncStatus2 = #{syncStatus2}</if>
+             <if test="createBy != null "> and createBy = #{createBy}</if>
+             <if test="updateBy != null "> and updateBy = #{updateBy}</if>
+         </where>
+    </select>
+
+    <select id="selectDistinctList" resultMap="MixformulaResult">
+        select distinct mixNumber,ConcreteLabel from mixformula where syncStatus=1 or syncStatus2 = 1
+    </select>
+    
+    <select id="selectMixformulaById" parameterType="Long" resultMap="MixformulaResult">
+        <include refid="selectMixformulaVo"/>
+        where SID = #{sID}
+    </select>
+        
+    <insert id="insertMixformula" parameterType="Mixformula" useGeneratedKeys="true" keyProperty="sID">
+        insert into mixformula
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="mixNumber != null  and mixNumber != ''  ">MixNumber,</if>
+			<if test="isMortar != null  ">IsMortar,</if>
+			<if test="concreteLabel != null  and concreteLabel != ''  ">ConcreteLabel,</if>
+			<if test="pouringWay != null  and pouringWay != ''  ">PouringWay,</if>
+			<if test="slump != null  and slump != ''  ">Slump,</if>
+			<if test="productLine != null  ">ProductLine,</if>
+			<if test="mixQnty != null  ">MixQnty,</if>
+			<if test="mixTime != null  ">MixTime,</if>
+			<if test="cement1Dosage != null  ">Cement1Dosage,</if>
+			<if test="cement2Dosage != null  ">Cement2Dosage,</if>
+			<if test="cement3Dosage != null  ">Cement3Dosage,</if>
+			<if test="cement4Dosage != null  ">Cement4Dosage,</if>
+			<if test="cement5Dosage != null  ">Cement5Dosage,</if>
+			<if test="mix1Dosage != null  ">Mix1Dosage,</if>
+			<if test="mix2Dosage != null  ">Mix2Dosage,</if>
+			<if test="mix3Dosage != null  ">Mix3Dosage,</if>
+			<if test="mix4Dosage != null  ">Mix4Dosage,</if>
+			<if test="mix5Dosage != null  ">Mix5Dosage,</if>
+			<if test="aG1Dosage != null  ">AG1Dosage,</if>
+			<if test="aG2Dosage != null  ">AG2Dosage,</if>
+			<if test="aG3Dosage != null  ">AG3Dosage,</if>
+			<if test="aG4Dosage != null  ">AG4Dosage,</if>
+			<if test="aG5Dosage != null  ">AG5Dosage,</if>
+			<if test="aG6Dosage != null  ">AG6Dosage,</if>
+			<if test="aG7Dosage != null  ">AG7Dosage,</if>
+			<if test="aG8Dosage != null  ">AG8Dosage,</if>
+			<if test="additive1Dosage != null  ">Additive1Dosage,</if>
+			<if test="additive2Dosage != null  ">Additive2Dosage,</if>
+			<if test="additive3Dosage != null  ">Additive3Dosage,</if>
+			<if test="additive4Dosage != null  ">Additive4Dosage,</if>
+			<if test="water1Dosage != null  ">Water1Dosage,</if>
+			<if test="water2Dosage != null  ">Water2Dosage,</if>
+			<if test="water3Dosage != null  ">Water3Dosage,</if>
+			<if test="type != null  ">Type,</if>
+			<if test="syncStatus != null  ">SyncStatus,</if>
+			<if test="syncStatus2 != null  ">SyncStatus2,</if>
+			<if test="createBy != null  ">createBy,</if>
+			<if test="updateBy != null  ">updateBy,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="mixNumber != null  and mixNumber != ''  ">#{mixNumber},</if>
+			<if test="isMortar != null  ">#{isMortar},</if>
+			<if test="concreteLabel != null  and concreteLabel != ''  ">#{concreteLabel},</if>
+			<if test="pouringWay != null  and pouringWay != ''  ">#{pouringWay},</if>
+			<if test="slump != null  and slump != ''  ">#{slump},</if>
+			<if test="productLine != null  ">#{productLine},</if>
+			<if test="mixQnty != null  ">#{mixQnty},</if>
+			<if test="mixTime != null  ">#{mixTime},</if>
+			<if test="cement1Dosage != null  ">#{cement1Dosage},</if>
+			<if test="cement2Dosage != null  ">#{cement2Dosage},</if>
+			<if test="cement3Dosage != null  ">#{cement3Dosage},</if>
+			<if test="cement4Dosage != null  ">#{cement4Dosage},</if>
+			<if test="cement5Dosage != null  ">#{cement5Dosage},</if>
+			<if test="mix1Dosage != null  ">#{mix1Dosage},</if>
+			<if test="mix2Dosage != null  ">#{mix2Dosage},</if>
+			<if test="mix3Dosage != null  ">#{mix3Dosage},</if>
+			<if test="mix4Dosage != null  ">#{mix4Dosage},</if>
+			<if test="mix5Dosage != null  ">#{mix5Dosage},</if>
+			<if test="aG1Dosage != null  ">#{aG1Dosage},</if>
+			<if test="aG2Dosage != null  ">#{aG2Dosage},</if>
+			<if test="aG3Dosage != null  ">#{aG3Dosage},</if>
+			<if test="aG4Dosage != null  ">#{aG4Dosage},</if>
+			<if test="aG5Dosage != null  ">#{aG5Dosage},</if>
+			<if test="aG6Dosage != null  ">#{aG6Dosage},</if>
+			<if test="aG7Dosage != null  ">#{aG7Dosage},</if>
+			<if test="aG8Dosage != null  ">#{aG8Dosage},</if>
+			<if test="additive1Dosage != null  ">#{additive1Dosage},</if>
+			<if test="additive2Dosage != null  ">#{additive2Dosage},</if>
+			<if test="additive3Dosage != null  ">#{additive3Dosage},</if>
+			<if test="additive4Dosage != null  ">#{additive4Dosage},</if>
+			<if test="water1Dosage != null  ">#{water1Dosage},</if>
+			<if test="water2Dosage != null  ">#{water2Dosage},</if>
+			<if test="water3Dosage != null  ">#{water3Dosage},</if>
+			<if test="type != null  ">#{type},</if>
+			<if test="syncStatus != null  ">#{syncStatus},</if>
+			<if test="syncStatus2 != null  ">#{syncStatus2},</if>
+			<if test="createBy != null  ">#{createBy},</if>
+			<if test="updateBy != null  ">#{updateBy},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateMixformula" parameterType="Mixformula">
+        update mixformula
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mixNumber != null  and mixNumber != ''  ">MixNumber = #{mixNumber},</if>
+            <if test="isMortar != null  ">IsMortar = #{isMortar},</if>
+            <if test="concreteLabel != null  and concreteLabel != ''  ">ConcreteLabel = #{concreteLabel},</if>
+            <if test="pouringWay != null  and pouringWay != ''  ">PouringWay = #{pouringWay},</if>
+            <if test="slump != null  and slump != ''  ">Slump = #{slump},</if>
+            <if test="productLine != null  ">ProductLine = #{productLine},</if>
+            <if test="mixQnty != null  ">MixQnty = #{mixQnty},</if>
+            <if test="mixTime != null  ">MixTime = #{mixTime},</if>
+            <if test="cement1Dosage != null  ">Cement1Dosage = #{cement1Dosage},</if>
+            <if test="cement2Dosage != null  ">Cement2Dosage = #{cement2Dosage},</if>
+            <if test="cement3Dosage != null  ">Cement3Dosage = #{cement3Dosage},</if>
+            <if test="cement4Dosage != null  ">Cement4Dosage = #{cement4Dosage},</if>
+            <if test="cement5Dosage != null  ">Cement5Dosage = #{cement5Dosage},</if>
+            <if test="mix1Dosage != null  ">Mix1Dosage = #{mix1Dosage},</if>
+            <if test="mix2Dosage != null  ">Mix2Dosage = #{mix2Dosage},</if>
+            <if test="mix3Dosage != null  ">Mix3Dosage = #{mix3Dosage},</if>
+            <if test="mix4Dosage != null  ">Mix4Dosage = #{mix4Dosage},</if>
+            <if test="mix5Dosage != null  ">Mix5Dosage = #{mix5Dosage},</if>
+            <if test="aG1Dosage != null  ">AG1Dosage = #{aG1Dosage},</if>
+            <if test="aG2Dosage != null  ">AG2Dosage = #{aG2Dosage},</if>
+            <if test="aG3Dosage != null  ">AG3Dosage = #{aG3Dosage},</if>
+            <if test="aG4Dosage != null  ">AG4Dosage = #{aG4Dosage},</if>
+            <if test="aG5Dosage != null  ">AG5Dosage = #{aG5Dosage},</if>
+            <if test="aG6Dosage != null  ">AG6Dosage = #{aG6Dosage},</if>
+            <if test="aG7Dosage != null  ">AG7Dosage = #{aG7Dosage},</if>
+            <if test="aG8Dosage != null  ">AG8Dosage = #{aG8Dosage},</if>
+            <if test="additive1Dosage != null  ">Additive1Dosage = #{additive1Dosage},</if>
+            <if test="additive2Dosage != null  ">Additive2Dosage = #{additive2Dosage},</if>
+            <if test="additive3Dosage != null  ">Additive3Dosage = #{additive3Dosage},</if>
+            <if test="additive4Dosage != null  ">Additive4Dosage = #{additive4Dosage},</if>
+            <if test="water1Dosage != null  ">Water1Dosage = #{water1Dosage},</if>
+            <if test="water2Dosage != null  ">Water2Dosage = #{water2Dosage},</if>
+            <if test="water3Dosage != null  ">Water3Dosage = #{water3Dosage},</if>
+            <if test="type != null  ">Type = #{type},</if>
+            <if test="syncStatus != null  ">SyncStatus = #{syncStatus},</if>
+            <if test="syncStatus2 != null  ">SyncStatus2 = #{syncStatus2},</if>
+            <if test="createBy != null  ">createBy = #{createBy},</if>
+            <if test="updateBy != null  ">updateBy = #{updateBy},</if>
+        </trim>
+        where SID = #{sID}
+    </update>
+
+	<delete id="deleteMixformulaById" parameterType="Long">
+        delete from mixformula where SID = #{sID}
+    </delete>
+	
+    <delete id="deleteMixformulaByIds" parameterType="String">
+        delete from mixformula where SID in 
+        <foreach item="sID" collection="array" open="(" separator="," close=")">
+            #{sID}
+        </foreach>
+    </delete>
+    
+</mapper>

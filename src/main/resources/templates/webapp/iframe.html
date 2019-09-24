@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>博力ERP</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="/css/webapp/manager.css"> -->
+  <link rel="stylesheet" href="/css/webapp/webapp.css">
+  <link rel="stylesheet" href="/css/webapp/vant.min.css">
+  <script src="/css/webapp/webapp.js"></script>
+  <style>
+    html,body,#app {
+    height: 100%;
+    padding: 0;
+  }
+  body{
+    overflow: hidden;
+  }
+  #app {
+    padding-bottom: 41px !important;
+  }
+  .if-box {
+    width: 100%;
+    height: 100%;
+  }
+  .usercenter {
+    position: fixed;
+    bottom: 0;
+    right: 9px;
+    font-size: 30px;
+    padding: 0;
+    line-height: 1;
+  }
+  .usercenter-btns{
+    padding: 10px 20px;
+    text-align: center;
+  }
+  .usercenter-btns .van-button{
+    margin: 5px;
+  }
+  .changepass{
+    text-align: center;
+    padding: 
+  }
+  .changepass-popup .van-popup--center{
+    width: 90%;
+    padding: 25px 5px;
+  }
+  .changepass-btns{
+    margin: 15px 0 0 0;
+  }
+  .changepass-btns-ok{
+    margin: 0 15px 0 0;
+  }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <template v-if="navs.length <= 1">
+      <div class="usercenter" @click="userCenterShowFun"><span class="glyphicon glyphicon-home"></span></div>
+    </template>
+    <van-popup v-model="userCenterShow">
+      <div class="usercenter-btns">
+        <van-button type="info" @click="reLogin">重新登录</van-button>
+        <van-button type="primary" @click="changePwdEv">修改密码</van-button>
+      </div>
+    </van-popup>
+    <iframe id="frame_box" @load="iframeLoaded" name="frame_box" :src="iframeUrl" frameborder="0" class="if-box"></iframe>
+    <ul class="com-nav">
+      <li v-for="(item, index) in navs" @click="clickNav" class="com-nav-li" :class="{'active': item.isActive }">
+        <a href="javascript:;" :data-href="item.url" :data-title="item.lable">{{item.lable}}</a>
+      </li>
+      <li class="com-nav-home" @click="userCenterShowFun"><span class="glyphicon glyphicon-home"></span></li>
+    </ul>
+    <div class="changepass-popup">
+      <van-popup v-model="changepassShow">
+        <div class="changepass">
+          <van-cell-group>
+            <van-field v-model="repwd.oldPassword" type="password" label="旧密码：" placeholder="请输入旧密码" required />
+          </van-cell-group>
+          <van-cell-group>
+            <van-field v-model="repwd.newPassword" type="password" label="新密码：" placeholder="请输入新密码" required />
+          </van-cell-group>
+          <van-cell-group>
+            <van-field v-model="repwd.confirmPassword" type="password" label="确认密码：" placeholder="请再次输入 新密码" required />
+          </van-cell-group>
+          <div class="changepass-btns">
+            <van-button type="primary" @click="resetPwd" class="changepass-btns-ok">确认</van-button>
+            <van-button type="info" @click="changepassShow = false">取消</van-button>
+          </div>
+        </div>
+      </van-popup>
+    </div>
+  </div>
+  <script src="/js/vue.js"></script>
+  <script src="/css/webapp/vant.min.js"></script>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/ajax/libs/layer/layer.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script>
+  var Vue = window.Vue;
+  var vant = window.vant;
+  var global_cache = '';
+  Vue.use(vant);
+  var frameBox = document.getElementById('frame_box');
+  // var pageName = JSON.parse(new URLSearchParams(document.location.search).get('auth'));
+  var authEncode = new URLSearchParams(document.location.search).get('auth');
+  var auths = JSON.parse(decodeURI(authEncode));
+
+  var navUrls = {
+    shaoshou: [{
+        lable: '下单',
+        url: '/webapp/manager',
+        isActive: true,
+      },
+      {
+        lable: '任务单管理',
+        url: '/webapp/manager-stop',
+        isActive: false,
+      },
+      // {
+      //   lable: '调度室',
+      //   url: '/duties/tasksDispather',
+      //   isActive: false,
+      // }
+    ],
+    shiyanshi: [{
+      lable: '任务单配比',
+      url: '/webapp/laboratory',
+      isActive: false,
+    }],
+    banzhuren: [{
+      lable: '配比单管理',
+      url: '/webapp/labomix',
+      isActive: false,
+    }],
+  };
+
+  if (com_devEnv === 'dev') {
+    navUrls = {
+      shaoshou: [{
+          lable: '下单',
+          url: './manager.html',
+          isActive: true,
+        },
+        {
+          lable: '任务单管理',
+          url: './manager-stop.html',
+          isActive: false,
+        }
+      ],
+      shiyanshi: [{
+        lable: '任务单配比',
+        url: './laboratory.html',
+        isActive: false,
+      }],
+      banzhuren: [{
+        lable: '配比单管理',
+        url: './labomix.html',
+        isActive: false,
+      }]
+    };
+  }
+  var navsArr = [];
+  for (var i = 0; i < auths.length; i++) {
+    console.log(auths[i]);
+    if (navUrls[auths[i]]) {
+      navsArr = navsArr.concat(navUrls[auths[i]])
+    }
+  }
+  console.log(navsArr);
+  var appData = {
+    navs: navsArr,
+    iframeUrl: '',
+    curUrl: '',
+    userCenterShow: false,
+    changepassShow: false,
+    repwd: {
+      oldPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    },
+  };
+
+  var app = new Vue({
+    el: '#app',
+    data: appData,
+    created: function() {
+      console.log('created', this.navs[0].url)
+      this.iframeUrl = this.navs[0].url
+      this.curUrl = this.navs[0].url
+    },
+    methods: {
+      clickNav: function(e) {
+        var href = e.target.dataset.href
+        if (this.curUrl === href) return;
+        document.title = e.target.dataset.title;
+        layer.load(1, { time: 3 * 1000 });
+        this.iframeUrl = href;
+        this.curUrl = href;
+        for (var i = 0; i < this.navs.length; i++) {
+          var ele = this.navs[i]
+          if (ele.url === href) {
+            console.log(ele.url, href)
+            ele.isActive = true;
+            continue;
+          }
+          ele.isActive = false;
+        }
+      },
+      iframeLoaded: function(e) {
+        ifm = e.currentTarget;
+        console.log('iframe 加载完成', e.currentTarget);
+        // if (ifm.src.indexOf('/duties/tasksDispather') > -1) { // 调度室页面不缩放
+        //   console.log('调度室页面');
+        //   let wd = 980;
+        //   let ht = 2000;
+        //   let x = document.getElementById('app').clientWidth / wd;
+        //   console.log(wd, document.getElementById('app').clientWidth, x)
+        //   ifm.style.width = wd + 'px';
+        //   ifm.style.height = ht + 'px';
+        //   ifm.style.transform = `scale(${x})`;
+        //   ifm.style.transformOrigin = '0 0';
+        // } else {
+        //   ifm.style = '';
+        // }
+        layer.closeAll('loading');
+      },
+      userCenterShowFun: function() {
+        this.userCenterShow = !this.userCenterShow;
+      },
+      reLogin: function() {
+        localStorage.removeItem('last_login_time');
+        localStorage.removeItem('last_login_page');
+        document.location.replace('/webapp/login');
+      },
+      changePwdEv: function() {
+        this.changepassShow = !this.changepassShow;
+      },
+      resetPwd: function() {
+        var This = this;
+        console.log(This.repwd);
+        if (This.repwd.newPassword.length < 6 || This.repwd.confirmPassword.length < 6) {
+          vant.Dialog({ message: '新密码长度必须大于6位数' });
+          return;
+        }
+        if (This.repwd.newPassword != This.repwd.confirmPassword) {
+          vant.Dialog({ message: '新密码两次输入不一致,请重新输入.' });
+          return;
+        }
+        var request = $.ajax({
+          url: "/system/user/profile/resetPwd",
+          type: "POST",
+          data: This.repwd,
+          dataType: "json"
+        });
+        request.done(function(data) {
+          if (data.code == 0) {
+            This.changePwdEv();
+            vant.Dialog.alert({
+              title: '提示',
+              message: '修改密码成功, 请使用新密码重新登录'
+            }).then(() => {
+              This.reLogin();
+            });
+          } else {
+            vant.Dialog({ message: '修改失败' });
+          }
+        });
+        request.fail(function(jqXHR, textStatus) {
+          layer.msg('网络失败');
+          console.warn('网络失败', jqXHR);
+        });
+      }
+    },
+    computed: {
+      // 计算属性的 getter
+      reversedMessage: function() {
+        // `this` 指向 vm 实例
+        return this.message.split('').reverse().join('')
+      }
+    }
+  });
+  // console.log('iframe::', app.$data);
+  // $('.usercenter').hide();
+  </script>
+</body>
+
+</html>

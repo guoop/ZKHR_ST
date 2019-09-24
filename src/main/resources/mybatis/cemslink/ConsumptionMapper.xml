@@ -1,0 +1,946 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.cemslink.consumption.mapper.ConsumptionMapper">
+    
+    <resultMap type="Consumption" id="ConsumptionResult">
+        <result property="sID"    column="SID"    />
+        <result property="productLine"    column="ProductLine"    />
+        <result property="erpProductNumber"    column="ErpProductNumber"    />
+        <result property="ipcProductNumber"    column="IpcProductNumber"    />
+        <result property="pieceNumber"    column="PieceNumber"    />
+        <result property="pieceOrder"    column="PieceOrder"    />
+        <result property="pieceAmount"    column="PieceAmount"    />
+        <result property="vehiAmount"    column="VehiAmount"    />
+        <result property="vehiNum"    column="VehiNum"    />
+        <result property="driver"    column="Driver"    />
+        <result property="productDateTime"    column="ProductDateTime"    />
+        <result property="taskNumber"    column="TaskNumber"    />
+        <result property="mixNumber"    column="MixNumber"    />
+        <result property="operator"    column="Operator"    />
+        <result property="concreteLabel"    column="ConcreteLabel"    />
+        <result property="isMortar"    column="IsMortar"    />
+        <result property="cementActualDosage1"    column="CementActualDosage1"    />
+        <result property="cementDesignDosage1"    column="CementDesignDosage1"    />
+        <result property="cementActualDosage2"    column="CementActualDosage2"    />
+        <result property="cementDesignDosage2"    column="CementDesignDosage2"    />
+        <result property="cementActualDosage3"    column="CementActualDosage3"    />
+        <result property="cementDesignDosage3"    column="CementDesignDosage3"    />
+        <result property="cementActualDosage4"    column="CementActualDosage4"    />
+        <result property="cementDesignDosage4"    column="CementDesignDosage4"    />
+        <result property="cementActualDosage5"    column="CementActualDosage5"    />
+        <result property="cementDesignDosage5"    column="CementDesignDosage5"    />
+        <result property="mixActualDosage1"    column="MixActualDosage1"    />
+        <result property="mixDesignDosage1"    column="MixDesignDosage1"    />
+        <result property="mixActualDosage2"    column="MixActualDosage2"    />
+        <result property="mixDesignDosage2"    column="MixDesignDosage2"    />
+        <result property="mixActualDosage3"    column="MixActualDosage3"    />
+        <result property="mixDesignDosage3"    column="MixDesignDosage3"    />
+        <result property="mixActualDosage4"    column="MixActualDosage4"    />
+        <result property="mixDesignDosage4"    column="MixDesignDosage4"    />
+        <result property="mixActualDosage5"    column="MixActualDosage5"    />
+        <result property="mixDesignDosage5"    column="MixDesignDosage5"    />
+        <result property="aGActualDosage1"    column="AGActualDosage1"    />
+        <result property="aGDesignDosage1"    column="AGDesignDosage1"    />
+        <result property="aGHSL1"    column="AGHSL1"    />
+        <result property="aGActualDosage2"    column="AGActualDosage2"    />
+        <result property="aGDesignDosage2"    column="AGDesignDosage2"    />
+        <result property="aGHSL2"    column="AGHSL2"    />
+        <result property="aGActualDosage3"    column="AGActualDosage3"    />
+        <result property="aGDesignDosage3"    column="AGDesignDosage3"    />
+        <result property="aGHSL3"    column="AGHSL3"    />
+        <result property="aGActualDosage4"    column="AGActualDosage4"    />
+        <result property="aGDesignDosage4"    column="AGDesignDosage4"    />
+        <result property="aGHSL4"    column="AGHSL4"    />
+        <result property="aGActualDosage5"    column="AGActualDosage5"    />
+        <result property="aGDesignDosage5"    column="AGDesignDosage5"    />
+        <result property="aGHSL5"    column="AGHSL5"    />
+        <result property="aGActualDosage6"    column="AGActualDosage6"    />
+        <result property="aGDesignDosage6"    column="AGDesignDosage6"    />
+        <result property="aGHSL6"    column="AGHSL6"    />
+        <result property="aGActualDosage7"    column="AGActualDosage7"    />
+        <result property="aGDesignDosage7"    column="AGDesignDosage7"    />
+        <result property="aGHSL7"    column="AGHSL7"    />
+        <result property="aGActualDosage8"    column="AGActualDosage8"    />
+        <result property="aGDesignDosage8"    column="AGDesignDosage8"    />
+        <result property="aGHSL8"    column="AGHSL8"    />
+        <result property="additiveActualDosage1"    column="AdditiveActualDosage1"    />
+        <result property="additiveDesignDosage1"    column="AdditiveDesignDosage1"    />
+        <result property="additiveActualDosage2"    column="AdditiveActualDosage2"    />
+        <result property="additiveDesignDosage2"    column="AdditiveDesignDosage2"    />
+        <result property="additiveActualDosage3"    column="AdditiveActualDosage3"    />
+        <result property="additiveDesignDosage3"    column="AdditiveDesignDosage3"    />
+        <result property="additiveActualDosage4"    column="AdditiveActualDosage4"    />
+        <result property="additiveDesignDosage4"    column="AdditiveDesignDosage4"    />
+        <result property="waterActualDosage1"    column="WaterActualDosage1"    />
+        <result property="waterDesignDosage1"    column="WaterDesignDosage1"    />
+        <result property="waterActualDosage2"    column="WaterActualDosage2"    />
+        <result property="waterDesignDosage2"    column="WaterDesignDosage2"    />
+        <result property="waterActualDosage3"    column="WaterActualDosage3"    />
+        <result property="waterDesignDosage3"    column="WaterDesignDosage3"    />
+        <result property="isExstore"    column="IsExstore"    />
+    </resultMap>
+
+    <!--报表-->
+    <resultMap type="ConsumptionReport" id="ConsumptionReportResult">
+        <result property="label"    column="label"    />
+        <result property="designValue"    column="designValue"    />
+        <result property="actualValue"    column="actualValue"    />
+        <result property="errorValue"    column="errorValue"    />
+        <result property="errorRate"    column="errorRate"    />
+    </resultMap>
+
+
+    <!--库存报表VO-->
+    <resultMap type="ConsumptionVO" id="ConsumptionVOResult">
+        <result property="cement"    column="totalCement"    />
+        <result property="ag1Dosage"    column="ag1Dosage"    />
+        <result property="ag2Dosage"    column="ag2Dosage"    />
+        <result property="ag3Dosage"    column="ag3Dosage"    />
+        <result property="ag4Dosage"    column="ag4Dosage"    />
+        <result property="ag5Dosage"    column="ag5Dosage"    />
+        <result property="mix1Dosage"    column="mix1Dosage"    />
+        <result property="mix2Dosage"    column="mix2Dosage"    />
+        <result property="additive1Dosage"    column="additive1Dosage"    />
+        <result property="additive2Dosage"    column="additive2Dosage"    />
+    </resultMap>
+	<sql id="selectConsumptionVo">
+        select SID, ProductLine, ErpProductNumber, IpcProductNumber, PieceNumber, PieceOrder, PieceAmount, VehiAmount, VehiNum, Driver, ProductDateTime, TaskNumber, MixNumber, Operator, ConcreteLabel, IsMortar, CementActualDosage1, CementDesignDosage1, CementActualDosage2, CementDesignDosage2, CementActualDosage3, CementDesignDosage3, CementActualDosage4, CementDesignDosage4, CementActualDosage5, CementDesignDosage5, MixActualDosage1, MixDesignDosage1, MixActualDosage2, MixDesignDosage2, MixActualDosage3, MixDesignDosage3, MixActualDosage4, MixDesignDosage4, MixActualDosage5, MixDesignDosage5, AGActualDosage1, AGDesignDosage1, AGHSL1, AGActualDosage2, AGDesignDosage2, AGHSL2, AGActualDosage3, AGDesignDosage3, AGHSL3, AGActualDosage4, AGDesignDosage4, AGHSL4, AGActualDosage5, AGDesignDosage5, AGHSL5, AGActualDosage6, AGDesignDosage6, AGHSL6, AGActualDosage7, AGDesignDosage7, AGHSL7, AGActualDosage8, AGDesignDosage8, AGHSL8, AdditiveActualDosage1, AdditiveDesignDosage1, AdditiveActualDosage2, AdditiveDesignDosage2, AdditiveActualDosage3, AdditiveDesignDosage3, AdditiveActualDosage4, AdditiveDesignDosage4, WaterActualDosage1, WaterDesignDosage1, WaterActualDosage2, WaterDesignDosage2, WaterActualDosage3, WaterDesignDosage3, IsExstore from consumption
+    </sql>
+	
+    <select id="selectConsumptionList" parameterType="Consumption" resultMap="ConsumptionResult">
+        <include refid="selectConsumptionVo"/>
+        <where>  
+            <if test="sID != null "> and SID = #{sID}</if>
+             <if test="productLine != null "> and ProductLine = #{productLine}</if>
+             <if test="erpProductNumber != null  and erpProductNumber != '' "> and ErpProductNumber = #{erpProductNumber}</if>
+             <if test="ipcProductNumber != null  and ipcProductNumber != '' "> and IpcProductNumber = #{ipcProductNumber}</if>
+             <if test="pieceNumber != null  and pieceNumber != '' "> and PieceNumber = #{pieceNumber}</if>
+             <if test="pieceOrder != null "> and PieceOrder = #{pieceOrder}</if>
+             <if test="pieceAmount != null "> and PieceAmount = #{pieceAmount}</if>
+             <if test="vehiAmount != null "> and VehiAmount = #{vehiAmount}</if>
+             <if test="vehiNum != null  and vehiNum != '' "> and VehiNum = #{vehiNum}</if>
+             <if test="driver != null  and driver != '' "> and Driver = #{driver}</if>
+             <if test="productDateTime != null "> and ProductDateTime = #{productDateTime}</if>
+             <if test="taskNumber != null  and taskNumber != '' "> and TaskNumber = #{taskNumber}</if>
+             <if test="mixNumber != null  and mixNumber != '' "> and MixNumber = #{mixNumber}</if>
+             <if test="operator != null  and operator != '' "> and Operator = #{operator}</if>
+             <if test="concreteLabel != null  and concreteLabel != '' "> and ConcreteLabel = #{concreteLabel}</if>
+             <if test="isMortar != null "> and IsMortar = #{isMortar}</if>
+             <if test="cementActualDosage1 != null "> and CementActualDosage1 = #{cementActualDosage1}</if>
+             <if test="cementDesignDosage1 != null "> and CementDesignDosage1 = #{cementDesignDosage1}</if>
+             <if test="cementActualDosage2 != null "> and CementActualDosage2 = #{cementActualDosage2}</if>
+             <if test="cementDesignDosage2 != null "> and CementDesignDosage2 = #{cementDesignDosage2}</if>
+             <if test="cementActualDosage3 != null "> and CementActualDosage3 = #{cementActualDosage3}</if>
+             <if test="cementDesignDosage3 != null "> and CementDesignDosage3 = #{cementDesignDosage3}</if>
+             <if test="cementActualDosage4 != null "> and CementActualDosage4 = #{cementActualDosage4}</if>
+             <if test="cementDesignDosage4 != null "> and CementDesignDosage4 = #{cementDesignDosage4}</if>
+             <if test="cementActualDosage5 != null "> and CementActualDosage5 = #{cementActualDosage5}</if>
+             <if test="cementDesignDosage5 != null "> and CementDesignDosage5 = #{cementDesignDosage5}</if>
+             <if test="mixActualDosage1 != null "> and MixActualDosage1 = #{mixActualDosage1}</if>
+             <if test="mixDesignDosage1 != null "> and MixDesignDosage1 = #{mixDesignDosage1}</if>
+             <if test="mixActualDosage2 != null "> and MixActualDosage2 = #{mixActualDosage2}</if>
+             <if test="mixDesignDosage2 != null "> and MixDesignDosage2 = #{mixDesignDosage2}</if>
+             <if test="mixActualDosage3 != null "> and MixActualDosage3 = #{mixActualDosage3}</if>
+             <if test="mixDesignDosage3 != null "> and MixDesignDosage3 = #{mixDesignDosage3}</if>
+             <if test="mixActualDosage4 != null "> and MixActualDosage4 = #{mixActualDosage4}</if>
+             <if test="mixDesignDosage4 != null "> and MixDesignDosage4 = #{mixDesignDosage4}</if>
+             <if test="mixActualDosage5 != null "> and MixActualDosage5 = #{mixActualDosage5}</if>
+             <if test="mixDesignDosage5 != null "> and MixDesignDosage5 = #{mixDesignDosage5}</if>
+             <if test="aGActualDosage1 != null "> and AGActualDosage1 = #{aGActualDosage1}</if>
+             <if test="aGDesignDosage1 != null "> and AGDesignDosage1 = #{aGDesignDosage1}</if>
+             <if test="aGHSL1 != null "> and AGHSL1 = #{aGHSL1}</if>
+             <if test="aGActualDosage2 != null "> and AGActualDosage2 = #{aGActualDosage2}</if>
+             <if test="aGDesignDosage2 != null "> and AGDesignDosage2 = #{aGDesignDosage2}</if>
+             <if test="aGHSL2 != null "> and AGHSL2 = #{aGHSL2}</if>
+             <if test="aGActualDosage3 != null "> and AGActualDosage3 = #{aGActualDosage3}</if>
+             <if test="aGDesignDosage3 != null "> and AGDesignDosage3 = #{aGDesignDosage3}</if>
+             <if test="aGHSL3 != null "> and AGHSL3 = #{aGHSL3}</if>
+             <if test="aGActualDosage4 != null "> and AGActualDosage4 = #{aGActualDosage4}</if>
+             <if test="aGDesignDosage4 != null "> and AGDesignDosage4 = #{aGDesignDosage4}</if>
+             <if test="aGHSL4 != null "> and AGHSL4 = #{aGHSL4}</if>
+             <if test="aGActualDosage5 != null "> and AGActualDosage5 = #{aGActualDosage5}</if>
+             <if test="aGDesignDosage5 != null "> and AGDesignDosage5 = #{aGDesignDosage5}</if>
+             <if test="aGHSL5 != null "> and AGHSL5 = #{aGHSL5}</if>
+             <if test="aGActualDosage6 != null "> and AGActualDosage6 = #{aGActualDosage6}</if>
+             <if test="aGDesignDosage6 != null "> and AGDesignDosage6 = #{aGDesignDosage6}</if>
+             <if test="aGHSL6 != null "> and AGHSL6 = #{aGHSL6}</if>
+             <if test="aGActualDosage7 != null "> and AGActualDosage7 = #{aGActualDosage7}</if>
+             <if test="aGDesignDosage7 != null "> and AGDesignDosage7 = #{aGDesignDosage7}</if>
+             <if test="aGHSL7 != null "> and AGHSL7 = #{aGHSL7}</if>
+             <if test="aGActualDosage8 != null "> and AGActualDosage8 = #{aGActualDosage8}</if>
+             <if test="aGDesignDosage8 != null "> and AGDesignDosage8 = #{aGDesignDosage8}</if>
+             <if test="aGHSL8 != null "> and AGHSL8 = #{aGHSL8}</if>
+             <if test="additiveActualDosage1 != null "> and AdditiveActualDosage1 = #{additiveActualDosage1}</if>
+             <if test="additiveDesignDosage1 != null "> and AdditiveDesignDosage1 = #{additiveDesignDosage1}</if>
+             <if test="additiveActualDosage2 != null "> and AdditiveActualDosage2 = #{additiveActualDosage2}</if>
+             <if test="additiveDesignDosage2 != null "> and AdditiveDesignDosage2 = #{additiveDesignDosage2}</if>
+             <if test="additiveActualDosage3 != null "> and AdditiveActualDosage3 = #{additiveActualDosage3}</if>
+             <if test="additiveDesignDosage3 != null "> and AdditiveDesignDosage3 = #{additiveDesignDosage3}</if>
+             <if test="additiveActualDosage4 != null "> and AdditiveActualDosage4 = #{additiveActualDosage4}</if>
+             <if test="additiveDesignDosage4 != null "> and AdditiveDesignDosage4 = #{additiveDesignDosage4}</if>
+             <if test="waterActualDosage1 != null "> and WaterActualDosage1 = #{waterActualDosage1}</if>
+             <if test="waterDesignDosage1 != null "> and WaterDesignDosage1 = #{waterDesignDosage1}</if>
+             <if test="waterActualDosage2 != null "> and WaterActualDosage2 = #{waterActualDosage2}</if>
+             <if test="waterDesignDosage2 != null "> and WaterDesignDosage2 = #{waterDesignDosage2}</if>
+             <if test="waterActualDosage3 != null "> and WaterActualDosage3 = #{waterActualDosage3}</if>
+             <if test="waterDesignDosage3 != null "> and WaterDesignDosage3 = #{waterDesignDosage3}</if>
+             <if test="isExstore != null "> and IsExstore = #{isExstore}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+            </if>
+         </where>
+    </select>
+
+
+    <!--截止到目前，总消耗-->
+    <select id="selectConsumptionNow" parameterType="Consumption" resultMap="ConsumptionVOResult">
+        SELECT  SUM( ISNULL(CementActualDosage1, 0) + ISNULL(CementActualDosage2, 0) + ISNULL(CementActualDosage3, 0)  +ISNULL(CementActualDosage4, 0)  +ISNULL(CementActualDosage5, 0) ) AS totalCement, --水泥
+            SUM( ISNULL(AGActualDosage1,0 )/1000) AS ag1Dosage,-- 石粉,
+            SUM( ISNULL(AGActualDosage2,0 )/1000 ) AS ag2Dosage,-- 1-2石子,
+            SUM( ISNULL(AGActualDosage3,0 )/1000 ) AS ag3Dosage,-- 0-5石子,
+            SUM( ISNULL(AGActualDosage4,0 )/1000 ) AS ag4Dosage,-- 米石,
+            SUM( ISNULL(AGActualDosage5,0 )/1000 ) AS ag5Dosage,-- 面沙,
+            SUM( ISNULL(MixActualDosage1,0 )/1000 ) AS mix1Dosage,-- 粉煤灰
+            SUM( ISNULL(MixActualDosage2,0 )/1000 ) AS mix2Dosage,-- 矿粉
+            SUM( ISNULL(AdditiveActualDosage1,0 )/1000 ) AS additive1Dosage, -- 外加剂A料
+            SUM(ISNULL(AdditiveActualDosage2,0 )/1000) AS additive2Dosage -- 外加剂B料
+        FROM
+            Consumption
+    </select>
+
+    <select id="selectConsumptionReports" parameterType="Consumption" resultMap="ConsumptionReportResult">
+        SELECT
+            '0-5石子' AS label,
+            SUM ( AGActualDosage3 ) AS 'actualValue',
+            SUM ( AGDesignDosage3 ) AS 'designValue',
+            ( SUM ( AGActualDosage3 ) - SUM ( AGDesignDosage3 ) ) AS 'errorValue',
+        CASE WHEN SUM ( AGDesignDosage3 ) = 0 THEN
+                0 ELSE ( SUM ( AGActualDosage3 ) - SUM ( AGDesignDosage3 ) ) / ( SUM ( AGDesignDosage3 ) )
+            END 'errorRate'
+        FROM
+            Consumption
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+            </if>
+            <if test="productLine!=null and productLine!=''">
+                and productLine =#{productLine}
+            </if>
+            <if test="concreteLabel!=null and concreteLabel!=''">
+                and concreteLabel=#{concreteLabel}
+            </if>
+            <if test="mixNumber!=null and mixNumber!=''">
+                and mixNumber=#{mixNumber}
+            </if>
+        </where>
+        UNION ALL
+        SELECT
+            '1-2石子' AS label,
+            SUM ( AGActualDosage2 ) AS 'actualValue',
+            SUM ( AGDesignDosage2 ) AS 'designValue',
+            ( SUM ( AGActualDosage2 ) - SUM ( AGDesignDosage2 ) ) AS 'errorValue',
+        CASE WHEN SUM ( AGDesignDosage2 ) = 0 THEN
+                0 ELSE ( SUM ( AGActualDosage2 ) - SUM ( AGDesignDosage2 ) ) / ( SUM ( AGDesignDosage2 ) )
+            END 'errorRate'
+        FROM
+            Consumption
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+            </if>
+            <if test="productLine!=null and productLine!=''">
+                and productLine =#{productLine}
+            </if>
+            <if test="concreteLabel!=null and concreteLabel!=''">
+                and concreteLabel=#{concreteLabel}
+            </if>
+            <if test="mixNumber!=null and mixNumber!=''">
+                and mixNumber=#{mixNumber}
+            </if>
+        </where>
+        UNION ALL
+        SELECT
+            '粉煤灰' AS label,
+            SUM ( MixActualDosage1 ) AS 'actualValue',
+            SUM ( MixDesignDosage1 ) AS 'designValue',
+            ( SUM ( MixActualDosage1 ) - SUM ( MixDesignDosage1 ) ) AS 'errorValue',
+        CASE WHEN SUM ( MixDesignDosage1 ) = 0 THEN
+                0 ELSE ( SUM ( MixActualDosage1 ) - SUM ( MixDesignDosage1 ) ) / ( SUM ( MixDesignDosage1 ) )
+            END 'errorRate'
+        FROM
+            Consumption
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+            </if>
+            <if test="productLine!=null and productLine!=''">
+                and productLine =#{productLine}
+            </if>
+            <if test="concreteLabel!=null and concreteLabel!=''">
+                and concreteLabel=#{concreteLabel}
+            </if>
+            <if test="mixNumber!=null and mixNumber!=''">
+                and mixNumber=#{mixNumber}
+            </if>
+        </where>
+        UNION ALL
+        SELECT
+            '矿粉' AS label,
+            SUM ( MixDesignDosage2 ) AS 'designValue',
+            SUM ( MixActualDosage2 ) AS 'actualValue',
+            ( SUM ( MixActualDosage2 ) - SUM ( MixDesignDosage2 ) ) AS 'errorValue',
+        CASE WHEN SUM ( MixDesignDosage2 ) = 0 THEN
+                0 ELSE ( SUM ( MixActualDosage2 ) - SUM ( MixDesignDosage2 ) ) / ( SUM ( MixDesignDosage2 ) )
+            END 'errorRate'
+        FROM
+            Consumption
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+            </if>
+            <if test="productLine!=null and productLine!=''">
+                and productLine =#{productLine}
+            </if>
+            <if test="concreteLabel!=null and concreteLabel!=''">
+                and concreteLabel=#{concreteLabel}
+            </if>
+            <if test="mixNumber!=null and mixNumber!=''">
+                and mixNumber=#{mixNumber}
+            </if>
+        </where>
+        UNION ALL
+        SELECT
+            '米石' AS label,
+            SUM ( AGActualDosage4 ) AS 'actualValue',
+            SUM ( AGDesignDosage4 ) AS 'designValue',
+            ( SUM ( AGActualDosage4 ) - SUM ( AGDesignDosage4 ) ) AS 'errorValue',
+        CASE WHEN SUM ( AGDesignDosage4 ) = 0 THEN
+                0 ELSE ( SUM ( AGActualDosage4 ) - SUM ( AGDesignDosage4 ) ) / ( SUM ( AGDesignDosage4 ) )
+            END 'errorRate'
+        FROM
+            Consumption
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+            </if>
+            <if test="productLine!=null and productLine!=''">
+                and productLine =#{productLine}
+            </if>
+            <if test="concreteLabel!=null and concreteLabel!=''">
+                and concreteLabel=#{concreteLabel}
+            </if>
+            <if test="mixNumber!=null and mixNumber!=''">
+                and mixNumber=#{mixNumber}
+            </if>
+        </where>
+        UNION ALL
+        SELECT
+            '面沙' AS label,
+            SUM ( AGActualDosage5 ) AS 'actualValue',
+            SUM ( AGDesignDosage5 ) AS 'designValue',
+            ( SUM ( AGActualDosage5 ) - SUM ( AGDesignDosage5 ) ) AS 'errorValue',
+        CASE WHEN SUM ( AGDesignDosage5 ) = 0 THEN
+                0 ELSE ( SUM ( AGActualDosage5 ) - SUM ( AGDesignDosage5 ) ) / ( SUM ( AGDesignDosage5 ) )
+            END 'errorRate'
+        FROM
+            Consumption
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+            </if>
+            <if test="productLine!=null and productLine!=''">
+                and productLine =#{productLine}
+            </if>
+            <if test="concreteLabel!=null and concreteLabel!=''">
+                and concreteLabel=#{concreteLabel}
+            </if>
+            <if test="mixNumber!=null and mixNumber!=''">
+                and mixNumber=#{mixNumber}
+            </if>
+        </where>
+        UNION ALL
+        SELECT
+            '石粉' AS label,
+            SUM ( AGActualDosage1 ) AS 'actualValue',
+            SUM ( AGDesignDosage1 ) AS 'designValue',
+            ( SUM ( AGActualDosage1 ) - SUM ( AGDesignDosage1 ) ) AS 'errorValue',
+        CASE WHEN SUM ( AGDesignDosage1 ) = 0 THEN
+                0 ELSE ( SUM ( AGActualDosage1 ) - SUM ( AGDesignDosage1 ) ) / ( SUM ( AGDesignDosage1 ) )
+            END 'errorRate'
+        FROM
+            Consumption
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+            </if>
+            <if test="productLine!=null and productLine!=''">
+                and productLine =#{productLine}
+            </if>
+            <if test="concreteLabel!=null and concreteLabel!=''">
+                and concreteLabel=#{concreteLabel}
+            </if>
+            <if test="mixNumber!=null and mixNumber!=''">
+                and mixNumber=#{mixNumber}
+            </if>
+        </where>
+        UNION ALL
+        SELECT
+            '水M1' AS label,
+            SUM ( WaterActualDosage1 ) AS 'actualValue',
+            SUM ( WaterDesignDosage1 ) AS 'designValue',
+            ( SUM ( WaterActualDosage1 ) - SUM ( WaterDesignDosage1 ) ) AS 'errorValue',
+        CASE WHEN SUM ( WaterDesignDosage1 ) = 0 THEN
+                0 ELSE ( SUM ( WaterActualDosage1 ) - SUM ( WaterDesignDosage1 ) ) / ( SUM ( WaterDesignDosage1 ) )
+            END 'errorRate'
+        FROM
+            Consumption
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+            </if>
+            <if test="productLine!=null and productLine!=''">
+                and productLine =#{productLine}
+            </if>
+            <if test="concreteLabel!=null and concreteLabel!=''">
+                and concreteLabel=#{concreteLabel}
+            </if>
+            <if test="mixNumber!=null and mixNumber!=''">
+                and mixNumber=#{mixNumber}
+            </if>
+        </where>
+        UNION ALL
+        SELECT
+            '减胶剂2' AS label,
+            SUM ( AdditiveActualDosage4 ) AS 'actualValue',
+            SUM ( AdditiveDesignDosage4 ) AS 'designValue',
+            ( SUM ( AdditiveActualDosage4 ) - SUM ( AdditiveDesignDosage4 ) ) AS 'errorValue',
+        CASE WHEN SUM ( AdditiveDesignDosage4 ) = 0 THEN
+                0 ELSE ( SUM ( AdditiveActualDosage4 ) - SUM ( AdditiveDesignDosage4 ) ) / ( SUM ( AdditiveDesignDosage4 ) )
+            END 'errorRate'
+        FROM
+            Consumption
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+            </if>
+            <if test="productLine!=null and productLine!=''">
+                and productLine =#{productLine}
+            </if>
+            <if test="concreteLabel!=null and concreteLabel!=''">
+                and concreteLabel=#{concreteLabel}
+            </if>
+            <if test="mixNumber!=null and mixNumber!=''">
+                and mixNumber=#{mixNumber}
+            </if>
+        </where>
+        UNION ALL
+        SELECT
+            '污水' AS label,
+            SUM ( MixActualDosage3 ) AS 'actualValue',
+            SUM ( MixDesignDosage3 ) AS 'designValue',
+            ( SUM ( MixActualDosage3 ) - SUM ( MixDesignDosage3 ) ) AS 'errorValue',
+        CASE WHEN SUM ( MixActualDosage3 ) = 0 THEN
+                0 ELSE ( SUM ( MixActualDosage3 ) - SUM ( MixDesignDosage3 ) ) / ( SUM ( MixDesignDosage3 ) )
+            END 'errorRate'
+        FROM
+            Consumption
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+            </if>
+            <if test="productLine!=null and productLine!=''">
+                and productLine =#{productLine}
+            </if>
+            <if test="concreteLabel!=null and concreteLabel!=''">
+                and concreteLabel=#{concreteLabel}
+            </if>
+            <if test="mixNumber!=null and mixNumber!=''">
+                and mixNumber=#{mixNumber}
+            </if>
+        </where>
+    </select>
+
+
+    <!-- 根据条件查询0-5石子报表 -->
+    <select id="selectAGDesignDosage3Report" parameterType="Consumption" resultMap="ConsumptionReportResult">
+        SELECT
+          '0-5石子' as label,
+          SUM( AGActualDosage3 ) AS 'actualValue',
+            SUM ( AGDesignDosage3 ) AS 'designValue',
+            (SUM( AGActualDosage3 )-SUM ( AGDesignDosage3 )) as 'errorValue',
+            (SUM( AGActualDosage3 )-SUM ( AGDesignDosage3 ))/(SUM ( AGDesignDosage3 ))  as 'errorRate'
+        FROM
+            Consumption
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+            </if>
+        </where>
+    </select>
+
+
+    <!-- 根据条件查询1-2石子报表 -->
+    <select id="selectAGDesignDosage2Report" parameterType="Consumption" resultMap="ConsumptionReportResult">
+        SELECT
+        '1-2石子' as label,
+        SUM( AGActualDosage2 ) AS 'actualValue',
+        SUM ( AGDesignDosage2 ) AS 'designValue',
+        (SUM( AGActualDosage2 )-SUM ( AGDesignDosage2 )) as 'errorValue',
+        (SUM( AGActualDosage2 )-SUM ( AGDesignDosage2 ))/(SUM ( AGDesignDosage2 ))  as 'errorRate'
+        FROM
+        Consumption
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+            </if>
+        </where>
+    </select>
+
+
+    <!-- 根据条件查询粉煤灰石子报表 -->
+    <select id="selectMixDesignDosage1Report" parameterType="Consumption" resultMap="ConsumptionReportResult">
+        SELECT
+        '粉煤灰' as label,
+        SUM( MixActualDosage1 ) AS 'actualValue',
+        SUM ( MixDesignDosage1 ) AS 'designValue',
+        (SUM( MixActualDosage1 )-SUM ( MixDesignDosage1 )) as 'errorValue',
+        (SUM( MixActualDosage1 )-SUM ( MixDesignDosage1 ))/(SUM ( MixDesignDosage1 ))  as 'errorRate'
+        FROM
+        Consumption
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+            </if>
+        </where>
+    </select>
+
+
+    <!-- 查询根据条件矿粉报表 -->
+    <select id="selectMixDesignDosage2Report" parameterType="Consumption" resultMap="ConsumptionReportResult">
+        SELECT
+        '矿粉' as label,
+        SUM( MixDesignDosage2 ) AS 'designValue',
+        SUM ( MixActualDosage2 ) AS 'actualValue',
+        (SUM( MixActualDosage2 )-SUM ( MixDesignDosage2 )) as 'errorValue',
+        (SUM( MixActualDosage2 )-SUM ( MixDesignDosage2 ))/(SUM ( MixDesignDosage2 ))  as 'errorRate'
+        FROM
+        Consumption
+        <where>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+            </if>
+        </where>
+    </select>
+
+
+    <!-- 查询根据条件[米石]报表 -->
+    <select id="selectAGDesignDosage4Report" parameterType="Consumption" resultMap="ConsumptionReportResult">
+        SELECT
+        '米石' as label,
+        SUM( AGActualDosage4 ) AS 'actualValue',
+        SUM ( AGDesignDosage4 ) AS 'designValue',
+        (SUM( AGActualDosage4 )-SUM ( AGDesignDosage4 )) as 'errorValue',
+        (SUM( AGActualDosage4 )-SUM ( AGDesignDosage4 ))/(SUM ( AGDesignDosage4 ))  as 'errorRate'
+        FROM
+        Consumption
+        <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+            AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+        </if>
+        <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+            AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+        </if>
+    </select>
+
+    <!-- 查询根据条件[面沙]报表 -->
+    <select id="selectAGDesignDosage5Report" parameterType="Consumption" resultMap="ConsumptionReportResult">
+        SELECT
+        '面沙' as label,
+        SUM( AGActualDosage5 ) AS 'actualValue',
+        SUM ( AGDesignDosage5 ) AS 'designValue',
+        (SUM( AGActualDosage5 )-SUM ( AGDesignDosage5 )) as 'errorValue',
+        (SUM( AGActualDosage5 )-SUM ( AGDesignDosage5 ))/(SUM ( AGDesignDosage5 ))  as 'errorRate'
+        FROM
+        Consumption
+        <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+            AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+        </if>
+        <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+            AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+        </if>
+    </select>
+
+
+    <!-- 查询根据条件[石粉]报表 -->
+    <select id="selectAGDesignDosage1Report" parameterType="Consumption" resultMap="ConsumptionReportResult">
+        SELECT
+        '石粉' as label,
+        SUM( AGActualDosage1 ) AS 'actualValue',
+        SUM ( AGDesignDosage1 ) AS 'designValue',
+        (SUM( AGActualDosage1 )-SUM ( AGDesignDosage1 )) as 'errorValue',
+        (SUM( AGActualDosage1 )-SUM ( AGDesignDosage1 ))/(SUM ( AGDesignDosage1 ))  as 'errorRate'
+        FROM
+        Consumption
+        <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+            AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+        </if>
+        <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+            AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+        </if>
+    </select>
+
+    <!-- 查询根据条件[水M1]报表 -->
+    <select id="selectWaterDesignDosage1Report" parameterType="Consumption" resultMap="ConsumptionReportResult">
+        SELECT
+        '水M1' as label,
+        SUM( WaterActualDosage1 ) AS 'actualValue',
+        SUM ( WaterDesignDosage1 ) AS 'designValue',
+        (SUM( WaterActualDosage1 )-SUM ( WaterDesignDosage1 )) as 'errorValue',
+        (SUM( WaterActualDosage1 )-SUM ( WaterDesignDosage1 ))/(SUM ( WaterDesignDosage1 ))  as 'errorRate'
+        FROM
+        Consumption
+        <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+            AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+        </if>
+        <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+            AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+        </if>
+    </select>
+
+    <!-- 查询根据条件[减胶剂2]报表 -->
+    <select id="selectAdditiveDesignDosage4Report" parameterType="Consumption" resultMap="ConsumptionReportResult">
+        SELECT
+        '减胶剂2' as label,
+        SUM( AdditiveActualDosage4) AS 'actualValue',
+        SUM ( AdditiveDesignDosage4) AS 'designValue',
+        (SUM( AdditiveActualDosage4)-SUM ( AdditiveDesignDosage4 )) as 'errorValue',
+        case when SUM(AdditiveDesignDosage4)=0 then 0 else
+        (SUM(AdditiveActualDosage4)-SUM (AdditiveDesignDosage4))/(SUM (AdditiveDesignDosage4))  end 'errorRate'
+        FROM
+        Consumption
+        <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+            AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+        </if>
+        <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+            AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+        </if>
+    </select>
+    <!-- 查询根据条件[污水]报表 -->
+    <select id="selectMixDesignDosage3Report" parameterType="Consumption" resultMap="ConsumptionReportResult">
+        SELECT
+        '污水' as label,
+        SUM( MixActualDosage3) AS 'actualValue',
+        SUM ( MixDesignDosage3) AS 'designValue',
+        (SUM( MixActualDosage3)-SUM ( MixDesignDosage3 )) as 'errorValue',
+        case when SUM(MixActualDosage3)=0 then 0 else
+        (SUM(MixActualDosage3)-SUM (MixDesignDosage3))/(SUM (MixDesignDosage3))  end 'errorRate'
+        FROM
+        Consumption
+        <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+            AND convert(varchar(100),CreateTime,23) &gt;= convert(varchar(100),#{params.beginTime},23)
+        </if>
+        <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+            AND convert(varchar(100),CreateTime,23) &lt;= convert(varchar(100),#{params.endTime},23)
+        </if>
+    </select>
+    
+    <select id="selectConsumptionById" parameterType="Long" resultMap="ConsumptionResult">
+        <include refid="selectConsumptionVo"/>
+        where SID = #{sID}
+    </select>
+        
+    <insert id="insertConsumption" parameterType="Consumption" useGeneratedKeys="true" keyProperty="sID">
+        insert into consumption
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="productLine != null  ">ProductLine,</if>
+			<if test="erpProductNumber != null  and erpProductNumber != ''  ">ErpProductNumber,</if>
+			<if test="ipcProductNumber != null  and ipcProductNumber != ''  ">IpcProductNumber,</if>
+			<if test="pieceNumber != null  and pieceNumber != ''  ">PieceNumber,</if>
+			<if test="pieceOrder != null  ">PieceOrder,</if>
+			<if test="pieceAmount != null  ">PieceAmount,</if>
+			<if test="vehiAmount != null  ">VehiAmount,</if>
+			<if test="vehiNum != null  and vehiNum != ''  ">VehiNum,</if>
+			<if test="driver != null  and driver != ''  ">Driver,</if>
+			<if test="productDateTime != null  ">ProductDateTime,</if>
+			<if test="taskNumber != null  and taskNumber != ''  ">TaskNumber,</if>
+			<if test="mixNumber != null  and mixNumber != ''  ">MixNumber,</if>
+			<if test="operator != null  and operator != ''  ">Operator,</if>
+			<if test="concreteLabel != null  and concreteLabel != ''  ">ConcreteLabel,</if>
+			<if test="isMortar != null  ">IsMortar,</if>
+			<if test="cementActualDosage1 != null  ">CementActualDosage1,</if>
+			<if test="cementDesignDosage1 != null  ">CementDesignDosage1,</if>
+			<if test="cementActualDosage2 != null  ">CementActualDosage2,</if>
+			<if test="cementDesignDosage2 != null  ">CementDesignDosage2,</if>
+			<if test="cementActualDosage3 != null  ">CementActualDosage3,</if>
+			<if test="cementDesignDosage3 != null  ">CementDesignDosage3,</if>
+			<if test="cementActualDosage4 != null  ">CementActualDosage4,</if>
+			<if test="cementDesignDosage4 != null  ">CementDesignDosage4,</if>
+			<if test="cementActualDosage5 != null  ">CementActualDosage5,</if>
+			<if test="cementDesignDosage5 != null  ">CementDesignDosage5,</if>
+			<if test="mixActualDosage1 != null  ">MixActualDosage1,</if>
+			<if test="mixDesignDosage1 != null  ">MixDesignDosage1,</if>
+			<if test="mixActualDosage2 != null  ">MixActualDosage2,</if>
+			<if test="mixDesignDosage2 != null  ">MixDesignDosage2,</if>
+			<if test="mixActualDosage3 != null  ">MixActualDosage3,</if>
+			<if test="mixDesignDosage3 != null  ">MixDesignDosage3,</if>
+			<if test="mixActualDosage4 != null  ">MixActualDosage4,</if>
+			<if test="mixDesignDosage4 != null  ">MixDesignDosage4,</if>
+			<if test="mixActualDosage5 != null  ">MixActualDosage5,</if>
+			<if test="mixDesignDosage5 != null  ">MixDesignDosage5,</if>
+			<if test="aGActualDosage1 != null  ">AGActualDosage1,</if>
+			<if test="aGDesignDosage1 != null  ">AGDesignDosage1,</if>
+			<if test="aGHSL1 != null  ">AGHSL1,</if>
+			<if test="aGActualDosage2 != null  ">AGActualDosage2,</if>
+			<if test="aGDesignDosage2 != null  ">AGDesignDosage2,</if>
+			<if test="aGHSL2 != null  ">AGHSL2,</if>
+			<if test="aGActualDosage3 != null  ">AGActualDosage3,</if>
+			<if test="aGDesignDosage3 != null  ">AGDesignDosage3,</if>
+			<if test="aGHSL3 != null  ">AGHSL3,</if>
+			<if test="aGActualDosage4 != null  ">AGActualDosage4,</if>
+			<if test="aGDesignDosage4 != null  ">AGDesignDosage4,</if>
+			<if test="aGHSL4 != null  ">AGHSL4,</if>
+			<if test="aGActualDosage5 != null  ">AGActualDosage5,</if>
+			<if test="aGDesignDosage5 != null  ">AGDesignDosage5,</if>
+			<if test="aGHSL5 != null  ">AGHSL5,</if>
+			<if test="aGActualDosage6 != null  ">AGActualDosage6,</if>
+			<if test="aGDesignDosage6 != null  ">AGDesignDosage6,</if>
+			<if test="aGHSL6 != null  ">AGHSL6,</if>
+			<if test="aGActualDosage7 != null  ">AGActualDosage7,</if>
+			<if test="aGDesignDosage7 != null  ">AGDesignDosage7,</if>
+			<if test="aGHSL7 != null  ">AGHSL7,</if>
+			<if test="aGActualDosage8 != null  ">AGActualDosage8,</if>
+			<if test="aGDesignDosage8 != null  ">AGDesignDosage8,</if>
+			<if test="aGHSL8 != null  ">AGHSL8,</if>
+			<if test="additiveActualDosage1 != null  ">AdditiveActualDosage1,</if>
+			<if test="additiveDesignDosage1 != null  ">AdditiveDesignDosage1,</if>
+			<if test="additiveActualDosage2 != null  ">AdditiveActualDosage2,</if>
+			<if test="additiveDesignDosage2 != null  ">AdditiveDesignDosage2,</if>
+			<if test="additiveActualDosage3 != null  ">AdditiveActualDosage3,</if>
+			<if test="additiveDesignDosage3 != null  ">AdditiveDesignDosage3,</if>
+			<if test="additiveActualDosage4 != null  ">AdditiveActualDosage4,</if>
+			<if test="additiveDesignDosage4 != null  ">AdditiveDesignDosage4,</if>
+			<if test="waterActualDosage1 != null  ">WaterActualDosage1,</if>
+			<if test="waterDesignDosage1 != null  ">WaterDesignDosage1,</if>
+			<if test="waterActualDosage2 != null  ">WaterActualDosage2,</if>
+			<if test="waterDesignDosage2 != null  ">WaterDesignDosage2,</if>
+			<if test="waterActualDosage3 != null  ">WaterActualDosage3,</if>
+			<if test="waterDesignDosage3 != null  ">WaterDesignDosage3,</if>
+			<if test="isExstore != null  ">IsExstore,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="productLine != null  ">#{productLine},</if>
+			<if test="erpProductNumber != null  and erpProductNumber != ''  ">#{erpProductNumber},</if>
+			<if test="ipcProductNumber != null  and ipcProductNumber != ''  ">#{ipcProductNumber},</if>
+			<if test="pieceNumber != null  and pieceNumber != ''  ">#{pieceNumber},</if>
+			<if test="pieceOrder != null  ">#{pieceOrder},</if>
+			<if test="pieceAmount != null  ">#{pieceAmount},</if>
+			<if test="vehiAmount != null  ">#{vehiAmount},</if>
+			<if test="vehiNum != null  and vehiNum != ''  ">#{vehiNum},</if>
+			<if test="driver != null  and driver != ''  ">#{driver},</if>
+			<if test="productDateTime != null  ">#{productDateTime},</if>
+			<if test="taskNumber != null  and taskNumber != ''  ">#{taskNumber},</if>
+			<if test="mixNumber != null  and mixNumber != ''  ">#{mixNumber},</if>
+			<if test="operator != null  and operator != ''  ">#{operator},</if>
+			<if test="concreteLabel != null  and concreteLabel != ''  ">#{concreteLabel},</if>
+			<if test="isMortar != null  ">#{isMortar},</if>
+			<if test="cementActualDosage1 != null  ">#{cementActualDosage1},</if>
+			<if test="cementDesignDosage1 != null  ">#{cementDesignDosage1},</if>
+			<if test="cementActualDosage2 != null  ">#{cementActualDosage2},</if>
+			<if test="cementDesignDosage2 != null  ">#{cementDesignDosage2},</if>
+			<if test="cementActualDosage3 != null  ">#{cementActualDosage3},</if>
+			<if test="cementDesignDosage3 != null  ">#{cementDesignDosage3},</if>
+			<if test="cementActualDosage4 != null  ">#{cementActualDosage4},</if>
+			<if test="cementDesignDosage4 != null  ">#{cementDesignDosage4},</if>
+			<if test="cementActualDosage5 != null  ">#{cementActualDosage5},</if>
+			<if test="cementDesignDosage5 != null  ">#{cementDesignDosage5},</if>
+			<if test="mixActualDosage1 != null  ">#{mixActualDosage1},</if>
+			<if test="mixDesignDosage1 != null  ">#{mixDesignDosage1},</if>
+			<if test="mixActualDosage2 != null  ">#{mixActualDosage2},</if>
+			<if test="mixDesignDosage2 != null  ">#{mixDesignDosage2},</if>
+			<if test="mixActualDosage3 != null  ">#{mixActualDosage3},</if>
+			<if test="mixDesignDosage3 != null  ">#{mixDesignDosage3},</if>
+			<if test="mixActualDosage4 != null  ">#{mixActualDosage4},</if>
+			<if test="mixDesignDosage4 != null  ">#{mixDesignDosage4},</if>
+			<if test="mixActualDosage5 != null  ">#{mixActualDosage5},</if>
+			<if test="mixDesignDosage5 != null  ">#{mixDesignDosage5},</if>
+			<if test="aGActualDosage1 != null  ">#{aGActualDosage1},</if>
+			<if test="aGDesignDosage1 != null  ">#{aGDesignDosage1},</if>
+			<if test="aGHSL1 != null  ">#{aGHSL1},</if>
+			<if test="aGActualDosage2 != null  ">#{aGActualDosage2},</if>
+			<if test="aGDesignDosage2 != null  ">#{aGDesignDosage2},</if>
+			<if test="aGHSL2 != null  ">#{aGHSL2},</if>
+			<if test="aGActualDosage3 != null  ">#{aGActualDosage3},</if>
+			<if test="aGDesignDosage3 != null  ">#{aGDesignDosage3},</if>
+			<if test="aGHSL3 != null  ">#{aGHSL3},</if>
+			<if test="aGActualDosage4 != null  ">#{aGActualDosage4},</if>
+			<if test="aGDesignDosage4 != null  ">#{aGDesignDosage4},</if>
+			<if test="aGHSL4 != null  ">#{aGHSL4},</if>
+			<if test="aGActualDosage5 != null  ">#{aGActualDosage5},</if>
+			<if test="aGDesignDosage5 != null  ">#{aGDesignDosage5},</if>
+			<if test="aGHSL5 != null  ">#{aGHSL5},</if>
+			<if test="aGActualDosage6 != null  ">#{aGActualDosage6},</if>
+			<if test="aGDesignDosage6 != null  ">#{aGDesignDosage6},</if>
+			<if test="aGHSL6 != null  ">#{aGHSL6},</if>
+			<if test="aGActualDosage7 != null  ">#{aGActualDosage7},</if>
+			<if test="aGDesignDosage7 != null  ">#{aGDesignDosage7},</if>
+			<if test="aGHSL7 != null  ">#{aGHSL7},</if>
+			<if test="aGActualDosage8 != null  ">#{aGActualDosage8},</if>
+			<if test="aGDesignDosage8 != null  ">#{aGDesignDosage8},</if>
+			<if test="aGHSL8 != null  ">#{aGHSL8},</if>
+			<if test="additiveActualDosage1 != null  ">#{additiveActualDosage1},</if>
+			<if test="additiveDesignDosage1 != null  ">#{additiveDesignDosage1},</if>
+			<if test="additiveActualDosage2 != null  ">#{additiveActualDosage2},</if>
+			<if test="additiveDesignDosage2 != null  ">#{additiveDesignDosage2},</if>
+			<if test="additiveActualDosage3 != null  ">#{additiveActualDosage3},</if>
+			<if test="additiveDesignDosage3 != null  ">#{additiveDesignDosage3},</if>
+			<if test="additiveActualDosage4 != null  ">#{additiveActualDosage4},</if>
+			<if test="additiveDesignDosage4 != null  ">#{additiveDesignDosage4},</if>
+			<if test="waterActualDosage1 != null  ">#{waterActualDosage1},</if>
+			<if test="waterDesignDosage1 != null  ">#{waterDesignDosage1},</if>
+			<if test="waterActualDosage2 != null  ">#{waterActualDosage2},</if>
+			<if test="waterDesignDosage2 != null  ">#{waterDesignDosage2},</if>
+			<if test="waterActualDosage3 != null  ">#{waterActualDosage3},</if>
+			<if test="waterDesignDosage3 != null  ">#{waterDesignDosage3},</if>
+			<if test="isExstore != null  ">#{isExstore},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateConsumption" parameterType="Consumption">
+        update consumption
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productLine != null  ">ProductLine = #{productLine},</if>
+            <if test="erpProductNumber != null  and erpProductNumber != ''  ">ErpProductNumber = #{erpProductNumber},</if>
+            <if test="ipcProductNumber != null  and ipcProductNumber != ''  ">IpcProductNumber = #{ipcProductNumber},</if>
+            <if test="pieceNumber != null  and pieceNumber != ''  ">PieceNumber = #{pieceNumber},</if>
+            <if test="pieceOrder != null  ">PieceOrder = #{pieceOrder},</if>
+            <if test="pieceAmount != null  ">PieceAmount = #{pieceAmount},</if>
+            <if test="vehiAmount != null  ">VehiAmount = #{vehiAmount},</if>
+            <if test="vehiNum != null  and vehiNum != ''  ">VehiNum = #{vehiNum},</if>
+            <if test="driver != null  and driver != ''  ">Driver = #{driver},</if>
+            <if test="productDateTime != null  ">ProductDateTime = #{productDateTime},</if>
+            <if test="taskNumber != null  and taskNumber != ''  ">TaskNumber = #{taskNumber},</if>
+            <if test="mixNumber != null  and mixNumber != ''  ">MixNumber = #{mixNumber},</if>
+            <if test="operator != null  and operator != ''  ">Operator = #{operator},</if>
+            <if test="concreteLabel != null  and concreteLabel != ''  ">ConcreteLabel = #{concreteLabel},</if>
+            <if test="isMortar != null  ">IsMortar = #{isMortar},</if>
+            <if test="cementActualDosage1 != null  ">CementActualDosage1 = #{cementActualDosage1},</if>
+            <if test="cementDesignDosage1 != null  ">CementDesignDosage1 = #{cementDesignDosage1},</if>
+            <if test="cementActualDosage2 != null  ">CementActualDosage2 = #{cementActualDosage2},</if>
+            <if test="cementDesignDosage2 != null  ">CementDesignDosage2 = #{cementDesignDosage2},</if>
+            <if test="cementActualDosage3 != null  ">CementActualDosage3 = #{cementActualDosage3},</if>
+            <if test="cementDesignDosage3 != null  ">CementDesignDosage3 = #{cementDesignDosage3},</if>
+            <if test="cementActualDosage4 != null  ">CementActualDosage4 = #{cementActualDosage4},</if>
+            <if test="cementDesignDosage4 != null  ">CementDesignDosage4 = #{cementDesignDosage4},</if>
+            <if test="cementActualDosage5 != null  ">CementActualDosage5 = #{cementActualDosage5},</if>
+            <if test="cementDesignDosage5 != null  ">CementDesignDosage5 = #{cementDesignDosage5},</if>
+            <if test="mixActualDosage1 != null  ">MixActualDosage1 = #{mixActualDosage1},</if>
+            <if test="mixDesignDosage1 != null  ">MixDesignDosage1 = #{mixDesignDosage1},</if>
+            <if test="mixActualDosage2 != null  ">MixActualDosage2 = #{mixActualDosage2},</if>
+            <if test="mixDesignDosage2 != null  ">MixDesignDosage2 = #{mixDesignDosage2},</if>
+            <if test="mixActualDosage3 != null  ">MixActualDosage3 = #{mixActualDosage3},</if>
+            <if test="mixDesignDosage3 != null  ">MixDesignDosage3 = #{mixDesignDosage3},</if>
+            <if test="mixActualDosage4 != null  ">MixActualDosage4 = #{mixActualDosage4},</if>
+            <if test="mixDesignDosage4 != null  ">MixDesignDosage4 = #{mixDesignDosage4},</if>
+            <if test="mixActualDosage5 != null  ">MixActualDosage5 = #{mixActualDosage5},</if>
+            <if test="mixDesignDosage5 != null  ">MixDesignDosage5 = #{mixDesignDosage5},</if>
+            <if test="aGActualDosage1 != null  ">AGActualDosage1 = #{aGActualDosage1},</if>
+            <if test="aGDesignDosage1 != null  ">AGDesignDosage1 = #{aGDesignDosage1},</if>
+            <if test="aGHSL1 != null  ">AGHSL1 = #{aGHSL1},</if>
+            <if test="aGActualDosage2 != null  ">AGActualDosage2 = #{aGActualDosage2},</if>
+            <if test="aGDesignDosage2 != null  ">AGDesignDosage2 = #{aGDesignDosage2},</if>
+            <if test="aGHSL2 != null  ">AGHSL2 = #{aGHSL2},</if>
+            <if test="aGActualDosage3 != null  ">AGActualDosage3 = #{aGActualDosage3},</if>
+            <if test="aGDesignDosage3 != null  ">AGDesignDosage3 = #{aGDesignDosage3},</if>
+            <if test="aGHSL3 != null  ">AGHSL3 = #{aGHSL3},</if>
+            <if test="aGActualDosage4 != null  ">AGActualDosage4 = #{aGActualDosage4},</if>
+            <if test="aGDesignDosage4 != null  ">AGDesignDosage4 = #{aGDesignDosage4},</if>
+            <if test="aGHSL4 != null  ">AGHSL4 = #{aGHSL4},</if>
+            <if test="aGActualDosage5 != null  ">AGActualDosage5 = #{aGActualDosage5},</if>
+            <if test="aGDesignDosage5 != null  ">AGDesignDosage5 = #{aGDesignDosage5},</if>
+            <if test="aGHSL5 != null  ">AGHSL5 = #{aGHSL5},</if>
+            <if test="aGActualDosage6 != null  ">AGActualDosage6 = #{aGActualDosage6},</if>
+            <if test="aGDesignDosage6 != null  ">AGDesignDosage6 = #{aGDesignDosage6},</if>
+            <if test="aGHSL6 != null  ">AGHSL6 = #{aGHSL6},</if>
+            <if test="aGActualDosage7 != null  ">AGActualDosage7 = #{aGActualDosage7},</if>
+            <if test="aGDesignDosage7 != null  ">AGDesignDosage7 = #{aGDesignDosage7},</if>
+            <if test="aGHSL7 != null  ">AGHSL7 = #{aGHSL7},</if>
+            <if test="aGActualDosage8 != null  ">AGActualDosage8 = #{aGActualDosage8},</if>
+            <if test="aGDesignDosage8 != null  ">AGDesignDosage8 = #{aGDesignDosage8},</if>
+            <if test="aGHSL8 != null  ">AGHSL8 = #{aGHSL8},</if>
+            <if test="additiveActualDosage1 != null  ">AdditiveActualDosage1 = #{additiveActualDosage1},</if>
+            <if test="additiveDesignDosage1 != null  ">AdditiveDesignDosage1 = #{additiveDesignDosage1},</if>
+            <if test="additiveActualDosage2 != null  ">AdditiveActualDosage2 = #{additiveActualDosage2},</if>
+            <if test="additiveDesignDosage2 != null  ">AdditiveDesignDosage2 = #{additiveDesignDosage2},</if>
+            <if test="additiveActualDosage3 != null  ">AdditiveActualDosage3 = #{additiveActualDosage3},</if>
+            <if test="additiveDesignDosage3 != null  ">AdditiveDesignDosage3 = #{additiveDesignDosage3},</if>
+            <if test="additiveActualDosage4 != null  ">AdditiveActualDosage4 = #{additiveActualDosage4},</if>
+            <if test="additiveDesignDosage4 != null  ">AdditiveDesignDosage4 = #{additiveDesignDosage4},</if>
+            <if test="waterActualDosage1 != null  ">WaterActualDosage1 = #{waterActualDosage1},</if>
+            <if test="waterDesignDosage1 != null  ">WaterDesignDosage1 = #{waterDesignDosage1},</if>
+            <if test="waterActualDosage2 != null  ">WaterActualDosage2 = #{waterActualDosage2},</if>
+            <if test="waterDesignDosage2 != null  ">WaterDesignDosage2 = #{waterDesignDosage2},</if>
+            <if test="waterActualDosage3 != null  ">WaterActualDosage3 = #{waterActualDosage3},</if>
+            <if test="waterDesignDosage3 != null  ">WaterDesignDosage3 = #{waterDesignDosage3},</if>
+            <if test="isExstore != null  ">IsExstore = #{isExstore},</if>
+        </trim>
+        where SID = #{sID}
+    </update>
+
+	<delete id="deleteConsumptionById" parameterType="Long">
+        delete from consumption where SID = #{sID}
+    </delete>
+	
+    <delete id="deleteConsumptionByIds" parameterType="String">
+        delete from consumption where SID in 
+        <foreach item="sID" collection="array" open="(" separator="," close=")">
+            #{sID}
+        </foreach>
+    </delete>
+    
+</mapper>

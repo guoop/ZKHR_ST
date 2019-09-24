@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('配合比数据列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								配合比编号：<input type="text" name="mixNumber"/>
+							</li>
+							<li>
+								砼标号：<input type="text" name="concreteLabel"/>
+							</li>
+							<li>
+								生产线：<input type="text" name="productLine"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="cemslink:mixformula:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="cemslink:mixformula:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<!--<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="cemslink:mixformula:remove">-->
+					<!--<i class="fa fa-remove"></i> 删除-->
+				<!--</a>-->
+				<!--<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="cemslink:mixformula:export">-->
+						<!--<i class="fa fa-download"></i> 导出-->
+				 <!--</a>-->
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('cemslink:mixformula:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('cemslink:mixformula:remove')}]];
+        var prefix = ctx + "cemslink/mixformula";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "配合比数据",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'sID', 
+					title : '序列号',
+					visible: false
+				},
+				{
+					field : 'mixNumber', 
+					title : '配合比编号',
+					sortable: true
+				},
+				// {
+				// 	field : 'isMortar',
+				// 	title : '是否润泵砂浆',
+				// 	sortable: true
+				// },
+				{
+					field : 'concreteLabel', 
+					title : '砼标号',
+					sortable: true
+				},
+				// {
+				// 	field : 'pouringWay',
+				// 	title : '浇注方式',
+				// 	sortable: true
+				// },
+				// {
+				// 	field : 'slump',
+				// 	title : '坍落度',
+				// 	sortable: true
+				// },
+				{
+					field : 'productLine', 
+					title : '生产线',
+					sortable: true
+				},
+				{
+					field : 'ag1Dosage',
+					title : '米石',
+					sortable: true
+				},
+				{
+					field : 'ag2Dosage',
+					title : '1-2石子',
+					sortable: true
+				},
+				{
+					field : 'ag3Dosage',
+					title : '0-5石子',
+					sortable: true
+				},
+				{
+					field : 'ag4Dosage',
+					title : '机制砂',
+					sortable: true
+				},
+				{
+					field : 'ag5Dosage',
+					title : '面沙',
+					sortable: true
+				},
+				// {
+				// 	field : 'mixQnty',
+				// 	title : '预留',
+				// 	sortable: true
+				// },
+				// {
+				// 	field : 'mixTime',
+				// 	title : '搅拌时间',
+				// 	sortable: true
+				// },
+				{
+					field : 'cement1Dosage', 
+					title : '水泥',
+					sortable: true
+				},
+				{
+					field : 'cement2Dosage', 
+					title : '水泥',
+					sortable: true
+				},
+				// {
+				// 	field : 'cement3Dosage',
+				// 	title : '水泥 3 设定量',
+				// 	sortable: true
+				// },
+				// {
+				// 	field : 'cement4Dosage',
+				// 	title : '水泥 4 设定量',
+				// 	sortable: true
+				// },
+				// {
+				// 	field : 'cement5Dosage',
+				// 	title : '水泥 5 设定量',
+				// 	sortable: true
+				// },
+				{
+					field : 'mix1Dosage', 
+					title : '粉煤灰',
+					sortable: true
+				},
+				{
+					field : 'mix2Dosage', 
+					title : '矿粉',
+					sortable: true
+				},
+				{
+					field : 'mix3Dosage', 
+					title : '污水',
+					sortable: true
+				},
+				{
+					field : 'water1Dosage',
+					title : '水M1',
+					sortable: true
+				},
+				{
+					field : 'water2Dosage',
+					title : '水M2',
+					sortable: true
+				},
+				// {
+				// 	field : 'mix4Dosage',
+				// 	title : '掺合料 4 设定量',
+				// 	sortable: true
+				// },
+				// {
+				// 	field : 'mix5Dosage',
+				// 	title : '掺合料 5 设定量',
+				// 	sortable: true
+				// },
+				// {
+				// 	field : 'aG6Dosage',
+				// 	title : '骨料 6 设定量',
+				// 	sortable: true
+				// },
+				// {
+				// 	field : 'aG7Dosage',
+				// 	title : '骨料 7 设定量',
+				// 	sortable: true
+				// },
+				// {
+				// 	field : 'aG8Dosage',
+				// 	title : '骨料 8 设定量',
+				// 	sortable: true
+				// },
+				{
+					field : 'additive1Dosage', 
+					title : '外加剂1',
+					sortable: true
+				},
+				{
+					field : 'additive2Dosage', 
+					title : '外加剂1',
+					sortable: true
+				},
+				{
+					field : 'additive3Dosage', 
+					title : '外加剂2',
+					sortable: true
+				},
+				{
+					field : 'additive4Dosage', 
+					title : '外加剂2',
+					sortable: true
+				},
+				// {
+				// 	field : 'water3Dosage',
+				// 	title : '水 3 设定量',
+				// 	sortable: true
+				// },
+				// {
+				// 	field : 'type',
+				// 	title : 'Type',
+				// 	sortable: true
+				// },
+				{
+					field : 'syncStatus', 
+					title : '是否下发主机',
+					sortable: true,
+                    formatter: function (value, row, index) {
+                        return row.syncStatus==0?'等待下发':'已下发';
+                    }
+				},
+				{
+					field : 'syncStatus2', 
+					title : '是否下发副机',
+					sortable: true,
+                    formatter: function (value, row, index) {
+                        return row.syncStatus2==0?'等待下发':'已下发';
+                    }
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.sID + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

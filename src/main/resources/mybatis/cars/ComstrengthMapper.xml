@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.cars.comstrength.mapper.ComstrengthMapper">
+    
+    <resultMap type="Comstrength" id="ComstrengthResult">
+        <result property="id"    column="id"    />
+        <result property="strengthNo"    column="strength_no"    />
+        <result property="ratio"    column="ratio"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+	
+	<sql id="selectComstrengthVo">
+        select id, strength_no, ratio, create_by, create_time, update_time from tb_comstrength
+    </sql>
+	
+    <select id="selectComstrengthList" parameterType="Comstrength" resultMap="ComstrengthResult">
+        <include refid="selectComstrengthVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="strengthNo != null  and strengthNo != '' "> and strength_no = #{strengthNo}</if>
+             <if test="ratio != null "> and ratio = #{ratio}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="updateTime != null "> and update_time = #{updateTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectComstrengthById" parameterType="Long" resultMap="ComstrengthResult">
+        <include refid="selectComstrengthVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertComstrength" parameterType="Comstrength" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_comstrength
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="strengthNo != null  and strengthNo != ''  ">strength_no,</if>
+			<if test="ratio != null  ">ratio,</if>
+			<if test="createBy != null  and createBy != ''  ">create_by,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="strengthNo != null  and strengthNo != ''  ">#{strengthNo},</if>
+			<if test="ratio != null  ">#{ratio},</if>
+			<if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateComstrength" parameterType="Comstrength">
+        update tb_comstrength
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="strengthNo != null  and strengthNo != ''  ">strength_no = #{strengthNo},</if>
+            <if test="ratio != null  ">ratio = #{ratio},</if>
+            <if test="createBy != null  and createBy != ''  ">create_by = #{createBy},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteComstrengthById" parameterType="Long">
+        delete from tb_comstrength where id = #{id}
+    </delete>
+	
+    <delete id="deleteComstrengthByIds" parameterType="String">
+        delete from tb_comstrength where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

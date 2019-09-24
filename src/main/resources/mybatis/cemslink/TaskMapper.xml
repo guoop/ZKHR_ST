@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.cemslink.task.mapper.TaskMapper">
+    
+    <resultMap type="Task" id="TaskResult">
+        <result property="sID"    column="SID"    />
+        <result property="productLine"    column="ProductLine"    />
+        <result property="taskNumber"    column="TaskNumber"    />
+        <result property="contractNumber"    column="ContractNumber"    />
+        <result property="customerName"    column="CustomerName"    />
+        <result property="projectName"    column="ProjectName"    />
+        <result property="unitName"    column="UnitName"    />
+        <result property="constructionPart"    column="ConstructionPart"    />
+        <result property="constructionAddress"    column="ConstructionAddress"    />
+        <result property="pouringWay"    column="PouringWay"    />
+        <result property="concreteLabel"    column="ConcreteLabel"    />
+        <result property="slump"    column="Slump"    />
+        <result property="distance"    column="Distance"    />
+        <result property="deliveryMode"    column="DeliveryMode"    />
+        <result property="cementGrade"    column="CementGrade"    />
+        <result property="aGSize"    column="AGSize"    />
+        <result property="techRequest"    column="TechRequest"    />
+        <result property="peibiScale"    column="PeibiScale"    />
+        <result property="contraLeakLevel"    column="ContraLeakLevel"    />
+        <result property="additionSort"    column="AdditionSort"    />
+        <result property="mixNumber"    column="MixNumber"    />
+        <result property="mortarMixNumber"    column="MortarMixNumber"    />
+        <result property="planAmount"    column="PlanAmount"    />
+        <result property="planDateTime"    column="PlanDateTime"    />
+        <result property="booker"    column="Booker"    />
+        <result property="contact"    column="Contact"    />
+        <result property="contactPhone"    column="ContactPhone"    />
+        <result property="lastModifiedTime"    column="LastModifiedTime"    />
+        <result property="remark"    column="Remark"    />
+        <result property="createdTime"    column="CreatedTime"    />
+        <result property="type"    column="Type"    />
+        <result property="syncStatus"    column="SyncStatus" />
+        <result property="syncStatus2"    column="SyncStatus2"    />
+    </resultMap>
+	
+	<sql id="selectTaskVo">
+        select SID, ProductLine, TaskNumber, ContractNumber, CustomerName, ProjectName, UnitName, ConstructionPart, ConstructionAddress, PouringWay, ConcreteLabel, Slump, Distance, DeliveryMode, CementGrade, AGSize, TechRequest, PeibiScale, ContraLeakLevel, AdditionSort, MixNumber, MortarMixNumber, PlanAmount, PlanDateTime, Booker, Contact, ContactPhone, LastModifiedTime, Remark, CreatedTime, Type, SyncStatus, SyncStatus2 from task
+    </sql>
+	
+    <select id="selectTaskList" parameterType="Task" resultMap="TaskResult">
+        <include refid="selectTaskVo"/>
+        <where>  
+            <if test="sID != null "> and SID = #{sID}</if>
+             <if test="productLine != null "> and ProductLine = #{productLine}</if>
+             <if test="taskNumber != null  and taskNumber != '' "> and TaskNumber = #{taskNumber}</if>
+             <if test="contractNumber != null  and contractNumber != '' "> and ContractNumber = #{contractNumber}</if>
+             <if test="customerName != null  and customerName != '' "> and CustomerName = #{customerName}</if>
+             <if test="projectName != null  and projectName != '' "> and ProjectName = #{projectName}</if>
+             <if test="unitName != null  and unitName != '' "> and UnitName = #{unitName}</if>
+             <if test="constructionPart != null  and constructionPart != '' "> and ConstructionPart = #{constructionPart}</if>
+             <if test="constructionAddress != null  and constructionAddress != '' "> and ConstructionAddress = #{constructionAddress}</if>
+             <if test="pouringWay != null  and pouringWay != '' "> and PouringWay = #{pouringWay}</if>
+             <if test="concreteLabel != null  and concreteLabel != '' "> and ConcreteLabel = #{concreteLabel}</if>
+             <if test="slump != null  and slump != '' "> and Slump = #{slump}</if>
+             <if test="distance != null "> and Distance = #{distance}</if>
+             <if test="deliveryMode != null  and deliveryMode != '' "> and DeliveryMode = #{deliveryMode}</if>
+             <if test="cementGrade != null  and cementGrade != '' "> and CementGrade = #{cementGrade}</if>
+             <if test="aGSize != null  and aGSize != '' "> and AGSize = #{aGSize}</if>
+             <if test="techRequest != null  and techRequest != '' "> and TechRequest = #{techRequest}</if>
+             <if test="peibiScale != null  and peibiScale != '' "> and PeibiScale = #{peibiScale}</if>
+             <if test="contraLeakLevel != null  and contraLeakLevel != '' "> and ContraLeakLevel = #{contraLeakLevel}</if>
+             <if test="additionSort != null  and additionSort != '' "> and AdditionSort = #{additionSort}</if>
+             <if test="mixNumber != null  and mixNumber != '' "> and MixNumber = #{mixNumber}</if>
+             <if test="mortarMixNumber != null  and mortarMixNumber != '' "> and MortarMixNumber = #{mortarMixNumber}</if>
+             <if test="planAmount != null "> and PlanAmount = #{planAmount}</if>
+             <if test="planDateTime != null "> and PlanDateTime = #{planDateTime}</if>
+             <if test="booker != null  and booker != '' "> and Booker = #{booker}</if>
+             <if test="contact != null  and contact != '' "> and Contact = #{contact}</if>
+             <if test="contactPhone != null  and contactPhone != '' "> and ContactPhone = #{contactPhone}</if>
+             <if test="lastModifiedTime != null "> and LastModifiedTime = #{lastModifiedTime}</if>
+             <if test="remark != null  and remark != '' "> and Remark = #{remark}</if>
+             <if test="createdTime != null "> and CreatedTime = #{createdTime}</if>
+             <if test="type != null "> and Type = #{type}</if>
+             <if test="syncStatus != null "> and SyncStatus = #{syncStatus}</if>
+             <if test="syncStatus2 != null "> and SyncStatus2 = #{syncStatus2}</if>
+         </where>
+    </select>
+    
+    <select id="selectTaskById" parameterType="Long" resultMap="TaskResult">
+        <include refid="selectTaskVo"/>
+        where SID = #{sID}
+    </select>
+        
+    <insert id="insertTask" parameterType="Task" useGeneratedKeys="true" keyProperty="sID">
+        insert into task
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="productLine != null  ">ProductLine,</if>
+			<if test="taskNumber != null  and taskNumber != ''  ">TaskNumber,</if>
+			<if test="contractNumber != null  and contractNumber != ''  ">ContractNumber,</if>
+			<if test="customerName != null  and customerName != ''  ">CustomerName,</if>
+			<if test="projectName != null  and projectName != ''  ">ProjectName,</if>
+			<if test="unitName != null  and unitName != ''  ">UnitName,</if>
+			<if test="constructionPart != null  and constructionPart != ''  ">ConstructionPart,</if>
+			<if test="constructionAddress != null  and constructionAddress != ''  ">ConstructionAddress,</if>
+			<if test="pouringWay != null  and pouringWay != ''  ">PouringWay,</if>
+			<if test="concreteLabel != null  and concreteLabel != ''  ">ConcreteLabel,</if>
+			<if test="slump != null  and slump != ''  ">Slump,</if>
+			<if test="distance != null  ">Distance,</if>
+			<if test="deliveryMode != null  and deliveryMode != ''  ">DeliveryMode,</if>
+			<if test="cementGrade != null  and cementGrade != ''  ">CementGrade,</if>
+			<if test="aGSize != null  and aGSize != ''  ">AGSize,</if>
+			<if test="techRequest != null  and techRequest != ''  ">TechRequest,</if>
+			<if test="peibiScale != null  and peibiScale != ''  ">PeibiScale,</if>
+			<if test="contraLeakLevel != null  and contraLeakLevel != ''  ">ContraLeakLevel,</if>
+			<if test="additionSort != null  and additionSort != ''  ">AdditionSort,</if>
+			<if test="mixNumber != null  and mixNumber != ''  ">MixNumber,</if>
+			<if test="mortarMixNumber != null  and mortarMixNumber != ''  ">MortarMixNumber,</if>
+			<if test="planAmount != null  ">PlanAmount,</if>
+			<if test="planDateTime != null  ">PlanDateTime,</if>
+			<if test="booker != null  and booker != ''  ">Booker,</if>
+			<if test="contact != null  and contact != ''  ">Contact,</if>
+			<if test="contactPhone != null  and contactPhone != ''  ">ContactPhone,</if>
+			<if test="lastModifiedTime != null  ">LastModifiedTime,</if>
+			<if test="remark != null  and remark != ''  ">Remark,</if>
+			<if test="createdTime != null  ">CreatedTime,</if>
+			<if test="type != null  ">Type,</if>
+			<if test="syncStatus != null  ">SyncStatus,</if>
+			<if test="syncStatus2 != null  ">SyncStatus2,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="productLine != null  ">#{productLine},</if>
+			<if test="taskNumber != null  and taskNumber != ''  ">#{taskNumber},</if>
+			<if test="contractNumber != null  and contractNumber != ''  ">#{contractNumber},</if>
+			<if test="customerName != null  and customerName != ''  ">#{customerName},</if>
+			<if test="projectName != null  and projectName != ''  ">#{projectName},</if>
+			<if test="unitName != null  and unitName != ''  ">#{unitName},</if>
+			<if test="constructionPart != null  and constructionPart != ''  ">#{constructionPart},</if>
+			<if test="constructionAddress != null  and constructionAddress != ''  ">#{constructionAddress},</if>
+			<if test="pouringWay != null  and pouringWay != ''  ">#{pouringWay},</if>
+			<if test="concreteLabel != null  and concreteLabel != ''  ">#{concreteLabel},</if>
+			<if test="slump != null  and slump != ''  ">#{slump},</if>
+			<if test="distance != null  ">#{distance},</if>
+			<if test="deliveryMode != null  and deliveryMode != ''  ">#{deliveryMode},</if>
+			<if test="cementGrade != null  and cementGrade != ''  ">#{cementGrade},</if>
+			<if test="aGSize != null  and aGSize != ''  ">#{aGSize},</if>
+			<if test="techRequest != null  and techRequest != ''  ">#{techRequest},</if>
+			<if test="peibiScale != null  and peibiScale != ''  ">#{peibiScale},</if>
+			<if test="contraLeakLevel != null  and contraLeakLevel != ''  ">#{contraLeakLevel},</if>
+			<if test="additionSort != null  and additionSort != ''  ">#{additionSort},</if>
+			<if test="mixNumber != null  and mixNumber != ''  ">#{mixNumber},</if>
+			<if test="mortarMixNumber != null  and mortarMixNumber != ''  ">#{mortarMixNumber},</if>
+			<if test="planAmount != null  ">#{planAmount},</if>
+			<if test="planDateTime != null  ">#{planDateTime},</if>
+			<if test="booker != null  and booker != ''  ">#{booker},</if>
+			<if test="contact != null  and contact != ''  ">#{contact},</if>
+			<if test="contactPhone != null  and contactPhone != ''  ">#{contactPhone},</if>
+			<if test="lastModifiedTime != null  ">#{lastModifiedTime},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="createdTime != null  ">#{createdTime},</if>
+			<if test="type != null  ">#{type},</if>
+			<if test="syncStatus != null  ">#{syncStatus},</if>
+			<if test="syncStatus2 != null  ">#{syncStatus2},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTask" parameterType="Task">
+        update task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productLine != null  ">ProductLine = #{productLine},</if>
+            <if test="taskNumber != null  and taskNumber != ''  ">TaskNumber = #{taskNumber},</if>
+            <if test="contractNumber != null  and contractNumber != ''  ">ContractNumber = #{contractNumber},</if>
+            <if test="customerName != null  and customerName != ''  ">CustomerName = #{customerName},</if>
+            <if test="projectName != null  and projectName != ''  ">ProjectName = #{projectName},</if>
+            <if test="unitName != null  and unitName != ''  ">UnitName = #{unitName},</if>
+            <if test="constructionPart != null  and constructionPart != ''  ">ConstructionPart = #{constructionPart},</if>
+            <if test="constructionAddress != null  and constructionAddress != ''  ">ConstructionAddress = #{constructionAddress},</if>
+            <if test="pouringWay != null  and pouringWay != ''  ">PouringWay = #{pouringWay},</if>
+            <if test="concreteLabel != null  and concreteLabel != ''  ">ConcreteLabel = #{concreteLabel},</if>
+            <if test="slump != null  and slump != ''  ">Slump = #{slump},</if>
+            <if test="distance != null  ">Distance = #{distance},</if>
+            <if test="deliveryMode != null  and deliveryMode != ''  ">DeliveryMode = #{deliveryMode},</if>
+            <if test="cementGrade != null  and cementGrade != ''  ">CementGrade = #{cementGrade},</if>
+            <if test="aGSize != null  and aGSize != ''  ">AGSize = #{aGSize},</if>
+            <if test="techRequest != null  and techRequest != ''  ">TechRequest = #{techRequest},</if>
+            <if test="peibiScale != null  and peibiScale != ''  ">PeibiScale = #{peibiScale},</if>
+            <if test="contraLeakLevel != null  and contraLeakLevel != ''  ">ContraLeakLevel = #{contraLeakLevel},</if>
+            <if test="additionSort != null  and additionSort != ''  ">AdditionSort = #{additionSort},</if>
+            <if test="mixNumber != null  and mixNumber != ''  ">MixNumber = #{mixNumber},</if>
+            <if test="mortarMixNumber != null  and mortarMixNumber != ''  ">MortarMixNumber = #{mortarMixNumber},</if>
+            <if test="planAmount != null  ">PlanAmount = #{planAmount},</if>
+            <if test="planDateTime != null  ">PlanDateTime = #{planDateTime},</if>
+            <if test="booker != null  and booker != ''  ">Booker = #{booker},</if>
+            <if test="contact != null  and contact != ''  ">Contact = #{contact},</if>
+            <if test="contactPhone != null  and contactPhone != ''  ">ContactPhone = #{contactPhone},</if>
+            <if test="lastModifiedTime != null  ">LastModifiedTime = #{lastModifiedTime},</if>
+            <if test="remark != null  and remark != ''  ">Remark = #{remark},</if>
+            <if test="createdTime != null  ">CreatedTime = #{createdTime},</if>
+            <if test="type != null  ">Type = #{type},</if>
+            <if test="syncStatus != null  ">SyncStatus = #{syncStatus},</if>
+            <if test="syncStatus2 != null  ">SyncStatus2 = #{syncStatus2},</if>
+        </trim>
+        where SID = #{sID}
+    </update>
+
+	<delete id="deleteTaskById" parameterType="Long">
+        delete from task where SID = #{sID}
+    </delete>
+	
+    <delete id="deleteTaskByIds" parameterType="String">
+        delete from task where SID in 
+        <foreach item="sID" collection="array" open="(" separator="," close=")">
+            #{sID}
+        </foreach>
+    </delete>
+
+    <select id="checkExistTask" resultMap="TaskResult">
+        select top 1 * from Task where taskNumber = #{TaskNumber} and ProductLine=#{ProductLine} and (SyncStatus = 1 or SyncStatus2 = 1)
+    </select>
+    
+</mapper>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.heavlywork.mapper.ProductMapper">
+    
+    <resultMap type="Product" id="ProductResult">
+        <result property="id"    column="id"    />
+        <result property="ErpID"    column="ErpID"    />
+        <result property="Mark"    column="Mark"    />
+        <result property="Code"    column="Code"    />
+        <result property="DatTim"    column="DatTim"    />
+        <result property="Attribute"    column="Attribute"    />
+        <result property="Contract"    column="Contract"    />
+        <result property="Customer"    column="Customer"    />
+        <result property="ProjName"    column="ProjName"    />
+        <result property="ProjType"    column="ProjType"    />
+        <result property="ProjGrade"    column="ProjGrade"    />
+        <result property="ProjArea"    column="ProjArea"    />
+        <result property="ProjAdr"    column="ProjAdr"    />
+        <result property="Distance"    column="Distance"    />
+        <result property="ConsPos"    column="ConsPos"    />
+        <result property="Pour"    column="Pour"    />
+        <result property="Variety"    column="Variety"    />
+        <result property="BetLev"    column="BetLev"    />
+        <result property="Filter"    column="Filter"    />
+        <result property="Freeze"    column="Freeze"    />
+        <result property="Lands"    column="Lands"    />
+        <result property="Cement"    column="Cement"    />
+        <result property="Stone"    column="Stone"    />
+        <result property="BnSize"    column="BnSize"    />
+        <result property="AddLiq"    column="AddLiq"    />
+        <result property="Request"    column="Request"    />
+        <result property="MixLast"    column="MixLast"    />
+        <result property="Recipe"    column="Recipe"    />
+        <result property="MorRec"    column="MorRec"    />
+        <result property="Mete"    column="Mete"    />
+        <result property="BegTim"    column="BegTim"    />
+        <result property="EndTim"    column="EndTim"    />
+        <result property="Attamper"    column="Attamper"    />
+        <result property="Flag"    column="Flag"    />
+        <result property="Note"    column="Note"    />
+        <result property="Vehicle"    column="Vehicle"    />
+        <result property="Driver"    column="Driver"    />
+        <result property="ProdTimB"    column="ProdTimB"    />
+        <result property="ProdTimE"    column="ProdTimE"    />
+        <result property="ProdMete"    column="ProdMete"    />
+        <result property="MorMete"    column="MorMete"    />
+        <result property="PieCnt"    column="PieCnt"    />
+        <result property="TotVehs"    column="TotVehs"    />
+        <result property="TotMete"    column="TotMete"    />
+        <result property="Qualitor"    column="Qualitor"    />
+        <result property="Acceptor"    column="Acceptor"    />
+        <result property="Operator"    column="Operator"    />
+
+    </resultMap>
+
+    <insert id="insertProductLine" parameterType="ProductLine" useGeneratedKeys="true" keyProperty="id">
+        insert into SY_HeavlyWork.dbo.Product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="Operator != null  ">Operator,</if>
+            <if test="Acceptor != null  ">Acceptor,</if>
+            <if test="Qualitor != null  ">Qualitor,</if>
+            <if test="TotMete != null  ">TotMete,</if>
+            <if test="TotVehs != null  and TotVehs !=''">TotVehs,</if>
+            <if test="PieCnt != null  and PieCnt !='' ">PieCnt,</if>
+            <if test="MorMete != null  ">MorMete,</if>
+            <if test="ProdMete != null  ">ProdMete,</if>
+            <if test="ProdTimE != null  ">ProdTimE,</if>
+            <if test="ProdTimB != null  ">ProdTimB,</if>
+            <if test="Driver != null  and Driver !=''">Driver,</if>
+            <if test="Vehicle != null  and Vehicle !='' ">Vehicle,</if>
+            <if test="EndTim != null  ">EndTim,</if>
+            <if test="BegTim != null  ">BegTim,</if>
+            <if test="Mete != null  ">Mete,</if>
+            <if test="MorRec != null  ">MorRec,</if>
+            <if test="Recipe != null  and Recipe !=''">Recipe,</if>
+            <if test="MixLast != null  and MixLast !='' ">MixLast,</if>
+            <if test="Request != null  ">Request,</if>
+            <if test="AddLiq != null  ">AddLiq,</if>
+            <if test="BnSize != null  ">BnSize,</if>
+            <if test="Stone != null  ">Stone,</if>
+            <if test="Cement != null  and Cement !=''">Cement,</if>
+            <if test="Lands != null  and Lands !='' ">Lands,</if>
+            <if test="Freeze != null  ">Freeze,</if>
+            <if test="Filter != null  ">Filter,</if>
+            <if test="BetLev != null  ">BetLev,</if>
+            <if test="Variety != null  ">Variety,</if>
+            <if test="Pour != null  and Pour !=''">Pour,</if>
+            <if test="ConsPos != null  and ConsPos !='' ">ConsPos,</if>
+            <if test="Distance != null  ">Distance,</if>
+            <if test="ProjAdr != null  ">ProjAdr,</if>
+            <if test="ProjArea != null  ">ProjArea,</if>
+            <if test="ProjGrade != null  ">ProjGrade,</if>
+            <if test="ProjType != null  and ProjType !=''">ProjType,</if>
+            <if test="ProjName != null  and ProjName !='' ">ProjName,</if>
+            <if test="Customer != null  ">Customer,</if>
+            <if test="Contract != null  ">Contract,</if>
+            <if test="Attribute != null  ">Attribute,</if>
+            <if test="DatTim != null  ">DatTim,</if>
+            <if test="Code != null  and Code !=''">Code,</if>
+            <if test="Mark != null  and Mark !='' ">Mark,</if>
+            <if test="ErpID != null  and ErpID !='' ">ErpID,</if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="Operator != null  ">#{Operator},</if>
+            <if test="Acceptor != null  ">#{Acceptor},</if>
+            <if test="Qualitor != null  ">#{Qualitor},</if>
+            <if test="TotMete != null  ">#{TotMete},</if>
+            <if test="TotVehs != null  and TotVehs !=''">#{TotVehs},</if>
+            <if test="PieCnt != null  and PieCnt !=''">#{PieCnt},</if>
+            <if test="MorMete != null  ">#{MorMete},</if>
+            <if test="ProdMete != null  ">#{ProdMete},</if>
+            <if test="ProdTimE != null  ">#{ProdTimE},</if>
+            <if test="ProdTimB != null  ">#{ProdTimB},</if>
+            <if test="Driver != null  and Driver !=''">#{Driver},</if>
+            <if test="Vehicle != null  and Vehicle !=''">#{Vehicle},</if>
+            <if test="EndTim != null  ">#{EndTim},</if>
+            <if test="BegTim != null  ">#{BegTim},</if>
+            <if test="Mete != null  ">#{Mete},</if>
+            <if test="MorRec != null  ">#{MorRec},</if>
+            <if test="Recipe != null  and Recipe !=''">#{Recipe},</if>
+            <if test="MixLast != null  and MixLast !=''">#{MixLast},</if>
+            <if test="Request != null  ">#{Request},</if>
+            <if test="AddLiq != null  ">#{AddLiq},</if>
+            <if test="BnSize != null  ">#{BnSize},</if>
+            <if test="Stone != null  ">#{Stone},</if>
+            <if test="Cement != null  and Cement !=''">#{Cement},</if>
+            <if test="Lands != null  and Lands !=''">#{Lands},</if>
+            <if test="Freeze != null  ">#{Freeze},</if>
+            <if test="Filter != null  ">#{Filter},</if>
+            <if test="BetLev != null  ">#{BetLev},</if>
+            <if test="Variety != null  ">#{Variety},</if>
+            <if test="Pour != null  and Pour !=''">#{Pour},</if>
+            <if test="ConsPos != null  and ConsPos !=''">#{ConsPos},</if>
+            <if test="Distance != null  ">#{Distance},</if>
+            <if test="ProjAdr != null  ">#{ProjAdr},</if>
+            <if test="ProjArea != null  ">#{ProjArea},</if>
+            <if test="ProjGrade != null  ">#{ProjGrade},</if>
+            <if test="ProjType != null  and ProjType !=''">#{ProjType},</if>
+            <if test="ProjName != null  and ProjName !=''">#{ProjName},</if>
+            <if test="Customer != null  ">#{Customer},</if>
+            <if test="Contract != null  ">#{Contract},</if>
+            <if test="Attribute != null  ">#{Attribute},</if>
+            <if test="DatTim != null  and DatTim !=''">#{DatTim},</if>
+            <if test="Code != null  and Code !=''">#{Code},</if>
+            <if test="Mark != null  ">#{Mark},</if>
+            <if test="ErpID != null  and ErpID !=''">#{ErpID},</if>
+        </trim>
+    </insert>
+	
+
+</mapper>

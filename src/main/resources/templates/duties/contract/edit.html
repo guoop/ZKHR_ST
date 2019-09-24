@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改合同')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-contract-edit" th:object="${contract}">
+            <input id="conId" name="conId" th:field="*{conId}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">合同编号：</label>
+				<div class="col-sm-8">
+					<input id="conNo" name="conNo" th:field="*{conNo}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">合同名称：</label>
+				<div class="col-sm-8">
+					<input id="conName" name="conName" th:field="*{conName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">合同类型：</label>
+				<div class="col-sm-8">
+					<input id="conType" name="conType" th:field="*{conType}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">合同金额：</label>
+				<div class="col-sm-8">
+					<input id="conMoney" name="conMoney" th:field="*{conMoney}" class="form-control" type="text">
+				</div>
+			</div>
+			<!--<div class="form-group">
+				<label class="col-sm-3 control-label">合同状态（0：正常，1：结算，2：终止）：</label>
+				<div class="col-sm-8">
+					<input id="conStatus" name="conStatus" th:field="*{conStatus}" class="form-control" type="text">
+				</div>
+			</div>-->
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">业主单位：</label>
+				<div class="col-sm-8">
+					<input id="yzUnitName" name="yzUnitName" th:field="*{yzUnitName}" class="form-control" type="text">
+				</div>
+			</div>
+
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">监理单位：</label>
+				<div class="col-sm-8">
+					<input id="jlUnitName" name="jlUnitName" th:field="*{jlUnitName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">承包单位：</label>
+				<div class="col-sm-8">
+					<input id="cbUnitName" name="cbUnitName" th:field="*{cbUnitName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">签订日期：</label>
+				<div class="col-sm-8">
+					<input id="signDate" name="signDate" th:field="*{signDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">计划启动日期：</label>
+				<div class="col-sm-8">
+					<input id="planStartDate" name="planStartDate" th:field="*{planStartDate}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">计划竣工日期：</label>
+				<div class="col-sm-8">
+					<input id="planEndDate" name="planEndDate" th:field="*{planEndDate}" class="form-control" type="text">
+				</div>
+			</div>
+
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "duties/contract";
+		$("#form-contract-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/edit", $('#form-contract-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

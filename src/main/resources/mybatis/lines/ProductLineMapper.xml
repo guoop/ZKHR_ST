@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.lines.productLine.mapper.ProductLineMapper">
+    
+    <resultMap type="ProductLine" id="ProductLineResult">
+        <result property="id"    column="id"    />
+        <result property="productLine"    column="product_line"    />
+        <result property="stoneType"    column="stone_type"    />
+        <result property="state"    column="state"    />
+        <result property="mixheight"    column="mixheight"    />
+        <result property="mixDoorName"    column="mix_door_name"    />
+        <result property="maxDoorName"    column="max_door_name"    />
+    </resultMap>
+	
+	<sql id="selectProductLineVo">
+        select id, product_line, stone_type, state,mixheight,mix_door_name,max_door_name from tb_product_line
+    </sql>
+	
+    <select id="selectProductLineList" parameterType="ProductLine" resultMap="ProductLineResult">
+        <include refid="selectProductLineVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="productLine != null "> and product_line = #{productLine}</if>
+             <if test="stoneType != null "> and stone_type = #{stoneType}</if>
+             <if test="state != null "> and state = #{state}</if>
+             <if test="mixheight != null "> and mixheight = #{mixheight}</if>
+             <if test="mixDoorName != null "> and mix_door_name = #{mixDoorName}</if>
+             <if test="maxDoorName != null "> and max_door_name = #{maxDoorName}</if>
+         </where>
+    </select>
+    
+    <select id="selectProductLineById" parameterType="Long" resultMap="ProductLineResult">
+        <include refid="selectProductLineVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertProductLine" parameterType="ProductLine" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_product_line
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="productLine != null  ">product_line,</if>
+			<if test="stoneType != null  ">stone_type,</if>
+			<if test="state != null  ">state,</if>
+			<if test="mixheight != null  ">mixheight,</if>
+			<if test="mixDoorName != null  and mixDoorName !=''">mix_door_name,</if>
+			<if test="maxDoorName != null  and maxDoorName !='' ">max_door_name,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="productLine != null  ">#{productLine},</if>
+			<if test="stoneType != null  ">#{stoneType},</if>
+			<if test="state != null  ">#{state},</if>
+			<if test="mixheight != null  ">#{mixheight},</if>
+			<if test="mixDoorName != null  and mixDoorName !=''">#{mixDoorName},</if>
+			<if test="maxDoorName != null  and maxDoorName !=''">#{maxDoorName},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateProductLine" parameterType="ProductLine">
+        update tb_product_line
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productLine != null  ">product_line = #{productLine},</if>
+            <if test="stoneType != null  ">stone_type = #{stoneType},</if>
+            <if test="state != null  ">state = #{state},</if>
+            <if test="mixheight != null  ">mixheight = #{mixheight},</if>
+            <if test="mixDoorName != null and mixDoorName !='' ">mix_door_name = #{mixDoorName},</if>
+            <if test="maxDoorName != null and maxDoorName !='' ">max_door_name = #{maxDoorName},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteProductLineById" parameterType="Long">
+        delete from tb_product_line where id = #{id}
+    </delete>
+	
+    <delete id="deleteProductLineByIds" parameterType="String">
+        delete from tb_product_line where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

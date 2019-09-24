@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.stock.sendAdmixsture.mapper.SendAdmixstureMapper">
+    
+    <resultMap type="SendAdmixsture" id="SendAdmixstureResult">
+        <result property="id"    column="id"    />
+        <result property="mixture"    column="mixture"    />
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+    </resultMap>
+	
+	<sql id="selectSendAdmixstureVo">
+        select id, mixture, user_id, dept_id, create_time, update_time, update_by from tb_send_admixsture
+    </sql>
+	
+    <select id="selectSendAdmixstureList" parameterType="SendAdmixsture" resultMap="SendAdmixstureResult">
+        <include refid="selectSendAdmixstureVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="mixture != null  and mixture != '' "> and mixture = #{mixture}</if>
+             <if test="userId != null "> and user_id = #{userId}</if>
+             <if test="deptId != null "> and dept_id = #{deptId}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="updateTime != null "> and update_time = #{updateTime}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+         </where>
+    </select>
+    
+    <select id="selectSendAdmixstureById" parameterType="Long" resultMap="SendAdmixstureResult">
+        <include refid="selectSendAdmixstureVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSendAdmixsture" parameterType="SendAdmixsture" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_send_admixsture
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
+			<if test="mixture != null  and mixture != ''  ">mixture,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="deptId != null  ">dept_id,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
+			<if test="mixture != null  and mixture != ''  ">#{mixture},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="deptId != null  ">#{deptId},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateSendAdmixsture" parameterType="SendAdmixsture">
+        update tb_send_admixsture
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mixture != null  and mixture != ''  ">mixture = #{mixture},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="deptId != null  ">dept_id = #{deptId},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteSendAdmixstureById" parameterType="Long">
+        delete from tb_send_admixsture where id = #{id}
+    </delete>
+	
+    <delete id="deleteSendAdmixstureByIds" parameterType="String">
+        delete from tb_send_admixsture where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

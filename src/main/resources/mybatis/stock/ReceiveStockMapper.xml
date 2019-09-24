@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.stock.receiveStock.mapper.ReceiveStockMapper">
+    
+    <resultMap type="ReceiveStock" id="ReceiveStockResult">
+        <result property="id"    column="id"/>
+        <result property="sno"    column="sno"/>
+        <result property="offerDept"    column="offer_dept"    />
+        <result property="carBrand"    column="car_brand"    />
+        <result property="goodsName"    column="goods_name"    />
+        <result property="driver"    column="driver"    />
+        <result property="level"    column="level"    />
+        <result property="receiveDept"    column="receive_dept"    />
+        <result property="receiver"    column="receiver"    />
+        <result property="place"    column="place"    />
+        <result property="acceptor"    column="acceptor"    />
+        <result property="bangyuan"    column="bangyuan"    />
+        <result property="grossWeight"    column="gross_weight"    />
+        <result property="carWeight"    column="car_weight"    />
+        <result property="netWeight"    column="net_weight"    />
+        <result property="takeOff"    column="take_off"    />
+        <result property="takeoffRate"    column="takeoff_rate"    />
+        <result property="settleNetweight"    column="settle_netweight"    />
+        <result property="sendNetweight"    column="send_netweight"    />
+        <result property="fangliang"    column="fangliang"    />
+        <result property="price"    column="price"    />
+        <result property="totalFee"    column="total_fee"    />
+        <result property="remark"    column="remark"    />
+        <result property="materialType"    column="material_type"    />
+    </resultMap>
+
+
+    <!--查询报表-->
+    <resultMap type="ReceiveStockReport" id="ReceiveStockReportResult">
+        <result property="goodsName"    column="goods_name"    />
+        <result property="materialType"    column="material_type"    />
+        <result property="totalCarWeight"    column="total_car_weight"    />
+        <result property="totalGrossWeight"    column="total_gross_weight"    />
+        <result property="totalNetWeight"    column="total_net_weight"    />
+        <result property="totalAmount"    column="total_amount"    />
+    </resultMap>
+
+
+    <!--库存报表VO-->
+    <resultMap type="com.ruoyi.project.cemslink.consumption.domain.ConsumptionVO" id="ConsumptionVOReports">
+        <result property="cement"    column="totalCement"    />
+        <result property="ag1Dosage"    column="ag1Dosage"    />
+        <result property="ag2Dosage"    column="ag2Dosage"    />
+        <result property="ag3Dosage"    column="ag3Dosage"    />
+        <result property="ag4Dosage"    column="ag4Dosage"    />
+        <result property="ag5Dosage"    column="ag5Dosage"    />
+        <result property="mix1Dosage"    column="mix1Dosage"    />
+        <result property="mix2Dosage"    column="mix2Dosage"    />
+        <result property="additive1Dosage"    column="additive1Dosage"    />
+        <result property="additive2Dosage"    column="additive2Dosage"    />
+    </resultMap>
+
+	<sql id="selectReceiveStockVo">
+        select id,sno, offer_dept, material_type,car_brand, goods_name, driver, level, receive_dept, receiver, place, acceptor, bangyuan, gross_weight, car_weight, net_weight, take_off, takeoff_rate, settle_netweight, send_netweight, fangliang, price, total_fee, remark from tb_receive_stock
+    </sql>
+	
+    <select id="selectReceiveStockList" parameterType="ReceiveStock" resultMap="ReceiveStockResult">
+        <include refid="selectReceiveStockVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="offerDept != null  and offerDept != '' "> and offer_dept = #{offerDept}</if>
+             <if test="carBrand != null  and carBrand != '' "> and car_brand = #{carBrand}</if>
+             <if test="goodsName != null  and goodsName != '' "> and goods_name = #{goodsName}</if>
+             <if test="driver != null  and driver != '' "> and driver = #{driver}</if>
+             <if test="level != null  and level != '' "> and level = #{level}</if>
+             <if test="receiveDept != null  and receiveDept != '' "> and receive_dept = #{receiveDept}</if>
+             <if test="receiver != null  and receiver != '' "> and receiver = #{receiver}</if>
+             <if test="place != null  and place != '' "> and place = #{place}</if>
+             <if test="acceptor != null  and acceptor != '' "> and acceptor = #{acceptor}</if>
+             <if test="bangyuan != null  and bangyuan != '' "> and bangyuan = #{bangyuan}</if>
+             <if test="grossWeight != null "> and gross_weight = #{grossWeight}</if>
+             <if test="carWeight != null "> and car_weight = #{carWeight}</if>
+             <if test="netWeight != null "> and net_weight = #{netWeight}</if>
+             <if test="takeOff != null "> and take_off = #{takeOff}</if>
+             <if test="takeoffRate != null "> and takeoff_rate = #{takeoffRate}</if>
+             <if test="settleNetweight != null "> and settle_netweight = #{settleNetweight}</if>
+             <if test="sendNetweight != null "> and send_netweight = #{sendNetweight}</if>
+             <if test="fangliang != null "> and fangliang = #{fangliang}</if>
+             <if test="price != null "> and price = #{price}</if>
+             <if test="totalFee != null "> and total_fee = #{totalFee}</if>
+             <if test="remark != null  and remark != '' "> and remark = #{remark}</if>
+             <if test="materialType != null  and materialType != '' "> and material_type = #{materialType}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+
+
+             <if test="sqlWhere != null  and sqlWhere != '' ">
+                 ${sqlWhere}
+             </if>
+         </where>
+    </select>
+    
+    <select id="selectReceiveStockById" parameterType="Long" resultMap="ReceiveStockResult">
+        <include refid="selectReceiveStockVo"/>
+        where id = #{id}
+    </select>
+
+
+
+    <!--获取进货报表-->
+    <select id="selectReceiveStockReport" parameterType="ReceiveStock" resultMap="ReceiveStockReportResult">
+        SELECT
+        goods_name AS goods_name,
+        <if test="materialType!=null and materialType!=''">
+            material_type as material_type,
+        </if>
+        SUM( car_weight ) AS `total_car_weight`,
+        SUM( gross_weight ) AS `total_gross_weight`,
+        SUM( net_weight ) AS `total_net_weight`,
+        SUM( total_fee ) AS `total_amount`
+        FROM
+        tb_receive_stock
+        <where>
+            <if test="materialType!=null and materialType!=''">
+                material_type = #{materialType}
+            </if>
+            <if test="goodsName!=null and goodsName!=''">
+                and goods_name = #{goodsName}
+            </if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+            and goods_name is not null and car_weight>0 and gross_weight>0
+        </where>
+        group by goods_name
+        <if test="materialType!=null and materialType!=''">,material_type</if>
+    </select>
+
+
+    <!--截止到目前，总消耗-->
+    <select id="selectConsumptionNow" parameterType="ReceiveStock"  resultMap="ConsumptionVOReports">
+        SELECT
+            max( CASE WHEN tb.material_type = 'cement' THEN tb.net_weight ELSE 0 END ) totalCement,
+            max( CASE WHEN tb.material_type = 'ag1Dosage' THEN tb.net_weight ELSE 0 END ) ag1Dosage,
+            max( CASE WHEN tb.material_type = 'ag2Dosage' THEN tb.net_weight ELSE 0 END ) ag2Dosage,
+            max( CASE WHEN tb.material_type = 'ag3Dosage' THEN tb.net_weight ELSE 0 END ) ag3Dosage,
+            max( CASE WHEN tb.material_type = 'ag4Dosage' THEN tb.net_weight ELSE 0 END ) ag4Dosage,
+            max( CASE WHEN tb.material_type = 'ag5Dosage' THEN tb.net_weight ELSE 0 END ) ag5Dosage,
+            max( CASE WHEN tb.material_type = 'mix1Dosage' THEN tb.net_weight ELSE 0 END ) mix1Dosage,
+            max( CASE WHEN tb.material_type = 'mix2Dosage' THEN tb.net_weight ELSE 0 END ) mix2Dosage,
+            max( CASE WHEN tb.material_type = 'additive1Dosage' THEN tb.net_weight ELSE 0 END ) additive1Dosage,
+            max( CASE WHEN tb.material_type = 'additive2Dosage' THEN tb.net_weight ELSE 0 END ) additive2Dosage
+        FROM
+            ( SELECT material_type, SUM( ifnull(net_weight,0) ) AS net_weight FROM tb_receive_stock where car_weight >0 and gross_weight>0 GROUP BY material_type ) tb
+    </select>
+        
+    <insert id="insertReceiveStock" parameterType="ReceiveStock" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_receive_stock
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
+			<if test="sno != null  and sno!=''">sno,</if>
+			<if test="offerDept != null  and offerDept != ''  ">offer_dept,</if>
+			<if test="carBrand != null  and carBrand != ''  ">car_brand,</if>
+			<if test="goodsName != null  and goodsName != ''  ">goods_name,</if>
+			<if test="driver != null  and driver != ''  ">driver,</if>
+			<if test="level != null  and level != ''  ">level,</if>
+			<if test="receiveDept != null  and receiveDept != ''  ">receive_dept,</if>
+			<if test="receiver != null  and receiver != ''  ">receiver,</if>
+			<if test="place != null  and place != ''  ">place,</if>
+			<if test="acceptor != null  and acceptor != ''  ">acceptor,</if>
+			<if test="bangyuan != null  and bangyuan != ''  ">bangyuan,</if>
+			<if test="grossWeight != null  ">gross_weight,</if>
+			<if test="carWeight != null  ">car_weight,</if>
+			<if test="netWeight != null  ">net_weight,</if>
+			<if test="takeOff != null  ">take_off,</if>
+			<if test="takeoffRate != null  ">takeoff_rate,</if>
+			<if test="settleNetweight != null  ">settle_netweight,</if>
+			<if test="sendNetweight != null  ">send_netweight,</if>
+			<if test="fangliang != null  ">fangliang,</if>
+			<if test="price != null  ">price,</if>
+			<if test="totalFee != null  ">total_fee,</if>
+			<if test="remark != null  and remark != ''  ">remark,</if>
+			<if test="materialType != null  and materialType != ''  ">material_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
+			<if test="sno != null  and sno!=''">#{sno},</if>
+			<if test="offerDept != null  and offerDept != ''  ">#{offerDept},</if>
+			<if test="carBrand != null  and carBrand != ''  ">#{carBrand},</if>
+			<if test="goodsName != null  and goodsName != ''  ">#{goodsName},</if>
+			<if test="driver != null  and driver != ''  ">#{driver},</if>
+			<if test="level != null  and level != ''  ">#{level},</if>
+			<if test="receiveDept != null  and receiveDept != ''  ">#{receiveDept},</if>
+			<if test="receiver != null  and receiver != ''  ">#{receiver},</if>
+			<if test="place != null  and place != ''  ">#{place},</if>
+			<if test="acceptor != null  and acceptor != ''  ">#{acceptor},</if>
+			<if test="bangyuan != null  and bangyuan != ''  ">#{bangyuan},</if>
+			<if test="grossWeight != null  ">#{grossWeight},</if>
+			<if test="carWeight != null  ">#{carWeight},</if>
+			<if test="netWeight != null  ">#{netWeight},</if>
+			<if test="takeOff != null  ">#{takeOff},</if>
+			<if test="takeoffRate != null  ">#{takeoffRate},</if>
+			<if test="settleNetweight != null  ">#{settleNetweight},</if>
+			<if test="sendNetweight != null  ">#{sendNetweight},</if>
+			<if test="fangliang != null  ">#{fangliang},</if>
+			<if test="price != null  ">#{price},</if>
+			<if test="totalFee != null  ">#{totalFee},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="materialType != null  and materialType != ''  ">#{materialType},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateReceiveStock" parameterType="ReceiveStock">
+        update tb_receive_stock
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="offerDept != null  and offerDept != ''  ">offer_dept = #{offerDept},</if>
+            <if test="carBrand != null  and carBrand != ''  ">car_brand = #{carBrand},</if>
+            <if test="goodsName != null  and goodsName != ''  ">goods_name = #{goodsName},</if>
+            <if test="driver != null  and driver != ''  ">driver = #{driver},</if>
+            <if test="level != null  and level != ''  ">level = #{level},</if>
+            <if test="receiveDept != null  and receiveDept != ''  ">receive_dept = #{receiveDept},</if>
+            <if test="receiver != null  and receiver != ''  ">receiver = #{receiver},</if>
+            <if test="place != null  and place != ''  ">place = #{place},</if>
+            <if test="acceptor != null  and acceptor != ''  ">acceptor = #{acceptor},</if>
+            <if test="bangyuan != null  and bangyuan != ''  ">bangyuan = #{bangyuan},</if>
+            <if test="grossWeight != null  ">gross_weight = #{grossWeight},</if>
+            <if test="carWeight != null  ">car_weight = #{carWeight},</if>
+            <if test="netWeight != null  ">net_weight = #{netWeight},</if>
+            <if test="takeOff != null  ">take_off = #{takeOff},</if>
+            <if test="takeoffRate != null  ">takeoff_rate = #{takeoffRate},</if>
+            <if test="settleNetweight != null  ">settle_netweight = #{settleNetweight},</if>
+            <if test="sendNetweight != null  ">send_netweight = #{sendNetweight},</if>
+            <if test="fangliang != null  ">fangliang = #{fangliang},</if>
+            <if test="price != null  ">price = #{price},</if>
+            <if test="totalFee != null  ">total_fee = #{totalFee},</if>
+            <if test="remark != null  and remark != ''  ">remark = #{remark},</if>
+            <if test="materialType != null  and materialType != ''  ">material_type = #{materialType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteReceiveStockById" parameterType="Long">
+        delete from tb_receive_stock where id = #{id}
+    </delete>
+	
+    <delete id="deleteReceiveStockByIds" parameterType="String">
+        delete from tb_receive_stock where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

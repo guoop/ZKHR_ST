@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.stock.sendCementlevel.mapper.SendCementlevelMapper">
+    
+    <resultMap type="SendCementlevel" id="SendCementlevelResult">
+        <result property="id"    column="id"    />
+        <result property="cementlevel"    column="cementlevel"    />
+        <result property="userId"    column="user_id"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+	
+	<sql id="selectSendCementlevelVo">
+        select id, cementlevel, user_id, dept_id, update_by, create_time, update_time from tb_send_cementlevel
+    </sql>
+	
+    <select id="selectSendCementlevelList" parameterType="SendCementlevel" resultMap="SendCementlevelResult">
+        <include refid="selectSendCementlevelVo"/>
+        <where>  
+            <if test="id != null "> and id = #{id}</if>
+             <if test="cementlevel != null  and cementlevel != '' "> and cementlevel = #{cementlevel}</if>
+             <if test="userId != null "> and user_id = #{userId}</if>
+             <if test="deptId != null "> and dept_id = #{deptId}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="updateTime != null "> and update_time = #{updateTime}</if>
+         </where>
+    </select>
+    
+    <select id="selectSendCementlevelById" parameterType="Long" resultMap="SendCementlevelResult">
+        <include refid="selectSendCementlevelVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSendCementlevel" parameterType="SendCementlevel" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_send_cementlevel
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">id,</if>
+			<if test="cementlevel != null  and cementlevel != ''  ">cementlevel,</if>
+			<if test="userId != null  ">user_id,</if>
+			<if test="deptId != null  ">dept_id,</if>
+			<if test="updateBy != null  and updateBy != ''  ">update_by,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  ">#{id},</if>
+			<if test="cementlevel != null  and cementlevel != ''  ">#{cementlevel},</if>
+			<if test="userId != null  ">#{userId},</if>
+			<if test="deptId != null  ">#{deptId},</if>
+			<if test="updateBy != null  and updateBy != ''  ">#{updateBy},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateSendCementlevel" parameterType="SendCementlevel">
+        update tb_send_cementlevel
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cementlevel != null  and cementlevel != ''  ">cementlevel = #{cementlevel},</if>
+            <if test="userId != null  ">user_id = #{userId},</if>
+            <if test="deptId != null  ">dept_id = #{deptId},</if>
+            <if test="updateBy != null  and updateBy != ''  ">update_by = #{updateBy},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+	<delete id="deleteSendCementlevelById" parameterType="Long">
+        delete from tb_send_cementlevel where id = #{id}
+    </delete>
+	
+    <delete id="deleteSendCementlevelByIds" parameterType="String">
+        delete from tb_send_cementlevel where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

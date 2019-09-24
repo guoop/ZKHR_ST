@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('新增计划单')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-planOrder-add">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">计划号：</label>
+				<div class="col-sm-8">
+					<input id="planNo" name="planNo" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">收货单位：</label>
+				<div class="col-sm-8">
+					<input id="receiveDept" name="receiveDept" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">强度等级：</label>
+				<div class="col-sm-8">
+					<input id="productType" name="productType" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">浇筑方式：</label>
+				<div class="col-sm-8">
+					<input id="waterMethod" name="waterMethod" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">工程名：</label>
+				<div class="col-sm-8">
+					<input id="processName" name="processName" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">坍落度：</label>
+				<div class="col-sm-8">
+					<input id="tanLuodu" name="tanLuodu" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">抗渗等级：</label>
+				<div class="col-sm-8">
+					<input id="ksLevel" name="ksLevel" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">浇筑部位：</label>
+				<div class="col-sm-8">
+					<input id="waterPart" name="waterPart" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">现场坍落度：</label>
+				<div class="col-sm-8">
+					<input id="locationTanluodu" name="locationTanluodu" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "duties/planOrder"
+		$("#form-planOrder-add").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-planOrder-add').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

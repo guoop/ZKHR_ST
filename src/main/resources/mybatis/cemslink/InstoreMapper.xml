@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.cemslink.instore.mapper.InstoreMapper">
+    
+    <resultMap type="Instore" id="InstoreResult">
+        <result property="sID"    column="SID"    />
+        <result property="instoreNum"    column="InstoreNum"    />
+        <result property="instoreTime"    column="InstoreTime"    />
+        <result property="suppID"    column="SuppID"    />
+        <result property="materialID"    column="MaterialID"    />
+        <result property="materialNum"    column="MaterialNum"    />
+        <result property="materialName"    column="MaterialName"    />
+        <result property="spec"    column="Spec"    />
+        <result property="gross"    column="Gross"    />
+        <result property="tare"    column="Tare"    />
+        <result property="trans"    column="Trans"    />
+        <result property="net"    column="Net"    />
+        <result property="sPOS"    column="SPOS"    />
+        <result property="vehiNum"    column="VehiNum"    />
+        <result property="instoreMan"    column="InstoreMan"    />
+        <result property="remark"    column="Remark"    />
+        <result property="lineID"    column="LineID"    />
+        <result property="syncStatus"    column="SyncStatus"    />
+        <result property="syncStatus2"    column="SyncStatus2"    />
+    </resultMap>
+	
+	<sql id="selectInstoreVo">
+        select SID, InstoreNum, InstoreTime, SuppID, MaterialID, MaterialNum, MaterialName, Spec, Gross, Tare, Trans, Net, SPOS, VehiNum, InstoreMan, Remark, LineID, SyncStatus, SyncStatus2 from instore
+    </sql>
+	
+    <select id="selectInstoreList" parameterType="Instore" resultMap="InstoreResult">
+        <include refid="selectInstoreVo"/>
+        <where>  
+            <if test="sID != null "> and SID = #{sID}</if>
+             <if test="instoreNum != null  and instoreNum != '' "> and InstoreNum = #{instoreNum}</if>
+             <if test="instoreTime != null "> and InstoreTime = #{instoreTime}</if>
+             <if test="suppID != null  and suppID != '' "> and SuppID = #{suppID}</if>
+             <if test="materialID != null  and materialID != '' "> and MaterialID = #{materialID}</if>
+             <if test="materialNum != null  and materialNum != '' "> and MaterialNum = #{materialNum}</if>
+             <if test="materialName != null  and materialName != '' "> and MaterialName = #{materialName}</if>
+             <if test="spec != null  and spec != '' "> and Spec = #{spec}</if>
+             <if test="gross != null "> and Gross = #{gross}</if>
+             <if test="tare != null "> and Tare = #{tare}</if>
+             <if test="trans != null "> and Trans = #{trans}</if>
+             <if test="net != null "> and Net = #{net}</if>
+             <if test="sPOS != null  and sPOS != '' "> and SPOS = #{sPOS}</if>
+             <if test="vehiNum != null  and vehiNum != '' "> and VehiNum = #{vehiNum}</if>
+             <if test="instoreMan != null  and instoreMan != '' "> and InstoreMan = #{instoreMan}</if>
+             <if test="remark != null  and remark != '' "> and Remark = #{remark}</if>
+             <if test="lineID != null "> and LineID = #{lineID}</if>
+             <if test="syncStatus != null "> and SyncStatus = #{syncStatus}</if>
+             <if test="syncStatus2 != null "> and SyncStatus2 = #{syncStatus2}</if>
+         </where>
+    </select>
+    
+    <select id="selectInstoreById" parameterType="Long" resultMap="InstoreResult">
+        <include refid="selectInstoreVo"/>
+        where SID = #{sID}
+    </select>
+        
+    <insert id="insertInstore" parameterType="Instore" useGeneratedKeys="true" keyProperty="sID">
+        insert into instore
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="instoreNum != null  and instoreNum != ''  ">InstoreNum,</if>
+			<if test="instoreTime != null  ">InstoreTime,</if>
+			<if test="suppID != null  and suppID != ''  ">SuppID,</if>
+			<if test="materialID != null  and materialID != ''  ">MaterialID,</if>
+			<if test="materialNum != null  and materialNum != ''  ">MaterialNum,</if>
+			<if test="materialName != null  and materialName != ''  ">MaterialName,</if>
+			<if test="spec != null  and spec != ''  ">Spec,</if>
+			<if test="gross != null  ">Gross,</if>
+			<if test="tare != null  ">Tare,</if>
+			<if test="trans != null  ">Trans,</if>
+			<if test="net != null  ">Net,</if>
+			<if test="sPOS != null  and sPOS != ''  ">SPOS,</if>
+			<if test="vehiNum != null  and vehiNum != ''  ">VehiNum,</if>
+			<if test="instoreMan != null  and instoreMan != ''  ">InstoreMan,</if>
+			<if test="remark != null  and remark != ''  ">Remark,</if>
+			<if test="lineID != null  ">LineID,</if>
+			<if test="syncStatus != null  ">SyncStatus,</if>
+			<if test="syncStatus2 != null  ">SyncStatus2,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="instoreNum != null  and instoreNum != ''  ">#{instoreNum},</if>
+			<if test="instoreTime != null  ">#{instoreTime},</if>
+			<if test="suppID != null  and suppID != ''  ">#{suppID},</if>
+			<if test="materialID != null  and materialID != ''  ">#{materialID},</if>
+			<if test="materialNum != null  and materialNum != ''  ">#{materialNum},</if>
+			<if test="materialName != null  and materialName != ''  ">#{materialName},</if>
+			<if test="spec != null  and spec != ''  ">#{spec},</if>
+			<if test="gross != null  ">#{gross},</if>
+			<if test="tare != null  ">#{tare},</if>
+			<if test="trans != null  ">#{trans},</if>
+			<if test="net != null  ">#{net},</if>
+			<if test="sPOS != null  and sPOS != ''  ">#{sPOS},</if>
+			<if test="vehiNum != null  and vehiNum != ''  ">#{vehiNum},</if>
+			<if test="instoreMan != null  and instoreMan != ''  ">#{instoreMan},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="lineID != null  ">#{lineID},</if>
+			<if test="syncStatus != null  ">#{syncStatus},</if>
+			<if test="syncStatus2 != null  ">#{syncStatus2},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateInstore" parameterType="Instore">
+        update instore
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="instoreNum != null  and instoreNum != ''  ">InstoreNum = #{instoreNum},</if>
+            <if test="instoreTime != null  ">InstoreTime = #{instoreTime},</if>
+            <if test="suppID != null  and suppID != ''  ">SuppID = #{suppID},</if>
+            <if test="materialID != null  and materialID != ''  ">MaterialID = #{materialID},</if>
+            <if test="materialNum != null  and materialNum != ''  ">MaterialNum = #{materialNum},</if>
+            <if test="materialName != null  and materialName != ''  ">MaterialName = #{materialName},</if>
+            <if test="spec != null  and spec != ''  ">Spec = #{spec},</if>
+            <if test="gross != null  ">Gross = #{gross},</if>
+            <if test="tare != null  ">Tare = #{tare},</if>
+            <if test="trans != null  ">Trans = #{trans},</if>
+            <if test="net != null  ">Net = #{net},</if>
+            <if test="sPOS != null  and sPOS != ''  ">SPOS = #{sPOS},</if>
+            <if test="vehiNum != null  and vehiNum != ''  ">VehiNum = #{vehiNum},</if>
+            <if test="instoreMan != null  and instoreMan != ''  ">InstoreMan = #{instoreMan},</if>
+            <if test="remark != null  and remark != ''  ">Remark = #{remark},</if>
+            <if test="lineID != null  ">LineID = #{lineID},</if>
+            <if test="syncStatus != null  ">SyncStatus = #{syncStatus},</if>
+            <if test="syncStatus2 != null  ">SyncStatus2 = #{syncStatus2},</if>
+        </trim>
+        where SID = #{sID}
+    </update>
+
+	<delete id="deleteInstoreById" parameterType="Long">
+        delete from instore where SID = #{sID}
+    </delete>
+	
+    <delete id="deleteInstoreByIds" parameterType="String">
+        delete from instore where SID in 
+        <foreach item="sID" collection="array" open="(" separator="," close=")">
+            #{sID}
+        </foreach>
+    </delete>
+    
+</mapper>

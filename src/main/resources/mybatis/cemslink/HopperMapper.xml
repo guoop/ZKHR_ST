@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.cemslink.hopper.mapper.HopperMapper">
+    
+    <resultMap type="Hopper" id="HopperResult">
+        <result property="iD"    column="ID"    />
+        <result property="lineID"    column="LineID"    />
+        <result property="hopperCode"    column="HopperCode"    />
+        <result property="hopperName"    column="HopperName"    />
+        <result property="materialTypeID"    column="MaterialTypeID"    />
+        <result property="materialID"    column="MaterialID"    />
+        <result property="materialName"    column="MaterialName"    />
+        <result property="meterName"    column="MeterName"    />
+        <result property="usageRate"    column="UsageRate"    />
+        <result property="precision"    column="Precision"    />
+        <result property="storageID"    column="StorageID"    />
+        <result property="orderCode"    column="OrderCode"    />
+        <result property="fieldCode"    column="FieldCode"    />
+        <result property="isEnabled"    column="IsEnabled"    />
+        <result property="syncStatus"    column="SyncStatus"    />
+        <result property="syncStatus2"    column="SyncStatus2"    />
+    </resultMap>
+	
+	<sql id="selectHopperVo">
+        select ID, LineID, HopperCode, HopperName, MaterialTypeID, MaterialID, MaterialName, MeterName, UsageRate, Precision, StorageID, OrderCode, FieldCode, IsEnabled, SyncStatus, SyncStatus2 from hopper
+    </sql>
+	
+    <select id="selectHopperList" parameterType="Hopper" resultMap="HopperResult">
+        <include refid="selectHopperVo"/>
+        <where>  
+            <if test="iD != null "> and ID = #{iD}</if>
+             <if test="lineID != null "> and LineID = #{lineID}</if>
+             <if test="hopperCode != null  and hopperCode != '' "> and HopperCode = #{hopperCode}</if>
+             <if test="hopperName != null  and hopperName != '' "> and HopperName = #{hopperName}</if>
+             <if test="materialTypeID != null "> and MaterialTypeID = #{materialTypeID}</if>
+             <if test="materialID != null "> and MaterialID = #{materialID}</if>
+             <if test="materialName != null  and materialName != '' "> and MaterialName = #{materialName}</if>
+             <if test="meterName != null  and meterName != '' "> and MeterName = #{meterName}</if>
+             <if test="usageRate != null "> and UsageRate = #{usageRate}</if>
+             <if test="precision != null "> and Precision = #{precision}</if>
+             <if test="storageID != null "> and StorageID = #{storageID}</if>
+             <if test="orderCode != null "> and OrderCode = #{orderCode}</if>
+             <if test="fieldCode != null  and fieldCode != '' "> and FieldCode = #{fieldCode}</if>
+             <if test="isEnabled != null "> and IsEnabled = #{isEnabled}</if>
+             <if test="syncStatus != null "> and SyncStatus = #{syncStatus}</if>
+             <if test="syncStatus2 != null "> and SyncStatus2 = #{syncStatus2}</if>
+         </where>
+    </select>
+    
+    <select id="selectHopperById" parameterType="Long" resultMap="HopperResult">
+        <include refid="selectHopperVo"/>
+        where ID = #{iD}
+    </select>
+        
+    <insert id="insertHopper" parameterType="Hopper" useGeneratedKeys="true" keyProperty="iD">
+        insert into hopper
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="lineID != null  ">LineID,</if>
+			<if test="hopperCode != null  and hopperCode != ''  ">HopperCode,</if>
+			<if test="hopperName != null  and hopperName != ''  ">HopperName,</if>
+			<if test="materialTypeID != null  ">MaterialTypeID,</if>
+			<if test="materialID != null  ">MaterialID,</if>
+			<if test="materialName != null  and materialName != ''  ">MaterialName,</if>
+			<if test="meterName != null  and meterName != ''  ">MeterName,</if>
+			<if test="usageRate != null  ">UsageRate,</if>
+			<if test="precision != null  ">Precision,</if>
+			<if test="storageID != null  ">StorageID,</if>
+			<if test="orderCode != null  ">OrderCode,</if>
+			<if test="fieldCode != null  and fieldCode != ''  ">FieldCode,</if>
+			<if test="isEnabled != null  ">IsEnabled,</if>
+			<if test="syncStatus != null  ">SyncStatus,</if>
+			<if test="syncStatus2 != null  ">SyncStatus2,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="lineID != null  ">#{lineID},</if>
+			<if test="hopperCode != null  and hopperCode != ''  ">#{hopperCode},</if>
+			<if test="hopperName != null  and hopperName != ''  ">#{hopperName},</if>
+			<if test="materialTypeID != null  ">#{materialTypeID},</if>
+			<if test="materialID != null  ">#{materialID},</if>
+			<if test="materialName != null  and materialName != ''  ">#{materialName},</if>
+			<if test="meterName != null  and meterName != ''  ">#{meterName},</if>
+			<if test="usageRate != null  ">#{usageRate},</if>
+			<if test="precision != null  ">#{precision},</if>
+			<if test="storageID != null  ">#{storageID},</if>
+			<if test="orderCode != null  ">#{orderCode},</if>
+			<if test="fieldCode != null  and fieldCode != ''  ">#{fieldCode},</if>
+			<if test="isEnabled != null  ">#{isEnabled},</if>
+			<if test="syncStatus != null  ">#{syncStatus},</if>
+			<if test="syncStatus2 != null  ">#{syncStatus2},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateHopper" parameterType="Hopper">
+        update hopper
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="lineID != null  ">LineID = #{lineID},</if>
+            <if test="hopperCode != null  and hopperCode != ''  ">HopperCode = #{hopperCode},</if>
+            <if test="hopperName != null  and hopperName != ''  ">HopperName = #{hopperName},</if>
+            <if test="materialTypeID != null  ">MaterialTypeID = #{materialTypeID},</if>
+            <if test="materialID != null  ">MaterialID = #{materialID},</if>
+            <if test="materialName != null  and materialName != ''  ">MaterialName = #{materialName},</if>
+            <if test="meterName != null  and meterName != ''  ">MeterName = #{meterName},</if>
+            <if test="usageRate != null  ">UsageRate = #{usageRate},</if>
+            <if test="precision != null  ">Precision = #{precision},</if>
+            <if test="storageID != null  ">StorageID = #{storageID},</if>
+            <if test="orderCode != null  ">OrderCode = #{orderCode},</if>
+            <if test="fieldCode != null  and fieldCode != ''  ">FieldCode = #{fieldCode},</if>
+            <if test="isEnabled != null  ">IsEnabled = #{isEnabled},</if>
+            <if test="syncStatus != null  ">SyncStatus = #{syncStatus},</if>
+            <if test="syncStatus2 != null  ">SyncStatus2 = #{syncStatus2},</if>
+        </trim>
+        where ID = #{iD}
+    </update>
+
+	<delete id="deleteHopperById" parameterType="Long">
+        delete from hopper where ID = #{iD}
+    </delete>
+	
+    <delete id="deleteHopperByIds" parameterType="String">
+        delete from hopper where ID in 
+        <foreach item="iD" collection="array" open="(" separator="," close=")">
+            #{iD}
+        </foreach>
+    </delete>
+    
+</mapper>

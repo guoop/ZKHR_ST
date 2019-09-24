@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+  <th:block th:include="include :: header('排队列表')" />
+  <link rel="stylesheet" href="/css/cems/queue.css">
+  <script src="/js/vue.js"></script>
+  <script src="/js/echarts.js"></script>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/cems/queue.js"></script>
+</head>
+
+<body class="gray-bg">
+  <div class="">
+    <div class="container door-container">
+      <div class="row" id="vm_host">
+        <div class="col-md-6 door-zhuji" v-for="item in hosts">
+          <div class="panel panel-default">
+            <div class="panel-heading door-panel-heading">{{item.hostName}}</div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="list-group">
+                  <a href="#" class="list-group-item" v-for="info in item.lineCar">
+                    <span>{{info.innerNumber}}</span><span>{{info.remark}}</span><span>{{info.state}}</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="vm_cars">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-heading door-panel-heading">主班车辆</div>
+            <div class="panel-body">
+              <div class="door-cars" id="zhuban">
+                <button class="btn btn-primary door-car" v-for="car in carsData.mastList" :data-carno="car.carNo">{{car.carNo}}号 <span class="badge"><b class="door-fang">{{car.fangl}}</b>方</span></button>
+              </div>
+            </div>
+            <div class="cars-btns">
+              <button class="btn btn-success cars-tongzhibtn" id="xixiancheliang">下线</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-heading door-panel-heading fuban-title" id="fuban_title">副班车辆</div>
+            <div class="panel-body fuban-body" id="fuban_body">
+              <div class="door-cars" id="fuban">
+                <button class="btn btn-info door-car" :data-carno="car.carNo" :data-fangliang="car.fangl" v-for="car in carsData.slaveList">{{car.carNo}}号 <span class="badge"><b class="door-fang">{{car.fangl}}</b>方</span></button>
+              </div>
+              <div class="cars-btns">
+                <label class="cars-label control-label">允许副班车辆：</label>
+                <div class="onoffswitch cars-onoffswitch">
+                  <input type="checkbox" class="onoffswitch-checkbox" id="status" name="status">
+                  <label class="onoffswitch-label" for="status"> <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                  </label>
+                </div>
+                <div class="checkbox cars-checkbox">
+                  <label>
+                    <input type="checkbox" id="cars_checkbox"> 全选
+                  </label>
+                </div>
+                <button class="btn btn-success cars-tongzhibtn" id="tongzhicheliang">通知车辆</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            <div class="panel-heading door-panel-heading">计划用车数</div>
+            <div class="panel-body">
+              <div id="main" class="sheet-img" style="width: 100%;height:320px;"></div>
+              <div class="door-yname">时间/小时</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div th:include="include :: footer"></div>
+</body>
+
+</html>

@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.duties.tasks.mapper.TasksMapper">
+    
+    <resultMap type="Tasks" id="TasksResult">
+        <result property="id"    column="id"    />
+        <result property="planOrderNo"    column="plan_order_no"    />
+        <result property="name"    column="name"    />
+        <result property="subTime"    column="sub_time"    />
+        <result property="isGoodJob"    column="is_good_job"    />
+        <result property="isPinch"    column="is_pinch"    />
+        <result property="isJcdou"    column="is_jcdou"    />
+        <result property="carType"    column="car_type"    />
+        <result property="pinchFl"    column="pinch_fl"    />
+        <result property="totalFl"    column="total_fl"    />
+        <result property="productKind"    column="product_kind"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="arriveTime"    column="arrive_time"    />
+        <result property="targetAddr"    column="target_addr"    />
+        <result property="lon"    column="lon"    />
+        <result property="lat"    column="lat"    />
+
+
+        <result property="startAddr"    column="start_addr"    />
+        <result property="startlng"    column="start_lng"    />
+        <result property="startLat"    column="start_lat"    />
+        <result property="createtime"    column="createtime"    />
+        <result property="status"    column="status"    />
+        <result property="pause"    column="pause"    />
+        <result property="isAuto"    column="is_auto"    />
+        <result property="waterMethod"    column="water_method"    />
+        <result property="tanLuodu"    column="tan_luodu"    />
+        <result property="ksLevel"    column="ks_level"    />
+        <result property="waterPart"    column="water_part"    />
+        <result property="locationTanluodu"    column="location_tanluodu"    />
+        <result property="ljfangliang"    column="ljfangliang"    />
+        <result property="lastCarTime"    column="last_car_time"    />
+        <result property="receivor"    column="receivor"/>
+        <result property="receiver"    column="receiver"/>
+        <result property="receivorMobile"    column="receivor_mobile"    />
+        <result property="doDeptPart"    column="do_dept_part"    />
+        <result property="doDept"    column="do_dept"    />
+        <result property="financePause"    column="finance_pause"    />
+        <result property="isMixture"    column="is_mixture"    />
+        <result property="isSchedule"    column="is_schedule"    />
+        <result property="mixNo"    column="mix_no"    />
+        <result property="mixor"    column="mixor"    />
+        <result property="mixtime"    column="mixtime"    />
+        <result property="shajiangfl"    column="shajiangfl"    />
+        <result property="maxcarfl"    column="maxcarfl"    />
+        <result property="carsubfl"    column="carsubfl"    />
+        <result property="targetCarcnt"    column="target_carcnt"    />
+        <result property="topping"    column="topping"    />
+
+        <result property="isCarMoney"    column="is_car_money"    />
+        <result property="isCobblestone"    column="is_cobblestone"    />
+        <result property="timeoutfee"    column="timeoutfee"    />
+        <result property="bufang"    column="bufang"    />
+        <result property="price"    column="price"    />
+        <result property="officerMobile"    column="officer_mobile"/>
+        <result property="officer"    column="officer"/>
+        <result property="isOtherArea"    column="is_other_area"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="cnt"    column="cnt"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="carCnt"    column="car_cnt"    />
+        <result property="cancelBy"    column="cancel_by"    />
+        <result property="contact"    column="contact"    />
+        <result property="planCarCnt"    column="plan_car_cnt"    />
+        <result property="planEndTime"    column="plan_end_time"    />
+        <result property="cartypeList"    column="cartype_list"    />
+        <result property="mixCar"    column="mix_car"    />
+        <result property="maxCar"    column="max_car"    />
+        <result property="height"    column="height"    />
+        <result property="createId"    column="create_id"    />
+        <result property="privilege"    column="privilege"    />
+        <result property="remark"    column="remark"    />
+        <result property="SyncStatus"    column="SyncStatus"    />
+        <result property="SyncStatus2"    column="SyncStatus2"    />
+        <result property="carList"    column="car_list"    />
+        <result property="timeToTask"    column="time_to_task"    />
+        <result property="productLine"    column="product_line"    />
+
+        <result property="wjj"    column="wjj"    />
+        <result property="sandLevel"    column="sand_level"    />
+        <result property="stoneLevel"    column="stone_level"    />
+        <result property="sendor"    column="sendor"    />
+        <result property="operator"    column="operator"    />
+        <result property="sno"    column="sno"    />
+        <result property="cementLevel"    column="cement_level"    />
+    </resultMap>
+
+
+    <resultMap type="Profileroom" id="ProfileroomResult">
+        <result property="id"    column="id"    />
+        <result property="taskId"    column="task_id"    />
+        <result property="projectName"    column="project_name"    />
+        <result property="projectPart"    column="project_part"    />
+        <result property="productKind"    column="product_kind"    />
+        <result property="doPart"    column="do_part"    />
+        <result property="firstCartime"    column="first_cartime"    />
+        <result property="ljfangliang"    column="ljfangliang"    />
+    </resultMap>
+    <!--可以定义CommonMapper.xml   -->
+    <resultMap type="Car" id="CarResult">
+        <result property="id"    column="id"    />
+        <result property="carNum"    column="car_num"    />
+        <result property="carNo"    column="car_no"    />
+        <result property="vin"   column="vin"/>
+        <result property="mobile"   column="mobile"/>
+        <result property="imei"   column="imei"/>
+        <result property="type"   column="type"/>
+        <result property="deviceName"   column="device_name"/>
+        <result property="carType"    column="car_type"    />
+        <result property="nature"    column="nature"    />
+        <result property="owner"    column="owner"    />
+        <result property="ownerPhone"    column="owner_phone"    />
+        <result property="fangl"    column="fangl"    />
+        <result property="shajiangfl"    column="shajiangfl"    />
+        <result property="jcdou"    column="jcdou"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="carWeight"    column="car_weight"    />
+        <result property="shibanfl"    column="shibanfl"    />
+        <result property="everyPrivilege"    column="every_privilege"    />
+        <result property="isOtherCar"    column="is_other_car"    />
+        <result property="height"    column="height"    />
+        <result property="signTime"    column="sign_time"    />
+    </resultMap>
+	
+	<sql id="selectTasksVo">
+        select id, name,plan_order_no, sub_time, is_good_job, is_pinch, is_jcdou, car_type, pinch_fl, total_fl, product_kind, start_time,arrive_time, target_addr, lon, lat, createtime, status, pause, is_auto,water_method,water_part, location_tanluodu,tan_luodu,ks_level,ljfangliang,
+        is_car_money,is_cobblestone,timeoutfee,bufang,price,officer_mobile,officer,receivor,receivor_mobile,do_dept,do_dept_part,is_other_area,update_by,create_by,create_time,update_time,finance_pause,
+        is_mixture,mix_no,is_schedule,mixor,mixtime,shajiangfl,receiver,car_cnt,cancel_by,contact,plan_car_cnt,plan_end_time,cartype_list,mix_car,max_car,height,create_id,
+        privilege,remark,SyncStatus,SyncStatus2,maxcarfl,carsubfl,car_list,target_carcnt,topping,time_to_task,product_line,wjj,sand_level,stone_level,
+        sendor,operator,cement_level
+        from tb_tasks
+    </sql>
+
+	<select id="selectTaskNameList" resultMap="TasksResult">
+        select distinct id,name
+        from tb_tasks
+        group by id,name
+    </select>
+
+    <select id="selectTasksList" parameterType="Tasks" resultMap="TasksResult">
+        <include refid="selectTasksVo"/>
+        <where>  
+            <if test="id != null  and id != '' "> and id = #{id}</if>
+             <if test="name != null  and name != '' "> and name like CONCAT('%',#{name},'%') </if>
+             <if test="planOrderNo != null  and planOrderNo != '' "> and plan_order_no = #{planOrderNo}</if>
+             <if test="subTime != null "> and sub_time = #{subTime}</if>
+             <if test="isGoodJob != null  and isGoodJob != '' "> and is_good_job = #{isGoodJob}</if>
+             <if test="isPinch != null  and isPinch != '' "> and is_pinch = #{isPinch}</if>
+             <if test="isJcdou != null  and isJcdou != '' "> and is_jcdou = #{isJcdou}</if>
+             <if test="carType != null "> and car_type = #{carType}</if>
+             <if test="pinchFl != null "> and pinch_fl = #{pinchFl}</if>
+             <if test="totalFl != null "> and total_fl = #{totalFl}</if>
+             <if test="productKind != null  and productKind != '' "> and product_kind = #{productKind}</if>
+             <if test="startTime != null "> and start_time = date_format(#{startTime},'%y-%m-%d %H:%i:%s'),</if>
+             <if test="arriveTime != null "> and arrive_time =  date_format(#{arriveTime},'%y-%m-%d %H:%i:%s'),</if>
+             <if test="targetAddr != null  and targetAddr != '' "> and target_addr = #{targetAddr}</if>
+             <if test="lon != null  and lon != '' "> and lon = #{lon}</if>
+             <if test="lat != null  and lat != '' "> and lat = #{lat}</if>
+             <if test="createtime != null "> and createtime = date_format(#{createtime},'%y-%m-%d %H:%i:%s'),</if>
+             <if test="status != null "> and status = #{status}</if>
+             <if test="pause != null  and pause != '' "> and pause = #{pause}</if>
+             <if test="isAuto != null  and isAuto != '' "> and is_auto = #{isAuto}</if>
+             <if test="waterMethod != null  and waterMethod != '' "> and water_method = #{waterMethod}</if>
+             <if test="tanLuodu != null  and tanLuodu != '' "> and tan_luodu = #{tanLuodu}</if>
+             <if test="ksLevel != null  and ksLevel != '' "> and ks_level = #{ksLevel}</if>
+             <if test="waterPart != null  and waterPart != '' "> and water_part = #{waterPart}</if>
+             <if test="locationTanluodu != null  and locationTanluodu != '' "> and location_tanluodu = #{locationTanluodu}</if>
+             <if test="ljfangliang != null  and ljfangliang != '' "> and ljfangliang = #{ljfangliang}</if>
+             <if test="isCarMoney != null  and isCarMoney != '' "> and is_car_money = #{isCarMoney}</if>
+             <if test="isCobblestone != null  and isCobblestone != '' "> and is_cobblestone = #{isCobblestone}</if>
+             <if test="timeoutfee != null  and timeoutfee != '' "> and timeoutfee = #{timeoutfee}</if>
+             <if test="bufang != null  and bufang != '' "> and bufang = #{bufang}</if>
+             <if test="price != null  and price != '' "> and price = #{price}</if>
+             <if test="officerMobile != null  and officerMobile != '' "> and officer_mobile = #{officerMobile}</if>
+             <if test="officer != null  and officer != '' "> and officer = #{officer}</if>
+             <if test="receiver != null  and receiver != '' "> and receiver = #{receiver}</if>
+             <if test="receivor != null  and receivor != '' "> and receivor = #{receivor}</if>
+             <if test="receivorMobile != null  and receivorMobile != '' "> and receivor_mobile = #{receivorMobile}</if>
+             <if test="doDeptPart != null  and doDeptPart != '' "> and do_dept_part = #{doDeptPart}</if>
+             <if test="doDept != null  and doDept != '' "> and doDept = #{doDept}</if>
+             <if test="isOtherArea != null  and isOtherArea != '' "> and is_other_area = #{isOtherArea}</if>
+             <if test="isMixture != null  and isMixture != '' "> and is_mixture = #{isMixture}</if>
+             <if test="isSchedule != null  and isSchedule != '' "> and is_schedule = #{isSchedule}</if>
+             <if test="mixNo != null  and mixNo != '' "> and mix_no = #{mixNo}</if>
+             <if test="mixor != null  and mixor != '' "> and mixor = #{mixor}</if>
+             <if test="mixtime != null  and mixtime != '' "> and mixtime = date_format(#{mixtime},'%y-%m-%d %H:%i:%s'),</if>
+             <if test="shajiangfl != null and shajiangfl >0 "> and shajiangfl = #{shajiangfl}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="updateBy != null  and updateBy != '' "> and update_by = #{updateBy}</if>
+             <if test="carCnt != null  and carCnt != '' "> and car_cnt = #{carCnt}</if>
+             <if test="cancelBy != null  and cancelBy != '' "> and cancel_by = #{cancelBy}</if>
+             <if test="contact != null  and contact != '' "> and contact = #{contact}</if>
+             <if test="planCarCnt != null "> and plan_car_cnt = #{planCarCnt}</if>
+             <if test="planEndTime != null "> and plan_end_time = date_format(#{planEndTime},'%y-%m-%d %H:%i:%s')</if>
+             <if test="cartypeList != null and cartypeList !='' "> and cartype_list = #{cartypeList}</if>
+             <if test="mixCar != null"> and mix_car = #{mixCar}</if>
+             <if test="maxCar != null"> and max_car = #{maxCar}</if>
+             <if test="height != null"> and height = #{height}</if>
+             <if test="createId != null"> and create_id = #{createId}</if>
+             <if test="privilege != null"> and privilege = #{privilege}</if>
+             <if test="remark != null"> and remark = #{remark}</if>
+             <if test="SyncStatus != null"> and SyncStatus = #{SyncStatus}</if>
+             <if test="SyncStatus2 != null"> and SyncStatus2 = #{SyncStatus2}</if>
+             <if test="maxcarfl != null"> and maxcarfl = #{maxcarfl}</if>
+             <if test="carsubfl != null"> and carsubfl = #{carsubfl}</if>
+             <if test="carList != null"> and car_list = #{carList}</if>
+             <if test="topping != null"> and topping = #{topping}</if>
+             <if test="productLine != null"> and product_line = #{productLine}</if>
+
+             <if test="wjj != null and wjj!=''"> and wjj = #{wjj}</if>
+             <if test="sandLevel != null and sandLevel!=''"> and sand_level = #{sandLevel}</if>
+             <if test="stoneLevel != null and stoneLevel!=''"> and stone_level = #{stoneLevel}</if>
+             <if test="sendor != null and sendor!=''"> and sendor = #{sendor}</if>
+             <if test="operator != null and operator!=''"> and operator = #{operator}</if>
+             <if test="cementLevel != null and cementLevel!=''"> and cement_level = #{cementLevel}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                AND date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                AND date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+             <if test="sqlWhere != null "> ${sqlWhere}</if>
+         </where>
+    </select>
+
+
+    <!--选出任务数目最少的一个任务进行派活-->
+    <select id="selectOneToTask" parameterType="Map" resultMap="TasksResult">
+        select
+            t.id, t.name,t.plan_order_no, t.sub_time, t.is_good_job, t.is_pinch, t.is_jcdou, t.car_type, t.pinch_fl, t.total_fl, t.product_kind, t.start_time,t.arrive_time,
+            t.target_addr, t.lon, t.lat, t.createtime, t.status, t.pause, t.is_auto,t.water_method,t.water_part, t.location_tanluodu,t.tan_luodu,t.ks_level,t.ljfangliang,
+            t.is_car_money,t.is_cobblestone,t.timeoutfee,t.bufang,t.price,t.officer_mobile,t.officer,t.receivor,t.receivor_mobile,t.do_dept,t.do_dept_part,t.is_other_area,t.update_by,t.create_by,t.create_time,t.update_time,t.finance_pause,
+            t.is_schedule,t.is_mixture,t.mix_no,t.mixor,t.mixtime,t.shajiangfl,t.receiver,t.car_cnt,t.cancel_by,t.contact,t.plan_car_cnt,t.plan_end_time,t.cartype_list,
+            t.mix_car,t.max_car,t.height,t.create_id,t.privilege,t.remark,t.SyncStatus,t.SyncStatus2,carsubfl,maxcarfl,t.car_list,t.target_carcnt,t.topping,t.time_to_task,t.product_line,
+            t.wjj,t.sand_level,t.stone_level,t.sendor,t.operator,t.cement_level
+            tc.cnt,tc.task_id
+        from tb_tasks t
+        left join (
+            select  count(tc.id) as cnt,tc.task_id as task_id
+            from tb_tasks_cars tc
+            where tc.`status` = #{tcStatus}
+            group by tc.task_id
+            order by count(tc.id) asc limit 1
+        ) tc
+        on  tc.task_id = t.id
+        where t.pause = #{pause} and t.status <![CDATA[ < ]]> 3
+        and t.is_mixture = 'Y' and t.is_schedule = 'Y'
+        <if test="sqlWhere!=null">
+            ${sqlWhere}
+        </if>
+        order by tc.cnt asc
+        limit 1
+    </select>
+
+    <!--选出最近需要排单的前6条任务单-->
+    <select id="selectDispathList" resultMap="TasksResult">
+        SELECT
+            t.*
+        FROM
+            (
+                SELECT
+                    id,
+                    NAME,
+                    plan_order_no,
+                    sub_time,
+                    is_good_job,
+                    is_pinch,
+                    is_jcdou,
+                    car_type,
+                    pinch_fl,
+                    total_fl,
+                    product_kind,
+                    start_time,
+                    arrive_time,
+                    target_addr,
+                    lon,
+                    lat,
+                    createtime,
+                    STATUS,
+                    pause,
+                    is_auto,
+                    water_method,
+                    water_part,
+                    location_tanluodu,
+                    tan_luodu,
+                    ks_level,
+                    ljfangliang,
+                    is_car_money,
+                    is_cobblestone,
+                    timeoutfee,
+                    bufang,
+                    price,
+                    officer_mobile,
+                    officer,
+                    receivor,
+                    receivor_mobile,
+                    do_dept,
+                    do_dept_part,
+                    is_other_area,
+                    update_by,
+                    create_by,
+                    create_time,
+                    update_time,
+                    finance_pause,
+                    is_mixture,
+                    mix_no,
+                    is_schedule,
+                    mixor,
+                    mixtime,
+                    shajiangfl,
+                    receiver,
+                    car_cnt,
+                    cancel_by,
+                    contact,
+                    plan_car_cnt,
+                    plan_end_time,
+                    cartype_list,
+                    mix_car,
+                    max_car,
+                    height,
+                    create_id,
+                    privilege,
+                    remark,
+                    maxcarfl,
+                    carsubfl,
+                    SyncStatus,
+                    SyncStatus2,
+                    car_list,
+                    target_carcnt,
+                    topping,
+                    time_to_task,
+                    product_line,
+                    wjj,
+                    sand_level,
+                    stone_level,
+                    sendor,
+                    operator,
+                    cement_level,
+                    DATE_ADD(
+                        ifnull(
+                            last_car_time,
+                            DATE_ADD(now(), INTERVAL - 1 DAY)
+                        ),
+                        INTERVAL sub_time MINUTE
+                    ) AS dispath_time
+                from tb_tasks
+                where status <![CDATA[ < ]]> 3  and is_schedule='Y' and is_mixture = 'Y'
+            ) t
+        order by t.topping desc,t.dispath_time asc
+    </select>
+
+
+
+    <!--选出最近需要排单的前6条任务单-->
+    <select id="selectFirstTasksToDispath" parameterType="Integer" resultMap="TasksResult">
+        SELECT
+            t.*
+        FROM
+            (
+                SELECT
+                    id,
+                    NAME,
+                    plan_order_no,
+                    sub_time,
+                    is_good_job,
+                    is_pinch,
+                    is_jcdou,
+                    car_type,
+                    pinch_fl,
+                    total_fl,
+                    product_kind,
+                    start_time,
+                    arrive_time,
+                    target_addr,
+                    lon,
+                    lat,
+                    createtime,
+                    STATUS,
+                    pause,
+                    is_auto,
+                    water_method,
+                    water_part,
+                    location_tanluodu,
+                    tan_luodu,
+                    ks_level,
+                    ljfangliang,
+                    is_car_money,
+                    is_cobblestone,
+                    timeoutfee,
+                    bufang,
+                    price,
+                    officer_mobile,
+                    officer,
+                    receivor,
+                    receivor_mobile,
+                    do_dept,
+                    do_dept_part,
+                    is_other_area,
+                    update_by,
+                    create_by,
+                    create_time,
+                    update_time,
+                    finance_pause,
+                    is_mixture,
+                    mix_no,
+                    is_schedule,
+                    mixor,
+                    mixtime,
+                    shajiangfl,
+                    receiver,
+                    car_cnt,
+                    cancel_by,
+                    contact,
+                    plan_car_cnt,
+                    plan_end_time,
+                    cartype_list,
+                    mix_car,
+                    max_car,
+                    height,
+                    create_id,
+                    privilege,
+                    remark,
+                    carsubfl,
+                    maxcarfl,
+                    SyncStatus,
+                    SyncStatus2,
+                    car_list,
+                    target_carcnt,
+                    topping,
+                    time_to_task,
+                    product_line,
+                    wjj,
+                    sand_level,
+                    stone_level,
+                    sendor,
+                    operator,
+                    cement_level,
+                    DATE_ADD(
+                        ifnull(
+                            last_car_time,
+                            DATE_ADD(now(), INTERVAL - 1 DAY)
+                        ),
+                        INTERVAL sub_time MINUTE
+                    ) AS dispath_time
+                from tb_tasks
+                where is_schedule='Y' and status <![CDATA[ < ]]> 3   and is_mixture = 'Y' and pause = 'N' and (SyncStatus = 1 or SyncStatus2 = 1) ) t
+        order by t.topping desc,t.dispath_time asc limit #{taskCntToDispath}
+    </select>
+    
+    <select id="selectTasksById" parameterType="String" resultMap="TasksResult">
+        <include refid="selectTasksVo"/>
+        where id = #{id}
+    </select>
+
+
+    <select id="selectTasks4Dispath" resultMap="TasksResult">
+        SELECT DISTINCT
+            t.*
+        FROM
+            tb_tasks t
+        WHERE
+            EXISTS ( SELECT  1   FROM tb_tasks_mixformula p  WHERE p.task_id = t.id  AND p.SyncStatus = 0  AND p.mix_number IS NOT NULL  AND p.productLine IS NOT NULL)
+    </select>
+
+    <select id="selectProfileRoom" parameterType="String" resultMap="ProfileroomResult">
+        SELECT distinct
+            t.id as task_id,
+            t.`name` AS project_name,
+            t.water_part AS project_part,
+            t.product_kind as product_kind,
+            t.ljfangliang as ljfangliang,
+            tc.start_time as first_cartime
+        FROM
+            tb_tasks t,
+            tb_tasks_cars tc
+        WHERE
+            t.id = #{id}
+        AND t.`status` = 3
+        AND t.id = tc.task_id
+        and tc.car_cnt=1
+        order by first_cartime desc
+        limit 1
+    </select>
+        
+    <insert id="insertTasks" parameterType="Tasks" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_tasks
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">id,</if>
+			<if test="name != null  and name != ''  ">name,</if>
+			<if test="planOrderNo != null  and planOrderNo != ''  ">plan_order_no,</if>
+			<if test="subTime != null  ">sub_time,</if>
+			<if test="isGoodJob != null  and isGoodJob != ''  ">is_good_job,</if>
+			<if test="isPinch != null  and isPinch != ''  ">is_pinch,</if>
+			<if test="isJcdou != null  and isJcdou != ''  ">is_jcdou,</if>
+			<if test="carType != null  ">car_type,</if>
+			<if test="pinchFl != null  ">pinch_fl,</if>
+			<if test="totalFl != null  ">total_fl,</if>
+			<if test="productKind != null  and productKind != ''  ">product_kind,</if>
+			<if test="startTime != null  ">start_time,</if>
+			<if test="arriveTime != null  ">arrive_time,</if>
+			<if test="targetAddr != null  and targetAddr != ''  ">target_addr,</if>
+			<if test="lon != null  and lon != ''  ">lon,</if>
+			<if test="lat != null  and lat != ''  ">lat,</if>
+
+
+            <if test="startAddr != null  and startAddr != ''  ">start_addr,</if>
+            <if test="startLng != null  and startLng != ''  ">start_lng,</if>
+            <if test="startLat != null  and startLat != ''  ">start_lat,</if>
+
+
+            <if test="createtime != null  ">createtime,</if>
+			<if test="status != null  ">status,</if>
+			<if test="pause != null  and pause != ''  ">pause,</if>
+			<if test="isAuto != null  and isAuto != ''  ">is_auto,</if>
+            <if test="waterMethod != null  and waterMethod != '' "> water_method,</if>
+            <if test="tanLuodu != null  and tanLuodu != '' "> tan_luodu,</if>
+            <if test="ksLevel != null  and ksLevel != '' "> ks_level,</if>
+            <if test="waterPart != null  and waterPart != '' "> water_part,</if>
+            <if test="locationTanluodu != null  and locationTanluodu != '' "> location_tanluodu,</if>
+            <!--<if test="ljfangliang != null  and ljfangliang != '' "> ljfangliang,</if>-->
+            <if test="isCarMoney != null  and isCarMoney != '' "> is_car_money,</if>
+            <if test="isCobblestone != null  and isCobblestone != '' "> is_cobblestone,</if>
+            <if test="timeoutfee != null  and timeoutfee != '' "> timeoutfee,</if>
+            <if test="bufang != null  and bufang != '' "> bufang,</if>
+            <if test="price != null  and price != '' "> price,</if>
+            <if test="officerMobile != null  and officerMobile != '' "> officer_mobile,</if>
+            <if test="officer != null  and officer != '' "> officer,</if>
+            <if test="receiver != null  and receiver != '' "> receiver,</if>
+            <if test="receivor != null  and receivor != '' "> receivor,</if>
+            <if test="receivorMobile != null  and receivorMobile != '' "> receivor_mobile,</if>
+            <if test="doDeptPart != null  and doDeptPart != '' "> do_dept_part,</if>
+            <if test="doDept != null  and doDept != '' "> do_dept,</if>
+            <if test="isOtherArea != null  and isOtherArea != '' "> is_other_area,</if>
+            <if test="isMixture != null  and isMixture != '' "> is_mixture,</if>
+            <if test="isSchedule != null  and isSchedule != '' "> is_schedule,</if>
+            <if test="mixNo != null  and mixNo != '' "> mix_no,</if>
+            <if test="mixor != null  and mixor != '' "> mixor,</if>
+            <if test="mixtime != null"> mixtime,</if>
+            <if test="financePause != null  and financePause != '' "> finance_pause,</if>
+            <if test="createBy != null  and createBy != '' "> create_by,</if>
+            <if test="updateBy != null  and updateBy != '' "> update_by,</if>
+            <if test="shajiangfl != null"> shajiangfl,</if>
+            <if test="carCnt != null  and carCnt != '' "> car_cnt,</if>
+            <if test="cancelBy != null  and cancelBy != '' "> cancel_by,</if>
+            <if test="contact != null  and contact != '' "> contact,</if>
+            <if test="planCarCnt != null "> plan_car_cnt,</if>
+            <if test="planEndTime != null"> plan_end_time,</if>
+            <if test="cartypeList != null and cartypeList !=''"> cartype_list,</if>
+            <if test="mixCar != null"> mix_car,</if>
+            <if test="maxCar != null"> max_car,</if>
+            <if test="height != null"> height,</if>
+            <if test="createId != null"> create_id,</if>
+            <if test="privilege != null"> privilege,</if>
+            <if test="remark != null"> remark,</if>
+            <if test="SyncStatus != null"> SyncStatus,</if>
+            <if test="SyncStatus2 != null"> SyncStatus2,</if>
+            <if test="maxcarfl != null"> maxcarfl,</if>
+            <if test="carsubfl != null"> carsubfl,</if>
+            <if test="carList != null"> car_list,</if>
+            <if test="topping != null"> topping,</if>
+            <if test="targetCarcnt != null"> target_carcnt,</if>
+            <if test="timeToTask != null"> time_to_task,</if>
+            <if test="productLine != null"> product_line,</if>
+            <if test="wjj != null and wjj!=''"> wjj,</if>
+            <if test="sandLevel != null and sandLevel!=''"> sand_level,</if>
+            <if test="stoneLevel != null and stoneLevel!=''"> stone_level,</if>
+            <if test="sendor != null and sendor!=''"> sendor,</if>
+            <if test="operator != null and operator!=''"> operator,</if>
+            <if test="cementLevel != null and cementLevel!=''"> cement_level,</if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null  and id != ''  ">#{id},</if>
+			<if test="name != null  and name != ''  ">#{name},</if>
+			<if test="planOrderNo != null  and planOrderNo != ''  ">#{planOrderNo},</if>
+			<if test="subTime != null  ">#{subTime},</if>
+			<if test="isGoodJob != null  and isGoodJob != ''  ">#{isGoodJob},</if>
+			<if test="isPinch != null  and isPinch != ''  ">#{isPinch},</if>
+			<if test="isJcdou != null  and isJcdou != ''  ">#{isJcdou},</if>
+			<if test="carType != null  ">#{carType},</if>
+			<if test="pinchFl != null  ">#{pinchFl},</if>
+			<if test="totalFl != null  ">#{totalFl},</if>
+			<if test="productKind != null  and productKind != ''  ">#{productKind},</if>
+			<if test="startTime != null  ">#{startTime},</if>
+			<if test="arriveTime != null  ">#{arriveTime},</if>
+			<if test="targetAddr != null  and targetAddr != ''  ">#{targetAddr},</if>
+			<if test="lon != null  and lon != ''  ">#{lon},</if>
+			<if test="lat != null  and lat != ''  ">#{lat},</if>
+
+            <if test="startAddr != null  and startAddr != ''  ">#{startAddr},</if>
+            <if test="startLng != null  and startLng != ''  ">#{startLng},</if>
+            <if test="startLat != null  and startLat != ''  ">#{startLat},</if>
+
+			<if test="createtime != null  ">#{createtime},</if>
+			<if test="status != null  ">#{status},</if>
+			<if test="pause != null  and pause != ''  ">#{pause},</if>
+			<if test="isAuto != null  and isAuto != ''  ">#{isAuto},</if>
+            <if test="waterMethod != null  and waterMethod != '' ">#{waterMethod},</if>
+            <if test="tanLuodu != null  and tanLuodu != '' "> #{tanLuodu},</if>
+            <if test="ksLevel != null  and ksLevel != '' "> #{ksLevel},</if>
+            <if test="waterPart != null  and waterPart != '' "> #{waterPart},</if>
+            <if test="locationTanluodu != null  and locationTanluodu != '' ">  #{locationTanluodu},</if>
+            <!--<if test="ljfangliang != null  and ljfangliang != '' ">  #{ljfangliang},</if>-->
+            <if test="isCarMoney != null  and isCarMoney != '' "> #{isCarMoney},</if>
+            <if test="isCobblestone != null  and isCobblestone != '' ">  #{isCobblestone},</if>
+            <if test="timeoutfee != null  and timeoutfee != '' "> #{timeoutfee},</if>
+            <if test="bufang != null  and bufang != '' "> #{bufang},</if>
+            <if test="price != null  and price != '' "> #{price},</if>
+            <if test="officerMobile != null  and officerMobile != '' "> #{officerMobile},</if>
+            <if test="officer != null  and officer != '' "> #{officer},</if>
+            <if test="receiver != null  and receiver != '' "> #{receiver},</if>
+            <if test="receivor != null  and receivor != '' "> #{receivor},</if>
+            <if test="receivorMobile != null  and receivorMobile != '' "> #{receivorMobile},</if>
+            <if test="doDeptPart != null  and doDeptPart != '' "> #{doDeptPart},</if>
+            <if test="doDept != null  and doDept != '' "> #{doDept},</if>
+            <if test="isOtherArea != null  and isOtherArea != '' "> #{isOtherArea},</if>
+            <if test="isMixture != null  and isMixture != '' "> #{isMixture},</if>
+            <if test="isSchedule != null  and isSchedule != '' "> #{isSchedule},</if>
+            <if test="mixNo != null  and mixNo != '' "> #{mixNo},</if>
+            <if test="mixor != null  and mixor != '' "> #{mixor},</if>
+            <if test="mixtime != null"> #{mixtime},</if>
+            <if test="financePause != null  and financePause != '' "> #{financePause},</if>
+            <if test="createBy != null  and createBy != '' "> #{createBy},</if>
+            <if test="updateBy != null  and updateBy != '' "> #{updateBy},</if>
+            <if test="shajiangfl != null "> #{shajiangfl},</if>
+            <if test="carCnt != null  and carCnt != '' "> #{carCnt},</if>
+            <if test="cancelBy != null  and cancelBy != '' "> #{cancelBy},</if>
+            <if test="contact != null  and contact != '' "> #{contact},</if>
+            <if test="planCarCnt != null "> #{planCarCnt},</if>
+            <if test="planEndTime != null "> #{planEndTime},</if>
+            <if test="cartypeList != null and cartypeList != '' "> #{cartypeList},</if>
+            <if test="mixCar != null"> #{mixCar},</if>
+            <if test="maxCar != null"> #{maxCar},</if>
+            <if test="height != null"> #{height},</if>
+            <if test="createId != null"> #{createId},</if>
+            <if test="privilege != null"> #{privilege},</if>
+            <if test="remark != null"> #{remark},</if>
+            <if test="SyncStatus != null"> #{SyncStatus},</if>
+            <if test="SyncStatus2 != null"> #{SyncStatus2},</if>
+            <if test="maxcarfl != null"> #{maxcarfl},</if>
+            <if test="carsubfl != null"> #{carsubfl},</if>
+            <if test="carList != null"> #{carList},</if>
+            <if test="topping != null"> #{topping},</if>
+            <if test="targetCarcnt != null"> #{targetCarcnt},</if>
+            <if test="timeToTask != null"> #{timeToTask},</if>
+            <if test="productLine != null"> #{productLine},</if>
+            <if test="wjj != null and wjj!=''"> #{wjj},</if>
+            <if test="sandLevel != null and sandLevel!=''"> #{sandLevel},</if>
+            <if test="stoneLevel != null and stoneLevel!=''"> #{stoneLevel},</if>
+            <if test="sendor != null and sendor!=''"> #{sendor},</if>
+            <if test="operator != null and operator!=''"> #{operator},</if>
+            <if test="cementLevel != null and cementLevel!=''"> #{cementLevel},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateTasks" parameterType="Tasks">
+        update tb_tasks
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''  ">name = #{name},</if>
+            <if test="subTime != null  ">sub_time = #{subTime},</if>
+            <if test="isGoodJob != null  and isGoodJob != ''  ">is_good_job = #{isGoodJob},</if>
+            <if test="isPinch != null  and isPinch != ''  ">is_pinch = #{isPinch},</if>
+            <if test="isJcdou != null  and isJcdou != ''  ">is_jcdou = #{isJcdou},</if>
+            <if test="carType != null  ">car_type = #{carType},</if>
+            <if test="pinchFl != null  ">pinch_fl = #{pinchFl},</if>
+            <if test="totalFl != null  ">total_fl = #{totalFl},</if>
+            <if test="productKind != null  and productKind != ''  ">product_kind = #{productKind},</if>
+            <if test="startTime != null  ">start_time = date_format(#{startTime},'%y-%m-%d %H:%i:%s'),</if>
+            <if test="arriveTime != null  ">arrive_time =  date_format(#{arriveTime},'%y-%m-%d %H:%i:%s'),</if>
+            <if test="targetAddr != null  and targetAddr != ''  ">target_addr = #{targetAddr},</if>
+            <if test="lon != null  and lon != ''  ">lon = #{lon},</if>
+            <if test="lat != null  and lat != ''  ">lat = #{lat},</if>
+
+            <if test="startAddr != null  and startAddr != ''  ">start_addr = #{startAddr},</if>
+            <if test="startLng != null  and startLng != ''  ">start_lng = #{startLng},</if>
+            <if test="startLat != null  and startLat != ''  ">start_lat = #{startLat},</if>
+
+            <if test="status != null  ">status = #{status},</if>
+            <if test="pause != null  and pause != ''  ">pause = #{pause},</if>
+            <if test="isAuto != null  and isAuto != ''  ">is_auto = #{isAuto},</if>
+            <if test="waterMethod != null  and waterMethod != '' "> water_method = #{waterMethod},</if>
+            <if test="tanLuodu != null  and tanLuodu != '' "> tan_luodu = #{tanLuodu},</if>
+            <if test="ksLevel != null  and ksLevel != '' "> ks_level = #{ksLevel},</if>
+            <if test="waterPart != null  and waterPart != '' "> water_part = #{waterPart},</if>
+            <if test="locationTanluodu != null  and locationTanluodu != '' "> location_tanluodu = #{locationTanluodu},</if>
+            <if test="ljfangliang != null  and ljfangliang != '' "> ljfangliang = #{ljfangliang},</if>
+            <if test="lastCarTime != null "> last_car_time = date_format(#{lastCarTime},'%y-%m-%d %H:%i:%s'),</if>
+            <if test="isCarMoney != null  and isCarMoney != '' "> is_car_money  = #{isCarMoney},</if>
+            <if test="isCobblestone != null  and isCobblestone != '' "> is_cobblestone= #{isCobblestone},</if>
+            <if test="timeoutfee != null  and timeoutfee != '' "> timeoutfee= #{timeoutfee},</if>
+            <if test="bufang != null  and bufang != '' "> bufang = #{bufang},</if>
+            <if test="price != null  and price != '' "> price= #{price},</if>
+            <if test="officerMobile != null  and officerMobile != '' "> officer_mobile= #{officerMobile},</if>
+            <if test="officer != null  and officer != '' "> officer= #{officer},</if>
+            <if test="receiver != null  and receiver != '' "> receiver= #{receiver},</if>
+            <if test="receivor != null  and receivor != '' "> receivor= #{receivor},</if>
+            <if test="receivorMobile != null  and receivorMobile != '' "> receivor_mobile= #{receivorMobile},</if>
+            <if test="doDeptPart != null  and doDeptPart != '' "> do_dept_part= #{doDeptPart},</if>
+            <if test="doDept != null  and doDept != '' "> do_dept= #{doDept},</if>
+            <if test="isOtherArea != null  and isOtherArea != '' "> is_other_area= #{isOtherArea},</if>
+            <if test="isMixture != null  and isMixture != '' "> is_mixture= #{isMixture},</if>
+            <if test="isSchedule != null  and isSchedule != '' "> is_schedule= #{isSchedule},</if>
+            <if test="mixNo != null  and mixNo != '' "> mix_no= #{mixNo},</if>
+            <if test="mixor != null  and mixor != '' "> mixor= #{mixor},</if>
+            <if test="mixtime != null "> mixtime= date_format(#{mixtime},'%y-%m-%d %H:%i:%s'),</if>
+            <if test="financePause != null  and financePause != '' "> finance_pause= #{financePause},</if>
+            <if test="createBy != null  and createBy != '' "> create_by= #{createBy},</if>
+            <if test="updateBy != null  and updateBy != '' "> update_by= #{updateBy},</if>
+            <if test="shajiangfl != null "> shajiangfl= #{shajiangfl},</if>
+            <if test="carCnt != null "> car_cnt= #{carCnt},</if>
+            <if test="cancelBy != null  and cancelBy != '' "> cancel_by= #{cancelBy},</if>
+            <if test="contact != null  and contact != '' "> contact= #{contact},</if>
+            <if test="planCarCnt != null "> plan_car_cnt= #{planCarCnt},</if>
+            <if test="planEndTime != null"> plan_end_time=date_format(#{planEndTime},'%y-%m-%d %H:%i:%s'),</if>
+            <if test="cartypeList != null and cartypeList != '' "> cartype_list=#{cartypeList},</if>
+            <if test="mixCar != null"> mix_car=#{mixCar},</if>
+            <if test="mixCar != null"> max_car=#{maxCar},</if>
+            <if test="height != null"> height=#{height},</if>
+            <if test="createId != null"> create_id=#{createId},</if>
+            <if test="privilege != null"> privilege=#{privilege},</if>
+            <if test="remark != null"> remark=#{remark},</if>
+            <if test="SyncStatus != null and SyncStatus == -1"> SyncStatus=null,</if>
+            <if test="SyncStatus != null and SyncStatus != -1"> SyncStatus=#{SyncStatus},</if>
+            <if test="SyncStatus2 != null"> SyncStatus2=#{SyncStatus2},</if>
+            <if test="maxcarfl != null"> maxcarfl=#{maxcarfl},</if>
+            <if test="carsubfl != null"> carsubfl=#{carsubfl},</if>
+            <if test="carList != null"> car_list=#{carList},</if>
+            <if test="targetCarcnt != null"> target_carcnt=#{targetCarcnt},</if>
+            <if test="topping != null"> topping=#{topping},</if>
+            <if test="timeToTask != null"> time_to_task=#{timeToTask},</if>
+            <if test="productLine != null"> product_line=#{productLine},</if>
+            <if test="wjj != null and wjj!=''">wjj= #{wjj},</if>
+            <if test="sandLevel != null and sandLevel!=''">sand_level= #{sandLevel},</if>
+            <if test="stoneLevel != null and stoneLevel!=''">stone_level= #{stoneLevel},</if>
+            <if test="sendor != null and sendor!=''">sendor= #{sendor},</if>
+            <if test="operator != null and operator!=''">operator= #{operator},</if>
+            <if test="cementLevel != null and cementLevel!=''">cement_level= #{cementLevel},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateTopping">
+        <if test="topping!=null and topping==0">
+            update tb_tasks set topping =0 where id = #{id} and <![CDATA[topping  <> 0]]>
+        </if>
+        <if test="topping!=null and topping==1">
+            update tb_tasks t,(select count(id) as cnt from tb_tasks where topping = 1 ) c
+            set t.topping = 1
+            where t.id = #{id} and <![CDATA[t.topping <> 1]]>
+            and c.cnt=0
+        </if>
+    </update>
+    <update id="updateTasksSyncstatusByNumber">
+        update tb_tasks set SyncStatus = 1 where plan_order_no = #{taskNumber}
+    </update>
+
+	<delete id="deleteTasksById" parameterType="String">
+        delete from tb_tasks where id = #{id}
+    </delete>
+	
+    <delete id="deleteTasksByIds" parameterType="String">
+        delete from tb_tasks where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectCarByTask" parameterType="String" resultMap="CarResult">
+                        select DISTINCT c.car_no,c.`owner`,c.owner_phone,c.imei,c.mobile,c.car_num,c.vin,c.type from tb_car c
+                                        left join tb_tasks_cars tc on c.id = tc.car_id where tc.task_id = #{taskId}
+    </select>
+    
+</mapper>

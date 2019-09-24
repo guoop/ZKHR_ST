@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改产线')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-productLine-edit" th:object="${productLine}">
+            <input id="id" name="id" th:field="*{id}"  type="hidden">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">产线号：</label>
+				<div class="col-sm-8">
+					<input id="productLine" name="productLine" th:field="*{productLine}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">最低门的高度：</label>
+				<div class="col-sm-8">
+					<input id="mixheight" name="mixheight" th:field="*{mixheight}" class="form-control" type="number">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">最低门的名称：</label>
+				<div class="col-sm-8">
+					<input id="mixDoorName" name="mixDoorName"  th:field="*{mixDoorName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">高门的名称：</label>
+				<div class="col-sm-8">
+					<input id="maxDoorName" name="maxDoorName"   th:field="*{maxDoorName}" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">石子类型：</label>
+				<div class="col-sm-8">
+					<label class="radio-box"> <input type="radio" th:field="*{stoneType}" name="stoneType" value="0" /> 青石 </label>
+					<label class="radio-box"> <input type="radio" th:field="*{stoneType}" name="stoneType" value="1" /> 卵石 </label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-4 control-label">主机状态：</label>
+				<div class="col-sm-8">
+					<div class="onoffswitch">
+						<input type="checkbox" th:checked="${productLine.state == 0 ? true : false}" class="onoffswitch-checkbox" id="state">
+						<label class="onoffswitch-label" for="state">
+							<span class="onoffswitch-inner"></span>
+							<span class="onoffswitch-switch"></span>
+						</label>
+					</div>
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "lines/productLine";
+		$("#form-productLine-edit").validate({
+			rules:{
+				xxxx:{
+					required:true,
+				},
+			},
+			focusCleanup: true
+		});
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+                var state = $("input[id='state']").is(':checked') == true ? 0 : 1;
+                var data = $("#form-productLine-edit").serializeArray();
+                data.push({"name": "state", "value": state});
+	            $.operate.save(prefix + "/edit", data);
+	        }
+	    }
+	</script>
+</body>
+</html>

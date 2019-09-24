@@ -1,0 +1,7 @@
+Application Version: ${shangtong.version}
+Spring Boot Version: ${spring-boot.version}
+#############################################
+#                                           #
+#            商砼站系统启动中....           #
+#                                           #
+#############################################

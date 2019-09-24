@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('库存数据列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								ERP运输单号：<input type="text" name="lineID"/>
+							</li>
+
+							<li>
+								：<input type="text" name="stockTime"/>
+							</li>
+
+							<li>
+								KuChun1：<input type="text" name="kuChun1"/>
+							</li>
+
+							<li>
+								KuChun2：<input type="text" name="kuChun2"/>
+							</li>
+
+							<li>
+								KuChun3：<input type="text" name="kuChun3"/>
+							</li>
+
+							<li>
+								KuChun4：<input type="text" name="kuChun4"/>
+							</li>
+
+							<li>
+								KuChun5：<input type="text" name="kuChun5"/>
+							</li>
+
+							<li>
+								KuChun6：<input type="text" name="kuChun6"/>
+							</li>
+
+							<li>
+								KuChun7：<input type="text" name="kuChun7"/>
+							</li>
+
+							<li>
+								KuChun8：<input type="text" name="kuChun8"/>
+							</li>
+
+							<li>
+								KuChun9：<input type="text" name="kuChun9"/>
+							</li>
+
+							<li>
+								KuChun10：<input type="text" name="kuChun10"/>
+							</li>
+
+							<li>
+								KuChun11：<input type="text" name="kuChun11"/>
+							</li>
+
+							<li>
+								KuChun12：<input type="text" name="kuChun12"/>
+							</li>
+
+							<li>
+								KuChun13：<input type="text" name="kuChun13"/>
+							</li>
+
+							<li>
+								KuChun14：<input type="text" name="kuChun14"/>
+							</li>
+
+							<li>
+								KuChun15：<input type="text" name="kuChun15"/>
+							</li>
+
+							<li>
+								KuChun16：<input type="text" name="kuChun16"/>
+							</li>
+
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="cemslink:stock:add">
+					<i class="fa fa-plus"></i> 添加
+				</a>
+				<a class="btn btn-primary btn-edit disabled" onclick="$.operate.edit()" shiro:hasPermission="cemslink:stock:edit">
+					<i class="fa fa-edit"></i> 修改
+				</a>
+				<a class="btn btn-danger btn-del btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="cemslink:stock:remove">
+					<i class="fa fa-remove"></i> 删除
+				</a>
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="cemslink:stock:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('cemslink:stock:edit')}]];
+        var removeFlag = [[${@permission.hasPermi('cemslink:stock:remove')}]];
+        var prefix = ctx + "cemslink/stock";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                createUrl: prefix + "/add",
+                updateUrl: prefix + "/edit/{id}",
+                removeUrl: prefix + "/remove",
+				exportUrl: prefix + "/export",
+                modalName: "库存数据",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'sID', 
+					title : '序列号',
+					visible: false
+				},
+				{
+					field : 'lineID', 
+					title : 'ERP运输单号',
+					sortable: true
+				},
+				{
+					field : 'stockTime', 
+					title : '',
+					sortable: true
+				},
+				{
+					field : 'kuChun1', 
+					title : 'KuChun1',
+					sortable: true
+				},
+				{
+					field : 'kuChun2', 
+					title : 'KuChun2',
+					sortable: true
+				},
+				{
+					field : 'kuChun3', 
+					title : 'KuChun3',
+					sortable: true
+				},
+				{
+					field : 'kuChun4', 
+					title : 'KuChun4',
+					sortable: true
+				},
+				{
+					field : 'kuChun5', 
+					title : 'KuChun5',
+					sortable: true
+				},
+				{
+					field : 'kuChun6', 
+					title : 'KuChun6',
+					sortable: true
+				},
+				{
+					field : 'kuChun7', 
+					title : 'KuChun7',
+					sortable: true
+				},
+				{
+					field : 'kuChun8', 
+					title : 'KuChun8',
+					sortable: true
+				},
+				{
+					field : 'kuChun9', 
+					title : 'KuChun9',
+					sortable: true
+				},
+				{
+					field : 'kuChun10', 
+					title : 'KuChun10',
+					sortable: true
+				},
+				{
+					field : 'kuChun11', 
+					title : 'KuChun11',
+					sortable: true
+				},
+				{
+					field : 'kuChun12', 
+					title : 'KuChun12',
+					sortable: true
+				},
+				{
+					field : 'kuChun13', 
+					title : 'KuChun13',
+					sortable: true
+				},
+				{
+					field : 'kuChun14', 
+					title : 'KuChun14',
+					sortable: true
+				},
+				{
+					field : 'kuChun15', 
+					title : 'KuChun15',
+					sortable: true
+				},
+				{
+					field : 'kuChun16', 
+					title : 'KuChun16',
+					sortable: true
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.sID + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.sID + '\')"><i class="fa fa-remove"></i>删除</a>');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

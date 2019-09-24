@@ -1,0 +1,354 @@
+body {
+  padding-bottom: 50px;
+}
+ul,
+li {
+  padding: 0;
+  list-style: none;
+}
+.od-title {
+  font-size: 1.6rem;
+  color: #000;
+}
+.manager-root {
+  padding-top: 15px;
+}
+.manager-nav-tabs {
+  padding: 10px 15px 0;
+}
+.manager-root .page-header {
+  margin-top: 0;
+  padding: 0 15px;
+}
+.manager-root .page-header h3 {
+  margin: 0;
+}
+.manager-root .arrivetime {
+  cursor: pointer;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+.tab-content {}
+.manager-map {
+  width: 100%;
+  position: absolute;
+  top: 50px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+}
+#manager_map {
+  width: 100%;
+  height: 100%;
+}
+.formtab {
+  padding: 0 15px;
+  background: #fff;
+  min-height: calc(100vh - 114px);
+}
+.navbar-collapse {
+  position: absolute;
+  z-index: 9;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  border: 0px;
+  color: #fff;
+}
+.js-example-basic-multiple {
+  width: 100%;
+}
+.carno {
+  margin: 0 15px;
+  display: flex;
+  flex-wrap: wrap;
+  display: none;
+}
+.carno-li {
+  color: #606266;
+  font-weight: 500;
+  line-height: 1;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  white-space: nowrap;
+  outline: none;
+  font-size: 14px;
+  user-select: none;
+  padding: 6px 8px;
+  min-width: 56px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+  margin: 5px;
+}
+.carno-li.active {
+  background: #2e6da4;
+  color: #fff;
+}
+.carno-icon {
+  display: inline-block;
+  vertical-align: middle;
+  color: #606266;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  outline: none;
+  font-size: 14px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  border: 1px solid #dcdfe6;
+  border-radius: 100%;
+  width: 14px;
+  height: 14px;
+  background-color: #fff;
+  position: relative;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+.carno .active .carno-icon {
+  border-color: #409eff;
+  background: #409eff;
+}
+.carno .active .carno-icon:after {
+  transform: translate(-50%, -50%) scale(1);
+}
+.carno-icon:after {
+  transform: translate(-50%, -50%) scale(0);
+  width: 4px;
+  height: 4px;
+  border-radius: 100%;
+  background-color: #fff;
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transition: transform .15s ease-in;
+}
+.carno-txt {
+  font-size: 14px;
+}
+.carno-label-icon {
+  width: 15px;
+  transition: all .4s;
+  position: absolute;
+  margin: 7px 0 0 0;
+}
+.carno-label-div.active .carno-label-icon {
+  transform: rotate(0.5turn);
+}
+/*实验室*/
+.sy-root {
+  padding-top: 15px;
+}
+
+#sy_root .table {
+  text-align: center;
+}
+#sy_root .table-head th:nth-child(1) {
+  width: 200px;
+}
+#sy_root tbody>tr>td:nth-child(1) {
+  width: 200px;
+}
+#sy_root .table td {
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+.sy-orders {
+  margin: 0 5px;
+  border: 1px solid #ccc;
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+.sy-orders-th {
+  display: flex;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+}
+.sy-orders-item {
+  padding: 8px 10px;
+}
+.sy-orders-item:nth-child(1) {
+  width: 70%;
+  border-right: 1px solid #ccc;
+}
+.sy-orders-item:nth-child(2) {
+  width: 30%;
+}
+.sy-orders-tr {
+  transition: all .4s;
+  display: flex;
+  border-bottom: 1px solid #ccc;
+}
+.bzr-tr.activety,
+.sy-orders-tr.active,
+.sy-list.activety {
+  color: #001c8e;
+  background: #d9edf7;
+}
+
+.com-nav {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  background: #eee;
+  border-top: 1px solid #ccc;
+  display: flex;
+  justify-content: space-around;
+  height: 40px;
+  line-height: 40px;
+  padding: 0;
+  margin: 0;
+  z-index: 1;
+}
+.com-nav-li {
+  flex: 1;
+  text-align: center;
+}
+.com-nav-home {
+  font-size: 22px;
+  padding: 2px 5px 0;
+}
+.com-nav-li.active {
+  color: #2e6da4;
+}
+.com-nav-li:active {
+  background: rgba(0, 0, 0, .1);
+}
+.com-nav-li a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.bzr-tools {
+  padding: 10px 0;
+}
+.bzr-tools .btn {
+  margin-right: 10px;
+}
+.bzr-add-input {
+  display: block;
+  width: 100%;
+}
+.bzr-add-table {
+  transition: all .4s;
+  display: none;
+  opacity: 0;
+  padding: 10px 0 20px;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow-y: scroll;
+  z-index: 1;
+  padding-bottom: 50px;
+}
+.bzr-add-table.active {
+  display: block;
+  opacity: 1;
+}
+.bzr-add-tools {
+  text-align: center;
+}
+.bzr-add-tools .btn-primary {
+  margin-right: 30px;
+}
+.manager-stop-list {
+  padding: 0 15px;
+}
+.manager-stop-list .van-row--justify-space-around {
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding: 5px 0;
+}
+.manager-stop-list-header .van-row--justify-space-around {
+  padding: 20px 0;
+}
+.lab-tasklist {}
+.lab-tasklist-row {
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+}
+.lab-tasklist .van-col {
+  padding: 8px 0;
+}
+.lab-tasklist-row-head {
+  font-weight: bold;
+  border-bottom: 1px solid #333;
+}
+.btn-center {
+  display: flex;
+  margin: 10px;
+  justify-content: space-around;
+}
+.btn-center .van-button{
+  margin: 10px;
+}
+.manager_map_box {
+  width: 100%;
+  height: calc(100vh - 38px);
+  position: absolute;
+  top: 0;
+  left: 100%;
+  z-index: 99;
+  transition: all 1s;
+}
+.show-map {
+  left: 0;
+}
+.product-line {
+  display: inline-block;
+  border: 1px solid #f00;
+  line-height: 22px;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  border-radius: 50%;
+  background: #f66;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0 4px 0 0;
+}
+.map-header {
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  font-size: 14px;
+  height: 25px;
+  align-items: center;
+}
+.map-header-txt {
+  color: #1989fa;
+  padding: 0 15px;
+}
+.mix-noa {
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  line-height: 15px;
+  background: #f33;
+  color: #fff;
+  font-weight: bold;
+  display: inline-block;
+  text-align: center;
+}
+.mix-notify {
+  margin: 10px 0;
+  text-align: center;
+  color: #ff976a;
+  font-weight: bold;
+}

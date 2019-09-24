@@ -1,0 +1,273 @@
+html {
+  height: 100%;
+}
+body .show {
+  display: block;
+}
+.root {
+  margin-top: 50px;
+  margin-bottom: 600px;
+  font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Source Han Sans SC, Noto Sans CJK SC, WenQuanYi Micro Hei;
+}
+.hide {
+  display: none;
+}
+.line_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.line-box {
+  display: flex;
+  align-items: center;
+  margin: 60px 10px;
+}
+.notpc .line-box {
+  width: 100%;
+  justify-content: center;
+}
+.line {
+  position: relative;
+  width: 660px;
+  height: 80px;
+  box-sizing: border-box;
+  border-radius: 40px;
+}
+.notpc .line {
+  width: 95%;
+}
+.line-bg-box {
+  overflow: hidden;
+}
+.line-bg-box,
+.line-bg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 40px;
+}
+.line-area {
+  position: absolute;
+  width: 100%;
+  height: 0;
+  z-index: 3;
+  padding: 80px 0 0 0;
+  border-radius: 5px;
+  transition: all 0.8s;
+  overflow: hidden;
+  cursor: pointer;
+}
+.line-area-con {
+  background-color: #fff;
+  padding: 20px 15px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, .2);
+  border-radius: 10px;
+  font-size: 14px;
+  color: #222;
+  max-height: 600px;
+  overflow-y: scroll;
+}
+.line-innerbox {
+  width: 96.4%;
+  height: 100%;
+  border-radius: 40px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+.line-inner {
+  width: 0;
+  height: 100%;
+  background: #26e66e;
+}
+/*车辆*/
+.line-car_go,
+.line-car_back {
+  position: absolute;
+  display: inline-block;
+  width: 37px;
+  height: 24px;
+  background-image: url("../../img/tasks/car.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: -24px 0 0 0;
+  transition: all 1s;
+}
+.line-car_go.redcar,
+.line-car_back.redcar {
+  background-image: url("../../img/tasks/car-red.png");
+}
+.line-car_back {
+  transform: rotateY(180deg);
+  margin-top: 46px;
+}
+.line-car-info {
+  position: absolute;
+  word-break: keep-all;
+  font-size: 12px;
+  background: #434343;
+  color: #fff;
+  padding: 2px 2px;
+  border-radius: 2px;
+  right: 0;
+  white-space: nowrap;
+}
+.line-car-info:before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-width: 5px;
+  border-style: solid;
+  position: absolute;
+  color: #434343;
+  z-index: -1;
+  top: 10px;
+}
+.line-car_go .line-car-info:before {
+  border-color: #434343 transparent transparent transparent;
+  margin: 10px 0 0 0;
+  right: 10px;
+}
+.line-car_back .line-car-info:before {
+  border-color: transparent transparent #434343 transparent;
+  margin: -20px 0 0 0;
+  left: 10px;
+}
+.line-car_go .line-car-info {
+  margin: -25px 0 0 0;
+}
+.line-car_back .line-car-info {
+  transform: rotateY(180deg);
+  margin: 30px 0 0 0;
+}
+.btn-box {
+  padding: 10px;
+  font-size: 16px;
+}
+.btn-img {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 5px;
+}
+.btn-img-text {
+  display: inline-block;
+}
+.btn-start {
+  margin-left: 10px;
+  cursor: pointer;
+}
+.notpc .btn-start {
+  display: none;
+}
+.line-icon_start,
+.line-icon_end {
+  height: 60%;
+  position: absolute;
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  line-height: 45px;
+  text-align: center;
+  color: #fff;
+  font-size: 28px;
+}
+.line-icon_start {
+  margin: 15px 0 0 22px;
+  background: #097c25;
+}
+.line-icon_end {
+  right: 22px;
+  margin: 15px 0 0 0;
+  background: #854334;
+}
+.tesk-name {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 1;
+  padding: 0 70px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.shake {
+  animation: shake 1.5s linear infinite;
+}
+@keyframes shake {
+  0% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+/*详情样式*/
+.tv-p {
+  margin: 5px 0;
+}
+.tv-label {
+  color: #666;
+  font-weight: bold;
+  padding: 0 10px 0 0;
+}
+.tv-cars {
+  padding: 6px 15px;
+}
+.tv-cars .tv-label {
+  color: #000;
+}
+.tv-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+}
+.tv-list li {
+  border-bottom: 1px solid #ccc;
+  padding: 2px 0 0 0;
+  display: flex;
+}
+.tv-col {
+  display: inline-block;
+  width: 20%;
+  padding: 2px 0;
+}
+.tv-thead {
+  font-weight: bold;
+  font-size: 13px;
+}
+.task-handrefresh {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  width: 180px;
+  height: 60px;
+  font-size: 30px;
+  display: none;
+}
+.pline-row {
+  text-align: center;
+  margin: 5px;
+}
+.pline-switch {
+  margin: 0 4px 0 0;
+}
+.lineapp {
+  border-bottom: 1px solid #eee;
+  padding: 0 0 5px 0;
+  font-weight: bold;
+  display: none;
+}
+.lineapp .el-radio__label {
+  font-weight: bold;
+}
+.tiaodan-mg {
+  height: 5px;
+}

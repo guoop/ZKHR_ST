@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.cemslink.preproduction.mapper.PreproductionMapper">
+    
+    <resultMap type="Preproduction" id="PreproductionResult">
+        <result property="sID"    column="SID"    />
+        <result property="productNumber"    column="ProductNumber"    />
+        <result property="productLine"    column="ProductLine"    />
+        <result property="taskNumber"    column="TaskNumber"    />
+        <result property="mixNumber"    column="MixNumber"    />
+        <result property="isMortar"    column="IsMortar"    />
+        <result property="customerName"    column="CustomerName"    />
+        <result property="projectName"    column="ProjectName"    />
+        <result property="unitName"    column="UnitName"    />
+        <result property="constructionPart"    column="ConstructionPart"    />
+        <result property="constructionAddress"    column="ConstructionAddress"    />
+        <result property="pouringWay"    column="PouringWay"    />
+        <result property="concreteLabel"    column="ConcreteLabel"    />
+        <result property="slump"    column="Slump"    />
+        <result property="distance"    column="Distance"    />
+        <result property="innerNumber"    column="InnerNumber"    />
+        <result property="plateNumber"    column="PlateNumber"    />
+        <result property="driver"    column="Driver"    />
+        <result property="transportAmount"    column="TransportAmount"    />
+        <result property="productAmount"    column="ProductAmount"    />
+        <result property="pieceAmount"    column="PieceAmount"    />
+        <result property="pieceCount"    column="PieceCount"    />
+        <result property="transportOrder"    column="TransportOrder"    />
+        <result property="sort"    column="Sort"    />
+        <result property="state"    column="State"    />
+        <result property="accumulativeAmount"    column="AccumulativeAmount"    />
+        <result property="ipcProductNumber"    column="IpcProductNumber"    />
+        <result property="remark"    column="Remark"    />
+        <result property="syncStatus"    column="SyncStatus"    />
+        <result property="syncStatus2"    column="SyncStatus2"    />
+    </resultMap>
+
+    <resultMap type="PreproductionQueue" id="PreproductionQueueResult">
+        <result property="cntCar"    column="cntCar"    />
+        <result property="productLine"    column="ProductLine"    />
+    </resultMap>
+	
+	<sql id="selectPreproductionVo">
+        select SID, ProductNumber, ProductLine, TaskNumber, MixNumber, IsMortar, CustomerName, ProjectName, UnitName, ConstructionPart, ConstructionAddress, PouringWay, ConcreteLabel, Slump, Distance, InnerNumber, PlateNumber, Driver, TransportAmount, ProductAmount, PieceAmount, PieceCount, TransportOrder, Sort, State, AccumulativeAmount, IpcProductNumber, Remark, SyncStatus, SyncStatus2 from preproduction
+    </sql>
+
+    <select id="selectOneProducting" parameterType="Preproduction" resultMap="PreproductionResult">
+        select top 1 * from preproduction where state is null and syncStatus=1
+    </select>
+	
+    <select id="selectPreproductionList" parameterType="Preproduction" resultMap="PreproductionResult">
+        <include refid="selectPreproductionVo"/>
+        <where>  
+            <if test="sID != null "> and SID = #{sID}</if>
+             <if test="productNumber != null  and productNumber != '' "> and ProductNumber = #{productNumber}</if>
+             <if test="productLine != null "> and ProductLine = #{productLine}</if>
+             <if test="taskNumber != null  and taskNumber != '' "> and TaskNumber = #{taskNumber}</if>
+             <if test="mixNumber != null  and mixNumber != '' "> and MixNumber = #{mixNumber}</if>
+             <if test="isMortar != null "> and IsMortar = #{isMortar}</if>
+             <if test="customerName != null  and customerName != '' "> and CustomerName = #{customerName}</if>
+             <if test="projectName != null  and projectName != '' "> and ProjectName = #{projectName}</if>
+             <if test="unitName != null  and unitName != '' "> and UnitName = #{unitName}</if>
+             <if test="constructionPart != null  and constructionPart != '' "> and ConstructionPart = #{constructionPart}</if>
+             <if test="constructionAddress != null  and constructionAddress != '' "> and ConstructionAddress = #{constructionAddress}</if>
+             <if test="pouringWay != null  and pouringWay != '' "> and PouringWay = #{pouringWay}</if>
+             <if test="concreteLabel != null  and concreteLabel != '' "> and ConcreteLabel = #{concreteLabel}</if>
+             <if test="slump != null  and slump != '' "> and Slump = #{slump}</if>
+             <if test="distance != null "> and Distance = #{distance}</if>
+             <if test="innerNumber != null  and innerNumber != '' "> and InnerNumber = #{innerNumber}</if>
+             <if test="plateNumber != null  and plateNumber != '' "> and PlateNumber = #{plateNumber}</if>
+             <if test="driver != null  and driver != '' "> and Driver = #{driver}</if>
+             <if test="transportAmount != null "> and TransportAmount = #{transportAmount}</if>
+             <if test="productAmount != null "> and ProductAmount = #{productAmount}</if>
+             <if test="pieceAmount != null "> and PieceAmount = #{pieceAmount}</if>
+             <if test="pieceCount != null "> and PieceCount = #{pieceCount}</if>
+             <if test="transportOrder != null "> and TransportOrder = #{transportOrder}</if>
+             <if test="sort != null "> and Sort = #{sort}</if>
+             <if test="state != null "> and State = #{state}</if>
+             <if test="accumulativeAmount != null "> and AccumulativeAmount = #{accumulativeAmount}</if>
+             <if test="ipcProductNumber != null  and ipcProductNumber != '' "> and IpcProductNumber = #{ipcProductNumber}</if>
+             <if test="remark != null  and remark != '' "> and Remark = #{remark}</if>
+             <if test="syncStatus != null "> and SyncStatus = #{syncStatus}</if>
+             <if test="syncStatus2 != null "> and SyncStatus2 = #{syncStatus2}</if>
+            <if test="sqlWhere!=null and sqlWhere!= ''">  ${sqlWhere}</if>
+         </where>
+    </select>
+    
+    <select id="selectPreproductionById" parameterType="Long" resultMap="PreproductionResult">
+        <include refid="selectPreproductionVo"/>
+        where SID = #{sID}
+    </select>
+
+    <select id="getSortedPreproductionCars" resultMap="PreproductionQueueResult" parameterType="String">
+        SELECT ProductLine, COUNT (InnerNumber) cntCar
+        FROM
+          dbo.PreProduction
+        WHERE <![CDATA[ ( State < 2 OR State IS NULL ) ]]>
+        and ProductLine in
+        <foreach item="ProductLine" collection="array" open="(" separator="," close=")">
+            #{ProductLine}
+        </foreach>
+        GROUP BY ProductLine
+        ORDER BY COUNT (InnerNumber)
+    </select>
+
+
+    <select id="getAllSortedPreproductionCars" resultMap="PreproductionQueueResult" parameterType="String">
+        SELECT ProductLine, COUNT (InnerNumber) cntCar
+        FROM
+        dbo.PreProduction
+        WHERE <![CDATA[ ( State < 2 OR State IS NULL ) ]]>
+        GROUP BY ProductLine
+        ORDER BY COUNT (InnerNumber)
+    </select>
+
+
+    <!--选出生产线较少的那台主机-->
+    <select id="selectOneProductLine2do" resultMap="PreproductionResult">
+        SELECT top 1
+        t.productline ,
+        ISNULL(p.cnt,0) as cnt
+        FROM
+        ( SELECT DISTINCT ProductLine FROM PreProduction WHERE ProductLine IN
+            <foreach collection="list" item="productLine" open="(" separator=","  close=")">
+                #{productLine}
+            </foreach>
+        ) t
+        LEFT JOIN (
+        SELECT TOP
+        10 ProductLine,
+        COUNT ( SID ) AS cnt
+        FROM
+        PreProduction
+        WHERE
+        ( State IS NULL OR State = 1 )
+        AND ( sort > 0 OR sort IS NULL )
+        AND <![CDATA[ SyncStatus <> -1 ]]>
+        GROUP BY
+        ProductLine
+        ) p ON t.ProductLine = p.productLine
+        order by cnt asc
+    </select>
+        
+    <insert id="insertPreproduction" parameterType="Preproduction" useGeneratedKeys="true" keyProperty="sID">
+        insert into preproduction
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="productNumber != null  and productNumber != ''  ">ProductNumber,</if>
+			<if test="productLine != null  ">ProductLine,</if>
+			<if test="taskNumber != null  and taskNumber != ''  ">TaskNumber,</if>
+			<if test="mixNumber != null  and mixNumber != ''  ">MixNumber,</if>
+			<if test="isMortar != null  ">IsMortar,</if>
+			<if test="customerName != null  and customerName != ''  ">CustomerName,</if>
+			<if test="projectName != null  and projectName != ''  ">ProjectName,</if>
+			<if test="unitName != null  and unitName != ''  ">UnitName,</if>
+			<if test="constructionPart != null  and constructionPart != ''  ">ConstructionPart,</if>
+			<if test="constructionAddress != null  and constructionAddress != ''  ">ConstructionAddress,</if>
+			<if test="pouringWay != null  and pouringWay != ''  ">PouringWay,</if>
+			<if test="concreteLabel != null  and concreteLabel != ''  ">ConcreteLabel,</if>
+			<if test="slump != null  and slump != ''  ">Slump,</if>
+			<if test="distance != null  ">Distance,</if>
+			<if test="innerNumber != null  and innerNumber != ''  ">InnerNumber,</if>
+			<if test="plateNumber != null  and plateNumber != ''  ">PlateNumber,</if>
+			<if test="driver != null  and driver != ''  ">Driver,</if>
+			<if test="transportAmount != null  ">TransportAmount,</if>
+			<if test="productAmount != null  ">ProductAmount,</if>
+			<if test="pieceAmount != null  ">PieceAmount,</if>
+			<if test="pieceCount != null  ">PieceCount,</if>
+			<if test="transportOrder != null  ">TransportOrder,</if>
+			<if test="sort != null  ">Sort,</if>
+			<if test="state != null  ">State,</if>
+			<if test="accumulativeAmount != null  ">AccumulativeAmount,</if>
+			<if test="ipcProductNumber != null  and ipcProductNumber != ''  ">IpcProductNumber,</if>
+			<if test="remark != null  and remark != ''  ">Remark,</if>
+			<if test="syncStatus != null  ">SyncStatus,</if>
+			<if test="syncStatus2 != null  ">SyncStatus2,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="productNumber != null  and productNumber != ''  ">#{productNumber},</if>
+			<if test="productLine != null  ">#{productLine},</if>
+			<if test="taskNumber != null  and taskNumber != ''  ">#{taskNumber},</if>
+			<if test="mixNumber != null  and mixNumber != ''  ">#{mixNumber},</if>
+			<if test="isMortar != null  ">#{isMortar},</if>
+			<if test="customerName != null  and customerName != ''  ">#{customerName},</if>
+			<if test="projectName != null  and projectName != ''  ">#{projectName},</if>
+			<if test="unitName != null  and unitName != ''  ">#{unitName},</if>
+			<if test="constructionPart != null  and constructionPart != ''  ">#{constructionPart},</if>
+			<if test="constructionAddress != null  and constructionAddress != ''  ">#{constructionAddress},</if>
+			<if test="pouringWay != null  and pouringWay != ''  ">#{pouringWay},</if>
+			<if test="concreteLabel != null  and concreteLabel != ''  ">#{concreteLabel},</if>
+			<if test="slump != null  and slump != ''  ">#{slump},</if>
+			<if test="distance != null  ">#{distance},</if>
+			<if test="innerNumber != null  and innerNumber != ''  ">#{innerNumber},</if>
+			<if test="plateNumber != null  and plateNumber != ''  ">#{plateNumber},</if>
+			<if test="driver != null  and driver != ''  ">#{driver},</if>
+			<if test="transportAmount != null  ">#{transportAmount},</if>
+			<if test="productAmount != null  ">#{productAmount},</if>
+			<if test="pieceAmount != null  ">#{pieceAmount},</if>
+			<if test="pieceCount != null  ">#{pieceCount},</if>
+			<if test="transportOrder != null  ">#{transportOrder},</if>
+			<if test="sort != null  ">#{sort},</if>
+			<if test="state != null  ">#{state},</if>
+			<if test="accumulativeAmount != null  ">#{accumulativeAmount},</if>
+			<if test="ipcProductNumber != null  and ipcProductNumber != ''  ">#{ipcProductNumber},</if>
+			<if test="remark != null  and remark != ''  ">#{remark},</if>
+			<if test="syncStatus != null  ">#{syncStatus},</if>
+			<if test="syncStatus2 != null  ">#{syncStatus2},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updatePreproduction" parameterType="Preproduction">
+        update preproduction
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productNumber != null  and productNumber != ''  ">ProductNumber = #{productNumber},</if>
+            <if test="productLine != null  ">ProductLine = #{productLine},</if>
+            <if test="taskNumber != null  and taskNumber != ''  ">TaskNumber = #{taskNumber},</if>
+            <if test="mixNumber != null  and mixNumber != ''  ">MixNumber = #{mixNumber},</if>
+            <if test="isMortar != null  ">IsMortar = #{isMortar},</if>
+            <if test="customerName != null  and customerName != ''  ">CustomerName = #{customerName},</if>
+            <if test="projectName != null  and projectName != ''  ">ProjectName = #{projectName},</if>
+            <if test="unitName != null  and unitName != ''  ">UnitName = #{unitName},</if>
+            <if test="constructionPart != null  and constructionPart != ''  ">ConstructionPart = #{constructionPart},</if>
+            <if test="constructionAddress != null  and constructionAddress != ''  ">ConstructionAddress = #{constructionAddress},</if>
+            <if test="pouringWay != null  and pouringWay != ''  ">PouringWay = #{pouringWay},</if>
+            <if test="concreteLabel != null  and concreteLabel != ''  ">ConcreteLabel = #{concreteLabel},</if>
+            <if test="slump != null  and slump != ''  ">Slump = #{slump},</if>
+            <if test="distance != null  ">Distance = #{distance},</if>
+            <if test="innerNumber != null  and innerNumber != ''  ">InnerNumber = #{innerNumber},</if>
+            <if test="plateNumber != null  and plateNumber != ''  ">PlateNumber = #{plateNumber},</if>
+            <if test="driver != null  and driver != ''  ">Driver = #{driver},</if>
+            <if test="transportAmount != null  ">TransportAmount = #{transportAmount},</if>
+            <if test="productAmount != null  ">ProductAmount = #{productAmount},</if>
+            <if test="pieceAmount != null  ">PieceAmount = #{pieceAmount},</if>
+            <if test="pieceCount != null  ">PieceCount = #{pieceCount},</if>
+            <if test="transportOrder != null  ">TransportOrder = #{transportOrder},</if>
+            <if test="sort != null  ">Sort = #{sort},</if>
+            <if test="state != null  ">State = #{state},</if>
+            <if test="accumulativeAmount != null  ">AccumulativeAmount = #{accumulativeAmount},</if>
+            <if test="ipcProductNumber != null  and ipcProductNumber != ''  ">IpcProductNumber = #{ipcProductNumber},</if>
+            <if test="remark != null  and remark != ''  ">Remark = #{remark},</if>
+            <if test="syncStatus != null  ">SyncStatus = #{syncStatus},</if>
+            <if test="syncStatus2 != null  ">SyncStatus2 = #{syncStatus2},</if>
+        </trim>
+        where SID = #{sID}
+    </update>
+
+    <update id="updateMasterBuildingStatus">
+        update PreProduction set SyncStatus=1 where SyncStatus2 =1 and SyncStatus=0 and ConcreteLabel is null;
+        update PreProduction set SyncStatus2=1 where SyncStatus =1 and SyncStatus2=0 and ConcreteLabel is null;
+    </update>
+
+	<delete id="deletePreproductionById" parameterType="Long">
+        delete from preproduction where SID = #{sID}
+    </delete>
+	
+    <delete id="deletePreproductionByIds" parameterType="String">
+        delete from preproduction where SID in 
+        <foreach item="sID" collection="array" open="(" separator="," close=")">
+            #{sID}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.duties.curstomer.mapper.CurstomerMapper">
+    
+    <resultMap type="Curstomer" id="CurstomerResult">
+        <result property="cusId"    column="cus_id"    />
+        <result property="cusName"    column="cus_name"    />
+        <result property="cusPhone"    column="cus_phone"    />
+        <result property="cusAddress"    column="cus_address"    />
+        <result property="cusStatus"    column="cus_status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="creater"    column="creater"    />
+    </resultMap>
+	
+	<sql id="selectCurstomerVo">
+        select cus_id, cus_name, cus_phone, cus_address, cus_status, create_time, creater from tb_curstomer
+    </sql>
+	
+    <select id="selectCurstomerList" parameterType="Curstomer" resultMap="CurstomerResult">
+        <include refid="selectCurstomerVo"/>
+        <where>  
+            <if test="cusId != null "> and cus_id = #{cusId}</if>
+             <if test="cusName != null  and cusName != '' "> and cus_name = #{cusName}</if>
+             <if test="cusPhone != null  and cusPhone != '' "> and cus_phone = #{cusPhone}</if>
+             <if test="cusAddress != null  and cusAddress != '' "> and cus_address = #{cusAddress}</if>
+             <if test="cusStatus != null "> and cus_status = #{cusStatus}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="creater != null  and creater != '' "> and creater = #{creater}</if>
+         </where>
+    </select>
+    
+    <select id="selectCurstomerById" parameterType="Long" resultMap="CurstomerResult">
+        <include refid="selectCurstomerVo"/>
+        where cus_id = #{cusId}
+    </select>
+        
+    <insert id="insertCurstomer" parameterType="Curstomer" useGeneratedKeys="true" keyProperty="cusId">
+        insert into tb_curstomer
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="cusName != null  and cusName != ''  ">cus_name,</if>
+			<if test="cusPhone != null  and cusPhone != ''  ">cus_phone,</if>
+			<if test="cusAddress != null  and cusAddress != ''  ">cus_address,</if>
+			<if test="cusStatus != null  ">cus_status,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="creater != null  and creater != ''  ">creater,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="cusName != null  and cusName != ''  ">#{cusName},</if>
+			<if test="cusPhone != null  and cusPhone != ''  ">#{cusPhone},</if>
+			<if test="cusAddress != null  and cusAddress != ''  ">#{cusAddress},</if>
+			<if test="cusStatus != null  ">#{cusStatus},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="creater != null  and creater != ''  ">#{creater},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateCurstomer" parameterType="Curstomer">
+        update tb_curstomer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cusName != null  and cusName != ''  ">cus_name = #{cusName},</if>
+            <if test="cusPhone != null  and cusPhone != ''  ">cus_phone = #{cusPhone},</if>
+            <if test="cusAddress != null  and cusAddress != ''  ">cus_address = #{cusAddress},</if>
+            <if test="cusStatus != null  ">cus_status = #{cusStatus},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="creater != null  and creater != ''  ">creater = #{creater},</if>
+        </trim>
+        where cus_id = #{cusId}
+    </update>
+
+	<delete id="deleteCurstomerById" parameterType="Long">
+        delete from tb_curstomer where cus_id = #{cusId}
+    </delete>
+	
+    <delete id="deleteCurstomerByIds" parameterType="String">
+        delete from tb_curstomer where cus_id in 
+        <foreach item="cusId" collection="array" open="(" separator="," close=")">
+            #{cusId}
+        </foreach>
+    </delete>
+    
+</mapper>

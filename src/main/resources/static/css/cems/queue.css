@@ -1,0 +1,92 @@
+.door-container {
+  margin: 10px auto;
+  font-size: 14px;
+}
+.door-container .panel-default>.panel-heading {
+  font-size: 16px;
+  padding: 3px 0;
+}
+
+.door-panel-heading {
+  padding: 5px 0;
+  font-size: 18px;
+  text-align: center;
+}
+
+.door-cars {
+  display: flex;
+  justify-content: space-between;
+  /*justify-content: flex-start;*/
+  flex-wrap: wrap;
+}
+
+.door-car {
+  padding-left: 0;
+  padding-right: 0;
+  margin: 5px;
+  min-width: 102px;
+  font-size: 16px;
+}
+
+.door-zhuji .panel-body {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.door-zhuji .list-group {
+  margin-bottom: 0;
+}
+
+.door-zhuji .list-group-item {
+  border-left: 0;
+  border-right: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sheet-img {
+  margin: 0 auto;
+}
+
+.door-fang {
+  margin-right: 2px;
+  /*color: #f66;*/
+}
+
+.door-yname {
+  text-align: right;
+  font-size: 14px;
+}
+.cars-btns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0 0 0;
+  border-top: 1px dashed #ccc;
+  padding: 15px 0 0 0;
+}
+.cars-label {
+  margin: 0;
+}
+.cars-onoffswitch {
+  height: 24px;
+}
+.cars-tongzhibtn {
+  margin: 0 0 0 40px;
+}
+
+#fuban .cars-caractive, #zhuban .cars-caractive {
+  background: #66f;
+}
+.cars-checkbox {
+  margin-left: 20px;
+}
+.fuban-title {
+  cursor: pointer;
+}
+.fuban-body {
+  display: none;
+}
+#xixiancheliang{
+  margin-bottom: 15px;
+}

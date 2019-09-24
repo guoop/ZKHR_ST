@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.stock.receiveGoods.mapper.ReceiveGoodsMapper">
+    
+    <resultMap type="ReceiveGoods" id="ReceiveGoodsResult">
+        <result property="goodsid"    column="goodsid"    />
+        <result property="goodsname"    column="goodsname"    />
+        <result property="price"    column="price"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="materialType"    column="material_type"    />
+    </resultMap>
+
+    <!--库存实体映射类-->
+    <resultMap type="GoodsStoreReport" id="GoodsStoreReportResult">
+        <result property="goodsname"    column="goodsname"    />
+        <result property="price"    column="price"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="materialType"    column="material_type"    />
+    </resultMap>
+	
+	<sql id="selectReceiveGoodsVo">
+        select goodsid, goodsname, price, create_by, create_time, update_time,material_type from tb_receive_goods
+    </sql>
+	
+    <select id="selectReceiveGoodsList" parameterType="ReceiveGoods" resultMap="ReceiveGoodsResult">
+        <include refid="selectReceiveGoodsVo"/>
+        <where>  
+            <if test="goodsid != null "> and goodsid = #{goodsid}</if>
+             <if test="goodsname != null  and goodsname != '' "> and goodsname = #{goodsname}</if>
+             <if test="price != null "> and price = #{price}</if>
+             <if test="createBy != null  and createBy != '' "> and create_by = #{createBy}</if>
+             <if test="createTime != null "> and create_time = #{createTime}</if>
+             <if test="updateTime != null "> and update_time = #{updateTime}</if>
+             <if test="materialType != null and materialType!=''"> and material_type = #{materialType}</if>
+         </where>
+    </select>
+
+    <!--查询库存报表-->
+    <select id="selectGoodsStoreReport" parameterType="ReceiveStock" resultMap="GoodsStoreReportResult">
+        
+    </select>
+
+    <select id="selectReceiveGoodsById" parameterType="Long" resultMap="ReceiveGoodsResult">
+        <include refid="selectReceiveGoodsVo"/>
+        where goodsid = #{goodsid}
+    </select>
+        
+    <insert id="insertReceiveGoods" parameterType="ReceiveGoods" useGeneratedKeys="true" keyProperty="goodsid">
+        insert into tb_receive_goods
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="goodsid != null  ">goodsid,</if>
+			<if test="goodsname != null  and goodsname != ''  ">goodsname,</if>
+			<if test="price != null  ">price,</if>
+			<if test="createBy != null  and createBy != ''  ">create_by,</if>
+			<if test="createTime != null  ">create_time,</if>
+			<if test="updateTime != null  ">update_time,</if>
+			<if test="materialType != null  and materialType!=''">material_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="goodsid != null  ">#{goodsid},</if>
+			<if test="goodsname != null  and goodsname != ''  ">#{goodsname},</if>
+			<if test="price != null  ">#{price},</if>
+			<if test="createBy != null  and createBy != ''  ">#{createBy},</if>
+			<if test="createTime != null  ">#{createTime},</if>
+			<if test="updateTime != null  ">#{updateTime},</if>
+			<if test="materialType != null  and materialType!=''">#{materialType},</if>
+         </trim>
+    </insert>
+	 
+    <update id="updateReceiveGoods" parameterType="ReceiveGoods">
+        update tb_receive_goods
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsname != null  and goodsname != ''  ">goodsname = #{goodsname},</if>
+            <if test="price != null  ">price = #{price},</if>
+            <if test="createBy != null  and createBy != ''  ">create_by = #{createBy},</if>
+            <if test="createTime != null  ">create_time = #{createTime},</if>
+            <if test="updateTime != null  ">update_time = #{updateTime},</if>
+            <if test="materialType != null  and materialType!=''">material_type = #{materialType},</if>
+        </trim>
+        where goodsid = #{goodsid}
+    </update>
+
+	<delete id="deleteReceiveGoodsById" parameterType="Long">
+        delete from tb_receive_goods where goodsid = #{goodsid}
+    </delete>
+	
+    <delete id="deleteReceiveGoodsByIds" parameterType="String">
+        delete from tb_receive_goods where goodsid in 
+        <foreach item="goodsid" collection="array" open="(" separator="," close=")">
+            #{goodsid}
+        </foreach>
+    </delete>
+    
+</mapper>

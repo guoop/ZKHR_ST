@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=yes">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/ruoyi/css/ry-ui.css?v=3.3.0">
+  <link rel="stylesheet" href="/css/tasks/style.css">
+  <link rel="stylesheet" href="/js/element-ui/element-ui.css">
+</head>
+
+<body class="gray-bg">
+  <div id="lineapp" class="lineapp" :class="{ show: isloaded }">
+    <el-row v-for="line in lines" class="pline-row">
+      <el-col :span="8">
+        {{line.productLine}} 号线
+      </el-col>
+      <el-col :span="8">
+        <el-radio-group v-model="line.stoneType" @change="changeProLine(line)">
+          <el-radio label="0">青石</el-radio>
+          <el-radio label="1">卵石</el-radio>
+        </el-radio-group>
+      </el-col>
+      <el-col :span="8">
+        <span class="pline-switch">生产状态:</span>
+        <el-switch @change="changeProLine(line)" v-model="line.state" active-color="#13ce66" inactive-color="#dcdfe6">
+        </el-switch>
+      </el-col>
+    </el-row>
+  </div>
+  <div style="clear: both;"></div>
+  <div class="root">
+    <img class="hide" src="/img/tasks/btn-pause.png" alt="">
+    <div class="line_container"></div>
+  </div>
+  <div id="taskvue">
+    <el-dialog title="提示" :visible.sync="tiaodan.visibility" width="30%">
+      <el-input v-model="tiaodan.remark" placeholder="请输入备注"></el-input>
+      <p class="tiaodan-mg"></p>
+      <el-table :data="tiaodan.tableData" style="width: 100%">
+        <el-table-column prop="name" label="名称">
+        </el-table-column>
+        <el-table-column prop="id" label="id">
+        </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button size="mini" @click="clickTiaoDan(scope.$index, scope.row)">选择</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="tiaodan.visibility = false">取 消</el-button>
+      </span>
+    </el-dialog>
+  </div>
+  <button class="btn btn-info task-handrefresh">手动刷新</button>
+  <script type="text/javascript" src="/js/jquery.min.js"></script>
+  <script type="text/javascript" src="/ajax/libs/layer/layer.min.js"></script>
+  <div th:include="include :: footer"></div>
+  <script src="/js/lodash.min.js"></script>
+  <script src="/js/vue.js"></script>
+  <script src="/js/element-ui/element-ui.js"></script>
+  <script type="text/javascript" src="/js/tasks/tasks.js" defer></script>
+  <script>
+  $(function() {
+
+  });
+
+  var prefix = ctx + "lines/productLine";
+  var apis = {
+    list: prefix + '/list', // 获取产线列表
+    edit: prefix + '/edit', // 编辑产线
+  };
+
+  var lineApp = new Vue({
+    el: '#lineapp',
+    data: {
+      isloaded: false,
+      lines: [],
+    },
+    created: function() {
+      this.isloaded = true;
+      this.getLines();
+    },
+    methods: {
+      getLines: function() {
+        var This = this;
+        var request = $.ajax({
+          url: apis.list,
+          type: "POST",
+          data: {
+            pageSize: 1000,
+            pageNum: 1,
+            orderByColumn: '',
+            isAsc: 'asc',
+          },
+          dataType: "json"
+        });
+        request.done(function(data) {
+          console.log(data)
+          if (data.code !== 0) {
+            layer.alert(data.msg);
+            return;
+          }
+          var lines = data.rows.map(function(item) {
+            return {
+              id: item.id,
+              productLine: item.productLine,
+              stoneType: String(item.stoneType),
+              state: item.state == 0 ? true : false,
+            };
+          });
+          This.lines = lines;
+        });
+        request.fail(function(jqXHR, textStatus) {
+          layer.msg('获取主机信息失败');
+          console.warn('网络失败', jqXHR);
+        });
+      },
+      changeProLine: function(line) { // 改变生产线状态或石子类型
+        $.modal.loading('修改中,请稍等.');
+        console.log(line);
+        var This = this;
+        var request = $.ajax({
+          url: apis.edit,
+          type: "POST",
+          timeout: 60000,
+          data: {
+            id: line.id,
+            productLine: line.productLine,
+            stoneType: line.stoneType,
+            state: line.state === true ? 0 : 1,
+          },
+          dataType: "json"
+        });
+        request.done(function(data) {
+          $.modal.closeLoading();
+          console.log(data);
+          if (data.code !== 0) {
+            layer.alert(data.msg);
+            return;
+          }
+          layer.msg(data.msg);
+        });
+        request.fail(function(jqXHR, textStatus) {
+          $.modal.closeLoading();
+          layer.msg('获取主机信息失败');
+          console.warn('网络失败', jqXHR);
+        });
+      }
+    },
+  });
+  </script>
+</body>
+
+</html>
